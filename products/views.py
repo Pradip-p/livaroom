@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import  Variant
+from .models import  Variant, Product
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
@@ -46,7 +46,8 @@ def dashboard(request):
 @login_required(login_url='/')
 def home(request):
     # #set the pagination on products li
-    variants = [variant for variant in Variant.objects.all().order_by('-id') if variant.price_livaroom]
+    # variants = [variant for variant in Variant.objects.all().order_by('-id') if variant.price_livaroom]
+    variants = Product.objects.all().order_by('-id')
     variants = set_pagination(request, variants)
     context = {'graphic': get_image(),
                'variants':variants,

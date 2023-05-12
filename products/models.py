@@ -96,27 +96,18 @@ class Variant(models.Model):
 
         return related_price
 
-
-
-
-
-
-
-        # Calculate the average price of the competitors
-        avg_competitor_price = float(self.price_englishelm) / float(self.price_livaroom)
-        
-        # Calculate the reduction amount
-        reduction_amount = float((reduction_percentage/100)) * float(avg_competitor_price)
-        
-        # Calculate the lower price
-        lower_price = avg_competitor_price - reduction_amount
-        
-        # If the optimized price is below your own price, use your own price instead
-        optimized_price = max(lower_price, float(self.price_livaroom))
-        
-        # Return the optimized price
-        return optimized_price
-
+    def __str__(self):
+        return self.title
     
+class Product(models.Model):
+    category_name = models.CharField(max_length=200)
+    title = models.CharField(max_length=200)
+    sku = models.CharField(max_length=200)
+    handle = models.CharField(max_length=200)
+    price_englishelm = models.CharField(max_length=200, blank=True)
+    price_livaroom = models.CharField(max_length=200, blank=True)
+    barcode = models.CharField(max_length=200)
+    featured_image = models.CharField(max_length=200)
+
     def __str__(self):
         return self.title

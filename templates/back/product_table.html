@@ -1,7 +1,7 @@
 <div class="table-responsive">
     <table id="" class="table table-vcenter table-condensed table-bordered"> <!-- id="example-datatable" -->
         <thead>
-            <tr>
+            <tr> <th class="text-center">Category</th>
                 <th class="text-center">title</th>
                 <th class="text-center">sku</th>
                 <th class="text-center" >barcode</th>
@@ -13,6 +13,7 @@
         <tbody>
             {% for cc in variants %}
             <tr>
+                <td class="text-center">{{cc.category_name}}</td>
                 <td class="text-center">{{cc.title}}</td>
                 <td class="text-center">{{ cc.sku }}</td> <!-- rand means random number of the news -->
                 <td class="text-center" > {{ cc.barcode }}</td>

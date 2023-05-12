@@ -15,7 +15,7 @@ sys.path.append(str(BASE_DIR))  # Add the base directory to the PYTHONPATH
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 django.setup()
 
-from products.models import Variant
+from products.models import Variant, Product
 
 class LivaroomDBPipeline(object):
     def __init__(self):
@@ -36,15 +36,41 @@ class LivaroomDBPipeline(object):
     
     @transaction.atomic
     def process_item(self, item, spider):
+        handle = item.get('handle')
+        category_name = item.get('category_name')
         variants = item.get('variants')
         for variant in variants:
-            try:
-                existing_product = Variant.objects.get(sku=variant.get('sku'))
-                existing_product.price_livaroom = variant.get('price')
-                existing_product.save()
-                return variant
-            except Variant.DoesNotExist:
-                return ''
+            title = variant.get('name')
+            sku = variant.get('sku')
+            price_englishelm = variant.get('price')
+            
+            if variant.get('barcode'):
+                barcode = variant.get('barcode')
+            else:
+                barcode = 'NA'
+
+            if variant['featured_image']:
+                if variant['featured_image'].get('src'):
+                    featured_image = variant['featured_image'].get('src')
+                else:
+                    featured_image = 'NA'
+            else:
+                featured_image = 'NA'
+
+
+            Product.objects.create(category_name=category_name, title=title,
+                                   handle=handle, sku=sku, barcode=barcode,featured_image=featured_image,
+                                   price_englishelm=price_englishelm)
+        return item
+    
+            # try:
+            #     featured_image = variant['featured_image'].get('src')
+            #     existing_product = Variant.objects.get(sku=variant.get('sku'))
+            #     existing_product.price_livaroom = variant.get('price')
+            #     existing_product.save()
+            #     return variant
+            # except Variant.DoesNotExist:
+            #     return ''
 
 
 

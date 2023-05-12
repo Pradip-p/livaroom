@@ -29,10 +29,18 @@ class LazyCrawler(LazyBaseCrawler):
             'lazy_crawler.crawler.pipelines.LivaroomDBPipeline': 400
         }
     }
-
+    ###all category avaiable in livroom
     categories =  [
         {
-        'living':['https://livaroom.com/collections/living-room']
+        'living':['https://livaroom.com/collections/living-room'],
+        'bedroom':['https://livaroom.com/collections/bedroom'],
+        'kitchen & dining':['https://livaroom.com/collections/kitchen-dining'],
+        'home & entertainment':['https://livaroom.com/collections/home-entertainment'],
+        'baby & kids furniture':['https://livaroom.com/collections/baby-kids-furniture'],
+        'outdoor':['https://livaroom.com/collections/outdoor'],
+        'home-decor':['https://livaroom.com/collections/home-decor'],
+        'bathroom':['https://livaroom.com/collections/bathroom'],
+        'office':['https://livaroom.com/collections/office']
         }
     ]
     proxy = 'p.webshare.io:80'
@@ -67,20 +75,22 @@ class LazyCrawler(LazyBaseCrawler):
                 urls = value
                 for url in urls:
                     yield scrapy.Request(url, self.parse_json, dont_filter=True,
-                                         headers=self.HEADERS)
+                                         headers=self.HEADERS, meta={'category_name':category_name})
+        # url = 'https://livaroom.com/collections/all'
+        # yield scrapy.Request(url, self.parse_json, dont_filter=True,headers=self.HEADERS)
 
     def parse_json(self, response):
         data_json_product = response.xpath('//li[@class="product"]/div[@class="product-item"]/@data-json-product').extract()
         for json_data in data_json_product:
             json_data = json.loads(json_data)
-
+            json_data['category_name'] = response.meta['category_name']
             yield json_data
 
         next_page = response.xpath('//ul[@class="pagination__list list-unstyled"]/li[@class="pagination-arrow"][last()]/a/@href').extract_first()
         ###logical error, fixed it.
         if next_page:
             url = 'https://livaroom.com{}'.format(next_page)
-            yield scrapy.Request(url, self.parse_json, dont_filter=True,headers=self.HEADERS)
+            yield scrapy.Request(url, self.parse_json, dont_filter=True,headers=self.HEADERS, meta={'category_name':response.meta['category_name']})
             
         gc.collect()
 
