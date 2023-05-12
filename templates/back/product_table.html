@@ -1,0 +1,65 @@
+<div class="table-responsive">
+    <table id="" class="table table-vcenter table-condensed table-bordered"> <!-- id="example-datatable" -->
+        <thead>
+            <tr>
+                <th class="text-center">title</th>
+                <th class="text-center">sku</th>
+                <th class="text-center" >barcode</th>
+                <th class="text-center">price_englishelm</th>
+                <th class="text-center">price_livaroom</th>
+                <th class="text-center">optimize_price<th/>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cc in variants %}
+            <tr>
+                <td class="text-center">{{cc.title}}</td>
+                <td class="text-center">{{ cc.sku }}</td> <!-- rand means random number of the news -->
+                <td class="text-center" > {{ cc.barcode }}</td>
+                <td class="text-center" > {{ cc.price_englishelm }}</td>
+                <td class="text-center" > {{ cc.price_livaroom }}</td>
+                <td class="text-center">{{cc.optimize_price}}</td>
+                
+            </tr>
+            {% endfor %}
+       
+        </tbody>
+    </table>
+    <!-- Pagination Start -->
+    Page {{ variants.number }} of {{ variants.paginator.num_pages }}
+    <br><br>
+    {% if variants.has_previous %}
+        <a href="?page={{variants.previous_page_number}}" data-toggle="tooltip" title="Previous" class="btn btn-xs btn-default">Previous</a>
+    {% endif %}
+
+    {% if variants.number > 1 %}
+        <a href="?page=1" data-toggle="tooltip" title="First" class="btn btn-xs btn-default">1</a>
+    {% endif %}
+
+    {% if variants.number > 4 %}
+        <span class="ellipsis">...</span>
+    {% endif %}
+
+    {% for i in variants.paginator.page_range %}
+        {% if i > variants.number|add:'-3' and i < variants.number|add:'3' %}
+            {% if variants.number == i %}
+                <a href="#" onclick="return false;" data-toggle="tooltip" title="{{Disables}}" class="btn btn-xs btn-default">{{i}}</a>
+            {% else %}
+                <a href="?page={{i}}" data-toggle="tooltip" title="{{i}}" class="btn btn-xs btn-default">{{i}}</a>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+
+    {% if variants.number < variants.paginator.num_pages|add:'-3' %}
+        <span class="ellipsis">...</span>
+    {% endif %}
+
+    {% if variants.number < variants.paginator.num_pages %}
+        <a href="?page={{variants.paginator.num_pages}}" data-toggle="tooltip" title="Last" class="btn btn-xs btn-default">{{variants.paginator.num_pages}}</a>
+    {% endif %}
+
+    {% if variants.has_next %}
+        <a href="?page={{variants.next_page_number}}" data-toggle="tooltip" title="Next" class="btn btn-xs btn-default">Next</a>
+    {% endif %}
+<!-- Pagination End -->
+</div>

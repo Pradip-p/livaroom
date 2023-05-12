@@ -1,0 +1,162 @@
+
+{% extends 'back/base.html' %}
+
+{% load static %}
+
+<!-- Add Editor(CKEditor) for News Add Page Start -->
+{% block headblock %}
+
+    <script src="{% static 'ckeditor/ckeditor.js' %}"></script>
+
+{% endblock %}
+<!-- Add Editor(CKEditor) for News Add Page Start -->
+
+{% block mainblock %}
+<!-- Datatables Header -->
+<div class="content-header">
+    <div class="header-section">
+        <h1>
+            <i class="fa fa-table"></i>Setting<br><small>You can add, edit and delete your data!</small>
+        </h1>
+    </div>
+</div>
+<ul class="breadcrumb breadcrumb-top">
+    <li>Site</li>
+    <li><a href="{% url 'site_setting' %}">Settings</a></li>
+</ul>
+<!-- END Datatables Header -->
+
+
+<div class="row">
+    <div class="col-md-12">
+        <!-- Basic Form Elements Block -->
+        <div class="block">
+            <!-- Basic Form Elements Title -->
+            <div class="block-title">
+                
+                <h2><strong>Site</strong> Settings</h2>
+            </div>
+            <!-- END Form Elements Title -->
+            <form action="#" method="post" enctype="multipart/form-data" class="form-horizontal form-bordered">
+                {% csrf_token %}
+            
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <strong>Oops!</strong> There were errors in your submission:<br>
+                        {% for field in form %}
+                            {% if field.errors %}
+                                {{ field.label_tag }}:
+                                {% for error in field.errors %}
+                                    {{ error|escape }}<br>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if form.non_field_errors %}
+                            {% for error in form.non_field_errors %}
+                                {{ error|escape }}<br>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                {% endif %}
+            
+                <div class="form-group">
+                    <div class="col-md-6">
+                        {{ form.name.label_tag }}
+                        {{ form.name }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.tell.label_tag }}
+                        {{ form.tell }}
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <div class="col-md-6">
+                        {{ form.fb.label_tag }}
+                        {{ form.fb }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.tw.label_tag }}
+                        {{ form.tw }}
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <div class="col-md-6">
+                        {{ form.yt.label_tag }}
+                        {{ form.yt }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.link.label_tag }}
+                        {{ form.link }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        {{ form.about.label_tag }}
+                        {{ form.about }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        {{ form.abouttxt.label_tag }}
+                        {{ form.abouttxt }}
+                    </div>
+                </div>
+            
+                <!-- Add Editor(CKEditor) for News Add Page Start -->
+                <!-- Replace by name -->
+                <script>  
+                    CKEDITOR.replace( 'about' );      
+                    CKEDITOR.replace( 'abouttxt' ); 
+                </script>
+                <!-- Add Editor(CKEditor) for News Add Page Start -->
+            
+                <div class="form-group">
+                    <div class="col-md-6">
+                        {{ form.header_img.label_tag }}
+                        {{ form.header_img }}
+                    </div>
+                    <div class="col-md-6">
+                        {% if form.instance.header_img %}
+                            <img style="display: inline-block; width: 200px; height: 100px;" src="{{ form.instance.header_img.url }}">
+                        {% endif %}
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <div class="col-md-6">
+                        {{ form.footer_img.label_tag }}
+                        {{ form.footer_img }}
+                    </div>
+                    <div class="col-md-6">
+                        {% if form.instance.footer_img %}
+                            <img style="display: inline-block; width: 200px; height: 100px;" src="{{ form.instance.footer_img.url }}">
+                        {% endif %}
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> Submit</button>
+                    </div>
+                </div>
+            </form>
+            
+            
+            <!-- END Basic Form Elements Content -->
+        </div>
+        <!-- END Basic Form Elements Block -->
+    </div>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block footerblock %}
+<!-- Load and execute javascript code used only in this page -->
+<script src="{% static 'back/js/pages/tablesDatatables.js' %}"></script>
+<script>$(function(){ TablesDatatables.init(); });</script>
+        {% endblock %}

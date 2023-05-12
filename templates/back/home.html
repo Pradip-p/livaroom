@@ -1,0 +1,127 @@
+
+{% extends 'back/base.html' %}
+
+{% load static %}
+
+{% block mainblock %}
+<!-- Mini Top Stats Row (Index page of admin panel) Start -->
+<div class="row">
+    <div class="col-sm-6 col-lg-3">
+        <!-- Widget -->
+        <a href="#" class="widget widget-hover-effect1">
+            <div class="widget-simple">
+                <div class="widget-icon pull-left themed-background-autumn animation-fadeIn">
+                    <i class="fa fa-file-text"></i>
+                </div>
+                <h3 class="widget-content text-right animation-pullDown">
+                    <strong>646</strong><br>
+                    <small> Matching Products</small>
+                </h3>
+            </div>
+        </a>
+        <!-- END Widget -->
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <!-- Widget -->
+        <a href="#" class="widget widget-hover-effect1">
+            <div class="widget-simple">
+                <div class="widget-icon pull-left themed-background-spring animation-fadeIn">
+                    <i class="gi gi-usd"></i>
+                </div>
+                <h3 class="widget-content text-right animation-pullDown">
+                    + <strong>132</strong><br>
+                    <small>Total Products: </small>
+                </h3>
+            </div>
+        </a>
+        <!-- END Widget -->
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <!-- Widget -->
+        <a href="#" class="widget widget-hover-effect1">
+            <div class="widget-simple">
+                <div class="widget-icon pull-left themed-background-fire animation-fadeIn">
+                    <i class="gi gi-envelope"></i>
+                </div>
+                <h3 class="widget-content text-right animation-pullDown">
+                    5 <strong>Messages</strong>
+                    <small>Support Center</small>
+                </h3>
+            </div>
+        </a>
+        <!-- END Widget -->
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <!-- Widget -->
+        <a href="#" class="widget widget-hover-effect1">
+            <div class="widget-simple">
+                <div class="widget-icon pull-left themed-background-amethyst animation-fadeIn">
+                    <i class="gi gi-picture"></i>
+                </div>
+                <h3 class="widget-content text-right animation-pullDown">
+                    +30 <strong>Photos</strong>
+                    <small>Gallery</small>
+                </h3>
+            </div>
+        </a>
+        <!-- END Widget -->
+    </div>
+
+</div>
+<!-- Mini Top Stats Row (Index page of admin panel) End -->
+
+<!-- Datatables Content -->
+<div class="block full">
+
+    <div class="block-title">
+        <h2><strong>Living</strong> Products</h2>
+
+        <div class="row">
+            <!-- Search Form Start -->
+            <form action="#" method="post">
+                    <div class="col-md-8">
+                        <!-- Right side content goes here -->
+                    </div>
+                    <div class="col-md-3">
+                    <input type="text" id="id_sku" name="sku" class="form-control" placeholder="Search Product based on SKU.."
+                        hx-get="{% url 'search-product' %}"
+                        hx-trigger="keyup"
+                        hx-target="#modules"
+                        hx-headers="{ 'X-CSRFToken': '{{ csrf_token }}' }"
+                        required
+                    >
+
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+            </form>
+            <!-- Search Form End -->
+        </div>
+    </div>
+    {% if not request.GET %}
+        <!-- Show this block if no search query -->
+        <div id="modules">
+            {% include 'back/product_table.html' %}
+        </div>
+    {% else %}
+        <!-- Show the search results in this block -->
+        <div id="modules" hx-swap="outerHTML">
+            {% if variants %}
+                {% include 'back/product_table.html' %}
+            {% else %}
+                {% include 'back/product.html' %}
+            {% endif %}
+        </div>
+    {% endif %}        
+    
+</div>
+<!-- END Datatables Content -->
+
+{% endblock %}
+
+
+{% block footerblock %}
+<!-- Load and execute javascript code used only in this page -->
+<script src="{% static 'back/js/pages/index.js' %}"></script>
+<script>$(function(){ Index.init(); });</script>
+{% endblock %}
