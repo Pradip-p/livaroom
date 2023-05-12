@@ -1,0 +1,12 @@
+Scrapy
+ipdb
+protobuf
+ruamel.yaml
+s3transfer
+pillow
+pyppeteer
+pandas
+googletrans
+pdfminer.six
+PyYAML
+openpyxl
