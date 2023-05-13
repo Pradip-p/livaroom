@@ -98,14 +98,23 @@ class EnglishElmDBPipeline(object):
 
         for variant in variants:
             try:
-                Variant.objects.get(sku=variant.get('sku'))
-                print('*'*100, 'This product is already exist.')
-            except Variant.DoesNotExist:
-                Variant.objects.create(
-                    title = variant.get('name'),
-                    sku = variant.get('sku'),
-                    price_englishelm = variant.get('price'),
-                    barcode = variant.get('id')
-                )                
+                existing_product = Product.objects.get(sku=variant.get('sku'))
+                existing_product.price_englishelm = variant.get('price')
+                existing_product.save()
                 return variant
+            except Product.DoesNotExist:
+                return ''
+
+
+            # try:
+            #     Variant.objects.get(sku=variant.get('sku'))
+            #     print('*'*100, 'This product is already exist.')
+            # except Variant.DoesNotExist:
+            #     Variant.objects.create(
+            #         title = variant.get('name'),
+            #         sku = variant.get('sku'),
+            #         price_englishelm = variant.get('price'),
+            #         barcode = variant.get('id')
+            #     )                
+            #     return variant
             

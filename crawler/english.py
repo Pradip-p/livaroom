@@ -26,7 +26,7 @@ class LazyCrawler(LazyBaseCrawler):
         "COOKIES_ENABLED": True,'DOWNLOAD_TIMEOUT': 180,
 
         'ITEM_PIPELINES' :  {
-            'lazy_crawler.crawler.pipelines.EnglishElmDBPipeline': None
+            'lazy_crawler.crawler.pipelines.EnglishElmDBPipeline': 300
         }
     }
     categories = [
@@ -61,17 +61,17 @@ class LazyCrawler(LazyBaseCrawler):
     }
 
     def start_requests(self): #project start from here.
-        # for category in self.categories:
-        #     category = category.items()
-        #     for key, value in category:
-        #         category_name = key
-        #         urls = value
-        #         for url in urls:
-        #             yield scrapy.Request(url, self.parse_json, dont_filter=True,
-        #                 # meta={'proxy': 'http://' + self.proxy},
-        #                 headers= self.HEADERS
-        #                 )
-        url = 'https://englishelm.com/collections/all'
+        for category in self.categories:
+            category = category.items()
+            for key, value in category:
+                category_name = key
+                urls = value
+                for url in urls:
+                    yield scrapy.Request(url, self.parse_json, dont_filter=True,
+                        # meta={'proxy': 'http://' + self.proxy},
+                        headers= self.HEADERS
+                        )
+        # url = 'https://englishelm.com/collections/all'
         yield scrapy.Request(url, self.parse_json, dont_filter=True,headers=self.HEADERS)
 
 
