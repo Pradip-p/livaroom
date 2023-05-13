@@ -10,3 +10,4 @@ pdfminer.six
 PyYAML
 openpyxl
 scrapy_fake_useragent
+js2xml

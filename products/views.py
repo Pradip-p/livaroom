@@ -14,13 +14,13 @@ def search_product(request):
         sku = request.GET.get('sku')
         if sku:
             try:
-                variants = Variant.objects.filter(sku__icontains=sku).distinct()
+                variants = Product.objects.filter(sku__icontains=sku).distinct()
                 context = {'variants':variants, 'message':'show the products based on price avaiable'}
                 return render(request, 'back/product_table.html', context)
             except ValueError:
                 return render(request, "back/product_table.html", {"message":"please, select the country."})
         else:
-            variants = [variant for variant in Variant.objects.all().order_by('-id') if variant.price_livaroom]
+            variants = [variant for variant in Product.objects.all().order_by('-id') if variant.price_livaroom]
             variants = set_pagination(request, variants)
             context = {
                'variants':variants,
@@ -30,10 +30,10 @@ def search_product(request):
 
 @login_required(login_url='/')
 def dashboard(request):
-    variants = Variant.objects.all().order_by('-id')
+    variants = Product.objects.all().order_by('-id')
     for variant in variants:
         if variant.price_livaroom:
-            print(variant)
+            print('')
     # variants_data = Variant.objects.exclude(price_livaroom__exact='').order_by('-id')
     # cat = Category.objects.all()
     # print(variants_data)
