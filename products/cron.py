@@ -18,7 +18,9 @@ class ProductCronJob(CronJobBase):
     RUN_EVERY_MINS = 60 # execute every 1 hour
 
     schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
-    code = 'products.product_cron_job'    # a unique code for this cron job
+    
+    code = 'products.cron.ProductCronJob'    # update the code attribute
+    # code = 'products.product_cron_job'    # a unique code for this cron job
 
     def do(self):
         # code to be executed when the cron job runs
