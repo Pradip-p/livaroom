@@ -42,7 +42,7 @@ class LivaroomDBPipeline(object):
         for variant in variants:
             title = variant.get('name')
             sku = variant.get('sku')
-            price_englishelm = variant.get('price')
+            price_livaroom = variant.get('price')
             
             if variant.get('barcode'):
                 barcode = variant.get('barcode')
@@ -60,7 +60,7 @@ class LivaroomDBPipeline(object):
 
             Product.objects.create(category_name=category_name, title=title,
                                    handle=handle, sku=sku, barcode=barcode,featured_image=featured_image,
-                                   price_englishelm=price_englishelm)
+                                   price_livaroom=price_livaroom)
         return item
     
             # try:

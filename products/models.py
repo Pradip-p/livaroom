@@ -111,3 +111,9 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+
+    def product_url(self):
+        # if not isinstance(self.handle, str):
+        #     raise TypeError("Product handle must be a string")
+        return f'https://livaroom.com/products/{self.handle}'
+

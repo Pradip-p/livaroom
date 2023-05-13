@@ -1,13 +1,14 @@
 <div class="table-responsive">
-    <table id="" class="table table-vcenter table-condensed table-bordered"> <!-- id="example-datatable" -->
+    <table id="example-datatable" class="table table-vcenter table-condensed table-bordered"> <!-- id="example-datatable" -->
         <thead>
-            <tr> <th class="text-center">Category</th>
+            <tr> 
+                <th class="text-center">Category</th>
                 <th class="text-center">title</th>
                 <th class="text-center">sku</th>
                 <th class="text-center" >barcode</th>
                 <th class="text-center">price_englishelm</th>
                 <th class="text-center">price_livaroom</th>
-                <th class="text-center">optimize_price<th/>
+                <th class="text-center" >url</th>
             </tr>
         </thead>
         <tbody>
@@ -15,12 +16,11 @@
             <tr>
                 <td class="text-center">{{cc.category_name}}</td>
                 <td class="text-center">{{cc.title}}</td>
-                <td class="text-center">{{ cc.sku }}</td> <!-- rand means random number of the news -->
+                <td class="text-center">{{ cc.sku }}</td>
                 <td class="text-center" > {{ cc.barcode }}</td>
                 <td class="text-center" > {{ cc.price_englishelm }}</td>
                 <td class="text-center" > {{ cc.price_livaroom }}</td>
-                <td class="text-center">{{cc.optimize_price}}</td>
-                
+                <td class="text-center"><a target="_blank" href="{{ cc.product_url }}" class="btn btn-sm btn-primary">open</a></td>
             </tr>
             {% endfor %}
        
