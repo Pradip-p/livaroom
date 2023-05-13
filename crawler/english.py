@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os
 import scrapy
 from scrapy.crawler import CrawlerProcess
