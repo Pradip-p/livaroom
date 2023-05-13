@@ -57,11 +57,25 @@ class LivaroomDBPipeline(object):
             else:
                 featured_image = 'NA'
 
+            # Get the product if it exists, else create it
+            product, created = Product.objects.get_or_create(category_name=category_name, title=title,
+                                handle=handle, sku=sku, barcode=barcode,featured_image=featured_image,
+                                price_livaroom=price_livaroom)
 
-            Product.objects.create(category_name=category_name, title=title,
-                                   handle=handle, sku=sku, barcode=barcode,featured_image=featured_image,
-                                   price_livaroom=price_livaroom)
-        return item
+            # If the product was created, set its attributes
+            if created:
+                product.category_name = category_name
+                product.title = title
+                product.handle = handle
+                product.sku = sku
+                product.barcode = barcode
+                product.featured_image = featured_image
+                product.price_livaroom = price_livaroom
+                product.save()
+            # Product.objects.create(category_name=category_name, title=title,
+            #                        handle=handle, sku=sku, barcode=barcode,featured_image=featured_image,
+            #                        price_livaroom=price_livaroom)
+        return ''
     
             # try:
             #     featured_image = variant['featured_image'].get('src')

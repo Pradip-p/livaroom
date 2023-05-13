@@ -122,9 +122,9 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 #  CronJob to run your Scrapy spider every week
-CRONJOBS = [
-    ('0 0 * * 0', 'products.cron.run_spider')
-]
+# CRONJOBS = [
+#     ('0 0 * * 0', 'products.cron.run_spider')
+# ]
 
 # CronJob to run your Scrapy spider every 5 minutes using the CRONJOBS
 # CRONJOBS = [
