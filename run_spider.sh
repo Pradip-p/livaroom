@@ -1,4 +1,3 @@
 #!/bin/bash
 cd /root/livaroom/
-source /room/livaroom/tools/bin/activate
-python /crawler/livaroom_com.py
+/usr/bin/env bash -c 'source /root/livaroom/tools/bin/activate && /root/livaroom/tools/bin/python /root/livaroom/crawler/livaroom_com.py'
