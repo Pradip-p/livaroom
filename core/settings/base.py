@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     ## added new app
     'authentication',
     'products',
+    #####django_cron app run cron jobs
+    'django_cron',
 ]
 
 MIDDLEWARE = [
