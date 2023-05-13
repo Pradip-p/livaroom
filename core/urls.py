@@ -17,6 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from django_cron import CronJobManager
+
+CRON_CLASSES = [
+    'products.cron.MyCronJob',  # replace myapp with the name of your Django app
+    # add more cron job classes if needed
+]
+
+cron_manager = CronJobManager(CRON_CLASSES)
+
 urlpatterns = [
     path('', include('authentication.urls')),
     path('', include('products.urls')),  

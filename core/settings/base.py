@@ -39,6 +39,12 @@ INSTALLED_APPS = [
     'django_cron',
 ]
 
+CRON_CLASSES = [
+    # other cron job classes ...
+   'products.cron.ProductCronJob',
+]
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
