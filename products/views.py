@@ -1,8 +1,5 @@
 from django.shortcuts import render, redirect
 from .models import  Variant, Product
-import matplotlib.pyplot as plt
-from io import BytesIO
-import base64
 from .pagination import set_pagination
 from django.contrib.auth.decorators import login_required
 
@@ -49,31 +46,7 @@ def home(request):
     # variants = [variant for variant in Variant.objects.all().order_by('-id') if variant.price_livaroom]
     variants = Product.objects.all().order_by('-id')
     variants = set_pagination(request, variants)
-    context = {'graphic': get_image(),
+    context = {
                'variants':variants,
                }
-
     return render(request, 'back/home.html', context)
-
-
-
-
-def get_image():
-    # Create a simple bar chart
-    x = ['A', 'B', 'C', 'D']
-    y = [10, 20, 30, 4]
-    plt.bar(x, y)
-    
-    # Convert the plot to a PNG image
-    buffer = BytesIO()
-    plt.savefig(buffer, format='png')
-    buffer.seek(0)
-    image_png = buffer.getvalue()
-    buffer.close()
-    
-    # Encode the PNG image as base64
-    graphic = base64.b64encode(image_png)
-    graphic = graphic.decode('utf-8')
-    
-    # Return the base64-encoded image
-    return graphic

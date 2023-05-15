@@ -69,7 +69,7 @@ class LazyCrawler(LazyBaseCrawler):
                 category_name = key
                 urls = value
                 for url in urls:
-                    time.sleep(15)
+                    time.sleep(5)
                     yield scrapy.Request(url, self.parse_json, dont_filter=True,
                         # meta={'proxy': 'http://' + self.proxy},
                         headers= self.HEADERS
@@ -90,7 +90,7 @@ class LazyCrawler(LazyBaseCrawler):
         # yield {'products':products}
         for product in products:
             yield{"variants": product['variants'] } 
-        time.sleep(15)
+        time.sleep(5)
 
         # scripts = response.css('#web-pixels-manager-setup').get('')
 
@@ -124,7 +124,7 @@ class LazyCrawler(LazyBaseCrawler):
         next_page = response.xpath('//ul[@class="pagination-page"]/li[@class="text"]/a[@title="Next"]/@href').extract_first()
         if next_page:
             url = 'https://englishelm.com{}'.format(next_page)
-            time.sleep(60)
+            time.sleep(5)
             yield scrapy.Request(url, self.parse_json, dont_filter=True,
                     # meta={'proxy': 'http://' + self.proxy},
                     headers= self.HEADERS
