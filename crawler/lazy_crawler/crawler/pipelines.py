@@ -56,22 +56,43 @@ class LivaroomDBPipeline(object):
                     featured_image = 'NA'
             else:
                 featured_image = 'NA'
-
-            # Get the product if it exists, else create it
-            product, created = Product.objects.get_or_create(category_name=category_name, title=title,
-                                handle=handle, sku=sku, barcode=barcode,featured_image=featured_image,
-                                price_livaroom=price_livaroom)
-
-            # If the product was created, set its attributes
-            if created:
+            try:
+                # Attempt to retrieve an existing Product object with the given SKU
+                product = Product.objects.get(sku=sku)
+                
+                # If the object exists, update its attributes with the new data
                 product.category_name = category_name
                 product.title = title
                 product.handle = handle
-                product.sku = sku
                 product.barcode = barcode
                 product.featured_image = featured_image
                 product.price_livaroom = price_livaroom
-                product.save()
+                
+                product.save()  # Save the changes to the database
+                
+            except Product.DoesNotExist:
+                # If the object doesn't exist, create a new one
+                product = Product.objects.create(category_name=category_name, title=title, handle=handle,
+                                                sku=sku, barcode=barcode, featured_image=featured_image,
+                                                price_livaroom=price_livaroom)
+
+
+            # # Get the product if it exists, else create it
+            # product, created = Product.objects.get_or_create(category_name=category_name, title=title,
+            #                     handle=handle, sku=sku, barcode=barcode,featured_image=featured_image,
+            #                     price_livaroom=price_livaroom)
+
+            # # If the product was created, set its attributes
+            # if created:
+            #     product.category_name = category_name
+            #     product.title = title
+            #     product.handle = handle
+            #     product.sku = sku
+            #     product.barcode = barcode
+            #     product.featured_image = featured_image
+            #     product.price_livaroom = price_livaroom
+            #     product.save()
+
             # Product.objects.create(category_name=category_name, title=title,
             #                        handle=handle, sku=sku, barcode=barcode,featured_image=featured_image,
             #                        price_livaroom=price_livaroom)
