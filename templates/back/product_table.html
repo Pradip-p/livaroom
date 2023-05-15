@@ -8,6 +8,7 @@
                 <th class="text-center" >barcode</th>
                 <th class="text-center">price_livaroom</th>
                 <th class="text-center">price_englishelm</th>
+                <th class="text-center" >optimize_price</th>
                 <th class="text-center" >url</th>
             </tr>
         </thead>
@@ -20,6 +21,7 @@
                 <td class="text-center" > {{ cc.barcode }}</td>
                 <td class="text-center" > {{ cc.price_livaroom }}</td>
                 <td class="text-center" > {{ cc.price_englishelm }}</td>
+                <td class="text-center" > {{ cc.optimize_price }}</td>
                 <td class="text-center"><a target="_blank" href="{{ cc.product_url }}" class="btn btn-sm btn-primary">open</a></td>
             </tr>
             {% endfor %}
