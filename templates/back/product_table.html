@@ -5,10 +5,11 @@
                 <th class="text-center">Category</th>
                 <th class="text-center">title</th>
                 <th class="text-center">sku</th>
-                <th class="text-center" >barcode</th>
+                {% comment %} <th class="text-center" >barcode</th> {% endcomment %}
                 <th class="text-center">price_livaroom</th>
                 <th class="text-center">price_englishelm</th>
                 <th class="text-center" >optimize_price</th>
+                <th class="text-center" >update</th>
                 <th class="text-center" >url</th>
             </tr>
         </thead>
@@ -18,10 +19,22 @@
                 <td class="text-center">{{cc.category_name}}</td>
                 <td class="text-center">{{cc.title}}</td>
                 <td class="text-center">{{ cc.sku }}</td>
-                <td class="text-center" > {{ cc.barcode }}</td>
+                {% comment %} <td class="text-center" > {{ cc.barcode }}</td> {% endcomment %}
                 <td class="text-center" > {{ cc.price_livaroom }}</td>
                 <td class="text-center" > {{ cc.price_englishelm }}</td>
-                <td class="text-center" > {{ cc.optimize_price }}</td>
+                
+                <td class="text-center">
+                    <div class="input-group input-group-sm">
+                      <input id="inputField" type="text" class="form-control" value="{{ cc.optimize_price }}">
+                      
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group-append">
+                    <button id="updateButton" class="btn btn-sm btn-warning">Update</button>
+                  </div>
+                </td>
+                  
                 <td class="text-center"><a target="_blank" href="{{ cc.product_url }}" class="btn btn-sm btn-primary">open</a></td>
             </tr>
             {% endfor %}
