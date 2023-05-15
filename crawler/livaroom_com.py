@@ -10,7 +10,7 @@ import base64
 from lazy_crawler.lib.user_agent import get_user_agent
 import gc
 import json
-
+import time
 
 class LazyCrawler(LazyBaseCrawler):
 
@@ -76,6 +76,7 @@ class LazyCrawler(LazyBaseCrawler):
                 category_name = key
                 urls = value
                 for url in urls:
+                    time.sleep(10) #sleep for 10 sec
                     yield scrapy.Request(url, self.parse_json, dont_filter=True,
                                          headers=self.HEADERS, meta={'category_name':category_name})
         # url = 'https://livaroom.com/collections/all'
@@ -87,11 +88,13 @@ class LazyCrawler(LazyBaseCrawler):
             json_data = json.loads(json_data)
             json_data['category_name'] = response.meta['category_name']
             yield json_data
+            time.sleep(10)
 
         next_page = response.xpath('//ul[@class="pagination__list list-unstyled"]/li[@class="pagination-arrow"][last()]/a/@href').extract_first()
         ###logical error, fixed it.
         if next_page:
             url = 'https://livaroom.com{}'.format(next_page)
+            time.sleep(20)
             yield scrapy.Request(url, self.parse_json, dont_filter=True,headers=self.HEADERS, meta={'category_name':response.meta['category_name']})
             
         gc.collect()

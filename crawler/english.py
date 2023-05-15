@@ -10,6 +10,7 @@ from lazy_crawler.lib.user_agent import get_user_agent
 import gc
 import json
 import js2xml
+import time
 
 class LazyCrawler(LazyBaseCrawler):
 
@@ -68,12 +69,13 @@ class LazyCrawler(LazyBaseCrawler):
                 category_name = key
                 urls = value
                 for url in urls:
+                    time.sleep(15)
                     yield scrapy.Request(url, self.parse_json, dont_filter=True,
                         # meta={'proxy': 'http://' + self.proxy},
                         headers= self.HEADERS
                         )
         # url = 'https://englishelm.com/collections/all'
-        yield scrapy.Request(url, self.parse_json, dont_filter=True,headers=self.HEADERS)
+        # yield scrapy.Request(url, self.parse_json, dont_filter=True,headers=self.HEADERS)
 
 
     def parse_json(self, response):
@@ -88,7 +90,7 @@ class LazyCrawler(LazyBaseCrawler):
         # yield {'products':products}
         for product in products:
             yield{"variants": product['variants'] } 
-
+        time.sleep(15)
 
         # scripts = response.css('#web-pixels-manager-setup').get('')
 
@@ -122,6 +124,7 @@ class LazyCrawler(LazyBaseCrawler):
         next_page = response.xpath('//ul[@class="pagination-page"]/li[@class="text"]/a[@title="Next"]/@href').extract_first()
         if next_page:
             url = 'https://englishelm.com{}'.format(next_page)
+            time.sleep(60)
             yield scrapy.Request(url, self.parse_json, dont_filter=True,
                     # meta={'proxy': 'http://' + self.proxy},
                     headers= self.HEADERS
