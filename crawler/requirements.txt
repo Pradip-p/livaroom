@@ -11,3 +11,4 @@ PyYAML
 openpyxl
 scrapy_fake_useragent
 js2xml
+ShopifyAPI

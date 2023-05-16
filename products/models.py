@@ -118,6 +118,8 @@ class Product(models.Model):
         return f'https://livaroom.com/products/{self.handle}'
 
     def optimize_price(self):
+        return self.price_englishelm
+    
         if self.price_englishelm and self.price_livaroom:
             # Calculate the absolute difference between the two prices
             abs_diff = abs(float(self.price_englishelm) - float(self.price_livaroom))
