@@ -78,9 +78,15 @@
 
         <div class="row">
             <!-- Search Form Start -->
+            
+            
             <form action="#" method="post">
                     <div class="col-md-8">
                         <!-- Right side content goes here -->
+                
+                        <ul  class="fa-ul text-muted">
+                            <li id='alertMessage' style="display:none" ><i class="fa fa-check fa-li text-success"></i></li>
+                        </ul>
                     </div>
                     <div class="col-md-3">
                     <input type="text" id="id_sku" name="sku" class="form-control" placeholder="Search Product based on SKU.."
@@ -124,4 +130,36 @@
 <!-- Load and execute javascript code used only in this page -->
 <script src="{% static 'back/js/pages/index.js' %}"></script>
 <script>$(function(){ Index.init(); });</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#updateButton').click(function(e) {
+            e.preventDefault(); // Prevent the default form submission
+            
+            var optimizePrice = $('#id_optimize_price').val(); // Get the value of optimize_price
+            
+            // Get the CSRF token value from the cookie
+            var csrftoken = Cookies.get('csrftoken');
+            
+            // Add the CSRF token and the optimize_price value to the data parameter
+            var data = {
+                'csrfmiddlewaretoken': csrftoken,
+                'optimize_price': optimizePrice
+            };
+            
+            $.ajax({
+                url: '{% url "update_view" %}',
+                type: 'POST',
+                data: data,
+                success: function(response) {
+                    $('#alertMessage').show().text('Success message'); // Show the <li> element and set the message
+                },
+                error: function(xhr, errmsg, err) {
+                }
+            });
+        });
+    });
+</script>
+
 {% endblock %}

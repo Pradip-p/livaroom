@@ -101,6 +101,8 @@ class Variant(models.Model):
     
 class Product(models.Model):
     category_name = models.CharField(max_length=200, blank=True)
+    product_id = models.CharField(max_length=200)
+    variant_id = models.CharField(max_length=200)
     title = models.CharField(max_length=200)
     sku = models.CharField(max_length=200,unique=True)
     handle = models.CharField(max_length=200)

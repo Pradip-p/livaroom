@@ -25,16 +25,15 @@
                 
                 <td class="text-center">
                     <div class="input-group input-group-sm">
-                      <input id="inputField" type="text" class="form-control" value="{{ cc.optimize_price }}">
-                      
+                        <input id="id_optimize_price" name="optimize_price" type="text" class="form-control" value="{{ cc.optimize_price }}">
                     </div>
                 </td>
                 <td>
                     <div class="input-group-append">
-                    <button id="updateButton" class="btn btn-sm btn-warning">Update</button>
-                  </div>
+                        <button id="updateButton" class="btn btn-sm btn-warning">Update</button>
+                    </div>
                 </td>
-                  
+                
                 <td class="text-center"><a target="_blank" href="{{ cc.product_url }}" class="btn btn-sm btn-primary">open</a></td>
             </tr>
             {% endfor %}

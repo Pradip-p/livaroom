@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 import os
-import scrapy
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from lazy_crawler.crawler.spiders.base_crawler import LazyBaseCrawler
 import gc
 import json
-import time
 import shopify
 from shopify import PaginatedIterator
 

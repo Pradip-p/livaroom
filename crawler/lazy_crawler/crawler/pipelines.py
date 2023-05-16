@@ -36,6 +36,7 @@ class LivaroomDBPipeline(object):
     
     @transaction.atomic
     def process_item(self, item, spider):
+        product_id = item.get('id')
         handle = item.get('handle')
         product_title = item['title']
         category_name = ''
@@ -44,7 +45,7 @@ class LivaroomDBPipeline(object):
             title = product_title+' - '+variant.get('title')
             sku = variant.get('sku')
             price_livaroom = variant.get('price')
-            
+            variant_id = variant.get('id')
             if variant.get('barcode'):
                 barcode = variant.get('barcode')
             else:
@@ -63,6 +64,8 @@ class LivaroomDBPipeline(object):
                 product = Product.objects.get(sku=sku)
                 
                 # If the object exists, update its attributes with the new data
+                product_id = product_id
+                variant_id = variant_id
                 product.category_name = category_name
                 product.title = title
                 product.handle = handle
@@ -74,9 +77,11 @@ class LivaroomDBPipeline(object):
                 
             except Product.DoesNotExist:
                 # If the object doesn't exist, create a new one
-                product = Product.objects.create(category_name=category_name, title=title, handle=handle,
-                                                sku=sku, barcode=barcode,
-                                                price_livaroom=price_livaroom)
+                product = Product.objects.create(
+                    product_id=product_id, variant_id = variant_id,
+                    category_name=category_name, title=title, handle=handle,
+                    sku=sku, barcode=barcode,
+                    price_livaroom=price_livaroom)
 
         return ''
     
@@ -114,17 +119,3 @@ class EnglishElmDBPipeline(object):
                 return variant
             except Product.DoesNotExist:
                 return ''
-
-
-            # try:
-            #     Variant.objects.get(sku=variant.get('sku'))
-            #     print('*'*100, 'This product is already exist.')
-            # except Variant.DoesNotExist:
-            #     Variant.objects.create(
-            #         title = variant.get('name'),
-            #         sku = variant.get('sku'),
-            #         price_englishelm = variant.get('price'),
-            #         barcode = variant.get('id')
-            #     )                
-            #     return variant
-            
