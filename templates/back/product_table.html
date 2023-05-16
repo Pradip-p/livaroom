@@ -18,7 +18,6 @@
         </thead>
         <tbody>
             {% for cc in variants %}
-            {% if cc.optimize_price %}
             <tr>
                 <td class="text-center"> {{forloop.counter}} <input type="checkbox" class="row-checkbox"></td>
                 <td class="text-center">{{cc.title}}</td>
@@ -65,7 +64,6 @@
                 
                 <td class="text-center"><a target="_blank" href="{{ cc.product_url }}" class="btn btn-sm btn-primary">open</a></td>
             </tr>
-            {% endif %}
             {% endfor %}
        
         </tbody>
