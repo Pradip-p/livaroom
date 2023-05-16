@@ -86,15 +86,12 @@
                     <div class="col-md-4">
                         <!-- Right side content goes here -->
                         <!-- END Login Title -->
-                        <select class="form-control" >
-                            <option value="option1">update selected product price</option>
-                            <option value="option2">Option 2</option>
-                            <option value="option3">Option 3</option>
-                            <!-- Add more options as needed -->
+                        <select class="form-control" id="select_id" >
+                            <option value="option1" selected>update selected product price</option>
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <button type="button" class="btn btn-sm btn-info" >
+                        <button type="button" id="update_all" class="btn btn-sm btn-info" >
                             Update
                         </button>
                     </div>
@@ -138,8 +135,82 @@
 {% block footerblock %}
 <!-- Load and execute javascript code used only in this page -->
 <script src="{% static 'back/js/pages/index.js' %}"></script>
-<script>$(function(){ Index.init(); });</script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + "=")) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+        }
+        }
+        return cookieValue;
+    }
+
+    $(document).ready(function(){
+        $('#update_all').click(function(){
+        // collect the selected sample id's
+        var skus = [];
+        $(':checkbox:checked').each(function(i){
+            if ($(this).val() !== 'on') {
+            skus[i] = $(this).val()
+            } 
+        })
+    
+        if (skus.length === 0){
+            alert('No samples selected.');
+        } else {
+            // collect the value of delete selected or send to qc passed
+            var value = document.getElementById("select_id").value;
+    
+            // remove the undefined values from the array of IDs
+            var skus = skus.filter(() => true);
+            console.log(skus);
+    
+            // send AJAX call to update the product price
+            if (value == 'option1') {
+            $.ajax({
+                method: 'POST',
+                url: "{% url 'update_product_price' %}",
+                headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRFToken": getCookie("csrftoken"),
+                },
+                data: {
+                skus: skus,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                }, 
+                success: function(response) {
+                // Handle the success response
+                },
+                error: function(error) {
+                console.log(error);
+                }
+            });
+            }
+        }
+        });
+    });
+    
+</script>
+<script>
+    function selectAllRows() {
+        var checkboxes = document.getElementsByClassName("row-checkbox");
+        var selectAllCheckbox = document.getElementById("select-all-checkbox");
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = selectAllCheckbox.checked;
+        }
+    }
+</script>
+
 
 <script>
     $(document).ready(function() {
