@@ -74,29 +74,38 @@
 <div class="block full">
 
     <div class="block-title">
-        <h2><strong>Living</strong> Products</h2>
+        <h2><strong>Products</strong>  </h2>
 
         <div class="row">
             <!-- Search Form Start -->
             
             
             <form action="#" method="post">
-                    <div class="col-md-8">
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-4">
                         <!-- Right side content goes here -->
                         <!-- END Login Title -->
-                        <ul id='message' style='text-aglin:center' class="fa-ul text-muted">                    
-                           
-                        </ul>
+                        <select class="form-control" >
+                            <option value="option1">update selected product price</option>
+                            <option value="option2">Option 2</option>
+                            <option value="option3">Option 3</option>
+                            <!-- Add more options as needed -->
+                        </select>
                     </div>
                     <div class="col-md-3">
-                    <input type="text" id="id_sku" name="sku" class="form-control" placeholder="Search Product based on SKU.."
-                        hx-get="{% url 'search-product' %}"
-                        hx-trigger="keyup"
-                        hx-target="#modules"
-                        hx-headers="{ 'X-CSRFToken': '{{ csrf_token }}' }"
-                        required
-                    >
-
+                        <button type="button" class="btn btn-sm btn-info" >
+                            Update
+                        </button>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" id="id_sku" name="sku" class="form-control" placeholder="Search Product based on SKU.."
+                            hx-get="{% url 'search-product' %}"
+                            hx-trigger="keyup"
+                            hx-target="#modules"
+                            hx-headers="{ 'X-CSRFToken': '{{ csrf_token }}' }"
+                            required
+                        >
                     </div>
                     <div class="col-md-1">
                     </div>

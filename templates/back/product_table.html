@@ -2,7 +2,10 @@
     <table id="example-datatable" class="table table-vcenter table-condensed table-bordered"> <!-- id="example-datatable" -->
         <thead>
             <tr> 
-                {% comment %} <th class="text-center">Category</th> {% endcomment %}
+                {% comment %} <th class="text-center">S.N.</th> {% endcomment %}
+                <th>&nbsp;
+                    <input type="checkbox" id="select-all-checkbox" onclick="selectAllRows()">
+                </th>
                 <th class="text-center">title</th>
                 <th class="text-center">sku</th>
                 <th class="text-center" >barcode</th>
@@ -16,7 +19,11 @@
         <tbody>
             {% for cc in variants %}
             <tr>
-                {% comment %} <td class="text-center">{{cc.category_name}}</td> {% endcomment %}
+                {% comment %} <td class="text-center">
+                    
+                    {{forloop.counter}}
+                </td> {% endcomment %}
+                <td class="text-center"> {{forloop.counter}} <input type="checkbox" class="row-checkbox"></td>
                 <td class="text-center">{{cc.title}}</td>
                 <td class="text-center">{{ cc.sku }}</td>
                 <td class="text-center" > {{ cc.barcode }}</td>

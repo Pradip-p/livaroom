@@ -3,7 +3,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger # For p
 def set_pagination(request, items):
     page = request.GET.get('page')
 
-    paginator = Paginator(items, 100)  ## How much news will be shown in each page
+    paginator = Paginator(items, 99)  ## How much news will be shown in each page
 
     try:
         items = paginator.page(page)

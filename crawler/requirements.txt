@@ -12,3 +12,9 @@ openpyxl
 scrapy_fake_useragent
 js2xml
 ShopifyAPI
+load_dotenv
+django
+gunicorn
+psycopg2
+matplotlib
+django-crontab
