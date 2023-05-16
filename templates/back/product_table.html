@@ -18,7 +18,7 @@
         </thead>
         <tbody>
             {% for cc in variants %}
-            {% if cc.price_englishelm %}
+            {% if cc.optimize_price %}
             <tr>
                 <td class="text-center"> {{forloop.counter}} <input type="checkbox" class="row-checkbox"></td>
                 <td class="text-center">{{cc.title}}</td>
