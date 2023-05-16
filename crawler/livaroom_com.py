@@ -4,12 +4,11 @@ import scrapy
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from lazy_crawler.crawler.spiders.base_crawler import LazyBaseCrawler
-from lazy_crawler.lib.cleaner import strip_html
-import base64
-from lazy_crawler.lib.user_agent import get_user_agent
 import gc
 import json
 import time
+import shopify
+from shopify import PaginatedIterator
 
 class LazyCrawler(LazyBaseCrawler):
 
@@ -18,84 +17,47 @@ class LazyCrawler(LazyBaseCrawler):
     allowed_domains = ['livaroom.com']
 
     custom_settings = {
-        'DOWNLOAD_DELAY': 4,'LOG_LEVEL': 'DEBUG',
-        
-        'CONCURRENT_REQUESTS' : 1,'CONCURRENT_REQUESTS_PER_IP': 1,
-
-        'CONCURRENT_REQUESTS_PER_DOMAIN': 1,'RETRY_TIMES': 2,
-
-        "COOKIES_ENABLED": True,'DOWNLOAD_TIMEOUT': 180,
-
-        'ITEM_PIPELINES' :  {
+        'DOWNLOAD_DELAY': 4,
+        'LOG_LEVEL': 'DEBUG',
+        'CONCURRENT_REQUESTS': 1,
+        'CONCURRENT_REQUESTS_PER_IP': 1,
+        'CONCURRENT_REQUESTS_PER_DOMAIN': 1,
+        'RETRY_TIMES': 2,
+        'COOKIES_ENABLED': True,
+        'DOWNLOAD_TIMEOUT': 180,
+        'ITEM_PIPELINES': {
             'lazy_crawler.crawler.pipelines.LivaroomDBPipeline': 400
         }
     }
-    ###all category avaiable in livroom
-    categories =  [
-        {
-        'living':['https://livaroom.com/collections/living-room'],
-        'bedroom':['https://livaroom.com/collections/bedroom'],
-        'kitchen & dining':['https://livaroom.com/collections/kitchen-dining'],
-        'home & entertainment':['https://livaroom.com/collections/home-entertainment'],
-        'baby & kids furniture':['https://livaroom.com/collections/baby-kids-furniture'],
-        'outdoor':['https://livaroom.com/collections/outdoor'],
-        'home-decor':['https://livaroom.com/collections/home-decor'],
-        'bathroom':['https://livaroom.com/collections/bathroom'],
-        'office':['https://livaroom.com/collections/office']
-        }
-    ]
-    proxy = 'p.webshare.io:80'
-    # user_pass = base64.encodebytes("hpiukvrn-rotate:yahyayahya".encode()).decode()
-    user_pass = base64.encodebytes("gkoffhkj-rotate:9qsx6zrpagq6".encode()).decode()
 
-    HEADERS = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:98.0) Gecko/20100101 Firefox/98.0",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-        "Accept-Language": "en-US,en;q=0.5",
-        "Accept-Encoding": "gzip, deflate",
-        "Connection": "keep-alive",
-        "Upgrade-Insecure-Requests": "1",
-        "Sec-Fetch-Dest": "document",
-        "Sec-Fetch-Mode": "navigate",
-        "Sec-Fetch-Site": "none",
-        "Sec-Fetch-User": "?1",
-        "Cache-Control": "max-age=0",
-        ###add
-        # 'Proxy-Authorization': 'Basic ' + user_pass,
-    }
+    start_urls  = ['https://livaroom.com/']
 
-    proxy = 'p.webshare.io:80'
-    # user_pass = base64.encodebytes("hpiukvrn-rotate:yahyayahya".encode()).decode()
-    user_pass = base64.encodebytes("gkoffhkj-rotate:9qsx6zrpagq6".encode()).decode()
-    
-    def start_requests(self): #project start from here.
-        for category in self.categories:
-            category = category.items()
-            for key, value in category:
-                category_name = key
-                urls = value
-                for url in urls:
-                    time.sleep(5) #sleep for 10 sec
-                    yield scrapy.Request(url, self.parse_json, dont_filter=True,
-                                         headers=self.HEADERS, meta={'category_name':category_name})
-        # url = 'https://livaroom.com/collections/all'
-        # yield scrapy.Request(url, self.parse_json, dont_filter=True,headers=self.HEADERS)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-    def parse_json(self, response):
-        data_json_product = response.xpath('//li[@class="product"]/div[@class="product-item"]/@data-json-product').extract()
-        for json_data in data_json_product:
-            json_data = json.loads(json_data)
-            json_data['category_name'] = response.meta['category_name']
-            yield json_data
-            time.sleep(5)
+        API_KEY = "2b4e323d3129443363269802ebca49df"
+        API_SECRET_KEY = '60d668593ffa6e9a65d3e02301c37d0d'
+        API_ACCESS_TOKEN = "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"
+        api_version = "2023-01"  # Set your desired API version
 
-        next_page = response.xpath('//ul[@class="pagination__list list-unstyled"]/li[@class="pagination-arrow"][last()]/a/@href').extract_first()
-        ###logical error, fixed it.
-        if next_page:
-            url = 'https://livaroom.com{}'.format(next_page)
-            time.sleep(10)
-            yield scrapy.Request(url, self.parse_json, dont_filter=True,headers=self.HEADERS, meta={'category_name':response.meta['category_name']})
-            
+        SHOP_NAME = 'livaroom'
+
+        shop_url = f"https://{API_KEY}:{API_ACCESS_TOKEN}@{SHOP_NAME}.myshopify.com/admin/api/2023-01"
+        shopify.ShopifyResource.set_site(shop_url)
+        self.shop = shopify.Shop.current()
+
+    def parse(self, response):
+        # Retrieve all products
+        for page in PaginatedIterator(shopify.Product.find()):
+            # for items in page:
+
+            # Iterate over each product
+            for product in page:
+                data = product.to_json()
+                json_data = data.decode('utf-8')  # Decode the bytes data into a string
+                json_data = json.loads(json_data)
+                product_data = json_data['product']
+                yield product_data
         gc.collect()
 
 

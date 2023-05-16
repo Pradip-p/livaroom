@@ -100,14 +100,14 @@ class Variant(models.Model):
         return self.title
     
 class Product(models.Model):
-    category_name = models.CharField(max_length=200)
+    category_name = models.CharField(max_length=200, blank=True)
     title = models.CharField(max_length=200)
     sku = models.CharField(max_length=200,unique=True)
     handle = models.CharField(max_length=200)
     price_englishelm = models.CharField(max_length=200, blank=True)
     price_livaroom = models.CharField(max_length=200, blank=True)
     barcode = models.CharField(max_length=200)
-    featured_image = models.CharField(max_length=200)
+    featured_image = models.CharField(max_length=200, blank=True)
 
     def __str__(self):
         return self.title

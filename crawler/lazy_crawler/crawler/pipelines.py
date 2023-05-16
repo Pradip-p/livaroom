@@ -37,10 +37,11 @@ class LivaroomDBPipeline(object):
     @transaction.atomic
     def process_item(self, item, spider):
         handle = item.get('handle')
-        category_name = item.get('category_name')
+        product_title = item['title']
+        category_name = ''
         variants = item.get('variants')
         for variant in variants:
-            title = variant.get('name')
+            title = product_title+' - '+variant.get('title')
             sku = variant.get('sku')
             price_livaroom = variant.get('price')
             
@@ -49,13 +50,14 @@ class LivaroomDBPipeline(object):
             else:
                 barcode = 'NA'
 
-            if variant['featured_image']:
-                if variant['featured_image'].get('src'):
-                    featured_image = variant['featured_image'].get('src')
-                else:
-                    featured_image = 'NA'
-            else:
-                featured_image = 'NA'
+            # if variant['featured_image']:
+            #     if variant['featured_image'].get('src'):
+            #         featured_image = variant['featured_image'].get('src')
+            #     else:
+            #         featured_image = 'NA'
+            # else:
+            #     featured_image = 'NA'
+
             try:
                 # Attempt to retrieve an existing Product object with the given SKU
                 product = Product.objects.get(sku=sku)
@@ -65,7 +67,7 @@ class LivaroomDBPipeline(object):
                 product.title = title
                 product.handle = handle
                 product.barcode = barcode
-                product.featured_image = featured_image
+                # product.featured_image = featured_image
                 product.price_livaroom = price_livaroom
                 
                 product.save()  # Save the changes to the database
@@ -73,39 +75,12 @@ class LivaroomDBPipeline(object):
             except Product.DoesNotExist:
                 # If the object doesn't exist, create a new one
                 product = Product.objects.create(category_name=category_name, title=title, handle=handle,
-                                                sku=sku, barcode=barcode, featured_image=featured_image,
+                                                sku=sku, barcode=barcode,
                                                 price_livaroom=price_livaroom)
 
-
-            # # Get the product if it exists, else create it
-            # product, created = Product.objects.get_or_create(category_name=category_name, title=title,
-            #                     handle=handle, sku=sku, barcode=barcode,featured_image=featured_image,
-            #                     price_livaroom=price_livaroom)
-
-            # # If the product was created, set its attributes
-            # if created:
-            #     product.category_name = category_name
-            #     product.title = title
-            #     product.handle = handle
-            #     product.sku = sku
-            #     product.barcode = barcode
-            #     product.featured_image = featured_image
-            #     product.price_livaroom = price_livaroom
-            #     product.save()
-
-            # Product.objects.create(category_name=category_name, title=title,
-            #                        handle=handle, sku=sku, barcode=barcode,featured_image=featured_image,
-            #                        price_livaroom=price_livaroom)
         return ''
     
-            # try:
-            #     featured_image = variant['featured_image'].get('src')
-            #     existing_product = Variant.objects.get(sku=variant.get('sku'))
-            #     existing_product.price_livaroom = variant.get('price')
-            #     existing_product.save()
-            #     return variant
-            # except Variant.DoesNotExist:
-            #     return ''
+
 
 
 

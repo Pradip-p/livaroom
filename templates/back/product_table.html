@@ -2,10 +2,10 @@
     <table id="example-datatable" class="table table-vcenter table-condensed table-bordered"> <!-- id="example-datatable" -->
         <thead>
             <tr> 
-                <th class="text-center">Category</th>
+                {% comment %} <th class="text-center">Category</th> {% endcomment %}
                 <th class="text-center">title</th>
                 <th class="text-center">sku</th>
-                {% comment %} <th class="text-center" >barcode</th> {% endcomment %}
+                <th class="text-center" >barcode</th>
                 <th class="text-center">price_livaroom</th>
                 <th class="text-center">price_englishelm</th>
                 <th class="text-center" >optimize_price</th>
@@ -16,10 +16,10 @@
         <tbody>
             {% for cc in variants %}
             <tr>
-                <td class="text-center">{{cc.category_name}}</td>
+                {% comment %} <td class="text-center">{{cc.category_name}}</td> {% endcomment %}
                 <td class="text-center">{{cc.title}}</td>
                 <td class="text-center">{{ cc.sku }}</td>
-                {% comment %} <td class="text-center" > {{ cc.barcode }}</td> {% endcomment %}
+                <td class="text-center" > {{ cc.barcode }}</td>
                 <td class="text-center" > {{ cc.price_livaroom }}</td>
                 <td class="text-center" > {{ cc.price_englishelm }}</td>
                 

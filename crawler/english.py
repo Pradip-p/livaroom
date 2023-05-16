@@ -90,6 +90,7 @@ class LazyCrawler(LazyBaseCrawler):
         # yield {'products':products}
         for product in products:
             yield{"variants": product['variants'] } 
+            
         time.sleep(5)
 
         # scripts = response.css('#web-pixels-manager-setup').get('')
