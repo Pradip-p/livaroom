@@ -9,15 +9,13 @@ import shopify
 from shopify import PaginatedIterator
 
 # Create your views here.
-
+@login_required(login_url='/')
 def update_view(request):
     if request.method == 'POST':
         optimize_price = request.POST.get('optimize_price')
         # Update the value in the database or perform any other operations
         API_KEY = "2b4e323d3129443363269802ebca49df"
-        API_SECRET_KEY = '60d668593ffa6e9a65d3e02301c37d0d'
         API_ACCESS_TOKEN = "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"
-        api_version = "2023-01"  # Set your desired API version
 
         SHOP_NAME = 'livaroom'
 
@@ -25,30 +23,24 @@ def update_view(request):
         shopify.ShopifyResource.set_site(shop_url)
         shop = shopify.Shop.current()
         #now i want to update the prices of each prodcuts
-        variant_sku = 'AR-9511	'
-
-        # Find the product variant based on SKU
-        # variant = shopify.Variant.find_one(sku=variant_sku)
-
-        product = shopify.Product(dict(id=8116163510579))
-        variant = shopify.Variant(dict(id=44402183471411, price=114999))
-        # product.add_variant(variant)
-        # product.save()
-
+        # variant_sku = 'AR-9511'
+        variant_sku = 'EEI-5805-CHE-WHI-WHI'
+        #let's check we found the varinat our database
+        variant = Product.objects.get(sku=variant_sku)
         if variant:
-            print(variant)
-            # for i in variant:
-                # print(i.sku)
-            # print(variant)
-            # Update the price of the variant
-            # variant.price = 'new_price'  # Replace 'new_price' with the desired price
-            # variant.save()
-            
-            messages.success(request, 'Price updated successfully for SKU: {}'.format(variant_sku))
-            return JsonResponse({'success': True, 'message': 'Price updated successfully.'})
+            product_id = variant.product_id
+            variant_id = variant.variant_id
+            # Find the product variant based on SKU on Livaroom API(site)..
+            product = shopify.Product(dict(id=product_id))
+            variant = shopify.Variant(dict(id=variant_id, price=55.04)) #55.04
+            product.add_variant(variant) #it does not mean add new varinat it update the existing price of variant.
+            product.save()
+            # messages.success(request,'Price {} updated successfully.'.format(optimize_price))
+            return JsonResponse({'message': 'Price {} updated successfully.'.format(optimize_price)}, status=200, safe=False)
+
         else:
-            messages.error(request, 'Variant with SKU {} not found.'.format(variant_sku))
-            return JsonResponse({'success': False, 'message': 'Variant not found.'})
+            # messages.errors(request, 'Varint:{} Not found'.format(variant_sku))
+            return JsonResponse({'success': True, 'message': 'SKU Not Found.'}, status=500)
         
 
 @login_required(login_url='/')
