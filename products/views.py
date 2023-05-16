@@ -79,11 +79,12 @@ def dashboard(request):
         'variants':variants,
         # 'cat':cat
     })
+
 @login_required(login_url='/')
 def home(request):
     # #set the pagination on products li
-    # variants = [variant for variant in Variant.objects.all().order_by('-id') if variant.price_livaroom]
-    variants = Product.objects.all().order_by('-id')
+    variants = [variant for variant in Variant.objects.all().order_by('-id') if variant.price_englishelm]
+    # variants = Product.objects.all().order_by('-id')
     variants = set_pagination(request, variants)
     context = {
                'variants':variants,
