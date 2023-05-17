@@ -18,4 +18,3 @@ gunicorn
 psycopg2
 matplotlib
 django-crontab
-selenium
