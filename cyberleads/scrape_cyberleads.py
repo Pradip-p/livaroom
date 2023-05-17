@@ -7,9 +7,36 @@ import time
 from lib.user_agent import get_user_agent
 import csv
 
+# from pyvirtualdisplay import Display
+# from selenium import webdriver
+# display = Display(visible=0, size=(800, 600))
+# display.start()
+# options = webdriver.ChromeOptions()
+# options.add_argument('--no-sandbox')
+# options = webdriver.ChromeOptions()
+# options.add_argument('--disable-extensions')
+# options.add_argument('--headless')
+# options.add_argument('--disable-gpu')
+# options.add_argument('--no-sandbox')
+# options.add_argument('--disable-dev-shm-usage')
+# driver = webdriver.Chrome(chrome_options=options)
+# driver.get('http://google.com')
+# print(driver.title)
+# print('it is working')
+
+
+
 def start_crawl():
-    options = Options()
-    options.add_argument('--headless')  # use headless browser mode
+    options = webdriver.ChromeOptions()
+    options.add_argument('--no-sandbox')
+    options = webdriver.ChromeOptions()
+    options.add_argument('--disable-extensions')
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    # options = Options() 
+    # options.add_argument('--headless')  # use headless browser mode
     options.add_argument(f"user-agent:{get_user_agent('random')}")
     wait_time = 10
     timeout = 30
@@ -31,8 +58,16 @@ def parse_url(driver, wait_time, timeout, retry_wait_time):
         for url in urls:
             # time.sleep(wait_time)  # wait for 10 seconds between requests
             try:
-                options = Options()
-                options.add_argument('--headless')  # use headless browser mode
+                options = webdriver.ChromeOptions()
+                options.add_argument('--no-sandbox')
+                options = webdriver.ChromeOptions()
+                options.add_argument('--disable-extensions')
+                options.add_argument('--headless')
+                options.add_argument('--disable-gpu')
+                options.add_argument('--no-sandbox')
+                options.add_argument('--disable-dev-shm-usage')
+                # options = Options()
+                # options.add_argument('--headless')  # use headless browser mode
                 options.add_argument(f"user-agent:{get_user_agent('random')}")
                 detail_driver = webdriver.Chrome(options=options)
                 detail_driver.get(url)
@@ -46,8 +81,16 @@ def parse_url(driver, wait_time, timeout, retry_wait_time):
         if next_page:
             next_page_url = next_page[0].get_attribute("href")
             try:
-                options = Options()
-                options.add_argument('--headless')  # use headless browser mode
+                options = webdriver.ChromeOptions()
+                options.add_argument('--no-sandbox')
+                options = webdriver.ChromeOptions()
+                options.add_argument('--disable-extensions')
+                options.add_argument('--headless')
+                options.add_argument('--disable-gpu')
+                options.add_argument('--no-sandbox')
+                options.add_argument('--disable-dev-shm-usage')
+                # options = Options()
+                # options.add_argument('--headless')  # use headless browser mode
                 options.add_argument(f"user-agent:{get_user_agent('random')}")
                 next_driver = webdriver.Chrome(options=options)
                 next_driver.get(next_page_url)
@@ -104,8 +147,16 @@ def parse_details(driver):
     technologies_stack(technologies_url, details)
 
 def technologies_stack(url, data):
-    options = Options()
-    options.add_argument('--headless')  # use headless browser mode
+    options = webdriver.ChromeOptions()
+    options.add_argument('--no-sandbox')
+    options = webdriver.ChromeOptions()
+    options.add_argument('--disable-extensions')
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    # options = Options()
+    # options.add_argument('--headless')  # use headless browser mode
     options.add_argument(f"user-agent:{get_user_agent('random')}")
     technologies_driver = webdriver.Chrome(options=options)
     technologies_driver.get(url)
@@ -132,8 +183,16 @@ def technologies_stack(url, data):
 
 
 def email_format(url, data):
-    options = Options()
-    options.add_argument('--headless')  # use headless browser mode
+    options = webdriver.ChromeOptions()
+    options.add_argument('--no-sandbox')
+    options = webdriver.ChromeOptions()
+    options.add_argument('--disable-extensions')
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    # options = Options()
+    # options.add_argument('--headless')  # use headless browser mode
     options.add_argument(f"user-agent:{get_user_agent('random')}")
     email_driver = webdriver.Chrome(options=options)
     email_driver.get(url)
@@ -172,7 +231,6 @@ def email_format(url, data):
 
 def write_data_to_csv(filename, data):
     col_name = list(data.keys())
-    col_value = [data]
 
     with open(filename, 'a', newline='') as csvFile:
         writer = csv.DictWriter(csvFile, fieldnames=col_name)
