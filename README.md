@@ -46,6 +46,7 @@ python manage.py createsuperuser
 ```
 python manage.py runserver
 ```
+5. Access the Price Matching Tools by visiting http://localhost:8000/ in your web browser.
 #### Contributing
 Contributions are welcome! If you encounter any issues or have suggestions for improvements, please submit a pull request.
 
