@@ -6,10 +6,6 @@ from selenium.webdriver.chrome.options import Options
 import time
 from lib.user_agent import get_user_agent
 import csv
-from selenium.webdriver.chrome.service import Service as ChromeService
-from webdriver_manager.chrome import ChromeDriverManager
-
-service = ChromeService(executable_path=ChromeDriverManager().install())
 
 def start_crawl():
     options = Options()
@@ -19,8 +15,7 @@ def start_crawl():
     timeout = 30
     retry_wait_time = 60
 
-    # driver = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver',options=options)
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
+    driver = webdriver.Chrome(options=options)
 
     for letter in range(ord('A'), ord('Z')+1):
         start_url = f'https://www.getcyberleads.com/directories/companies/{chr(letter)}'
@@ -39,9 +34,7 @@ def parse_url(driver, wait_time, timeout, retry_wait_time):
                 options = Options()
                 options.add_argument('--headless')  # use headless browser mode
                 options.add_argument(f"user-agent:{get_user_agent('random')}")
-                detail_driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
-
-                # detail_driver = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver',options=options)
+                detail_driver = webdriver.Chrome(options=options)
                 detail_driver.get(url)
                 print('*'*100, 'scraping started with', url)
                 parse_details(detail_driver)
@@ -56,9 +49,7 @@ def parse_url(driver, wait_time, timeout, retry_wait_time):
                 options = Options()
                 options.add_argument('--headless')  # use headless browser mode
                 options.add_argument(f"user-agent:{get_user_agent('random')}")
-                next_driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
-
-                # next_driver = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver',options=options)
+                next_driver = webdriver.Chrome(options=options)
                 next_driver.get(next_page_url)
                 driver.quit()
                 driver = next_driver
@@ -116,9 +107,7 @@ def technologies_stack(url, data):
     options = Options()
     options.add_argument('--headless')  # use headless browser mode
     options.add_argument(f"user-agent:{get_user_agent('random')}")
-    technologies_driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
-
-    # technologies_driver = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver',options=options)
+    technologies_driver = webdriver.Chrome(options=options)
     technologies_driver.get(url)
     stack_text = []
     stacks = technologies_driver.find_elements(By.XPATH,'//div[@class="company-post"]/div[@class="columns data-points-columns"]/div[@class="column field"]/p[@class="data-point-title"]/b')
@@ -146,8 +135,7 @@ def email_format(url, data):
     options = Options()
     options.add_argument('--headless')  # use headless browser mode
     options.add_argument(f"user-agent:{get_user_agent('random')}")
-    email_driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
-    # email_driver = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver',options=options)
+    email_driver = webdriver.Chrome(options=options)
     email_driver.get(url)
 
     headers = email_driver.find_elements(By.XPATH, '//tr[@id="table-headers"]/th')
