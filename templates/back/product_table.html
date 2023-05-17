@@ -3,7 +3,7 @@
         <thead>
             <tr> 
                 <th>&nbsp;
-                    <input type="checkbox" id="select-all-checkbox" onclick="selectAllRows()">
+                    <input type="checkbox" value="" id="select-all-checkbox" onclick="selectAllRows()">
                 </th>
                 <th class="text-center">title</th>
                 <th class="text-center">sku</th>
@@ -31,7 +31,7 @@
                 
                 <td class="text-center">
                     <div class="input-group input-group-sm">
-                        <input id="id_optimize_price" name="optimize_price" type="text" class="form-control" value="{{ cc.optimize_price }}">
+                        <input id="optimize_price_{{cc.sku}}" name="optimize_price" type="text" class="form-control" value="{{ cc.optimize_price }}">
                     </div>
                 </td>
                 <td>

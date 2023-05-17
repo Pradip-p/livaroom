@@ -81,7 +81,10 @@
             
             
             <form action="#" method="post">
-                    <div class="col-md-1">
+                    <div class="col-md-3">
+                        <ul id='message' class="fa-ul text-muted">                    
+                           
+                        </ul>
                     </div>
                     <div class="col-md-4">
                         <!-- Right side content goes here -->
@@ -90,12 +93,12 @@
                             <option value="option1" selected>update selected product price</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-1">
                         <button type="button" id="update_all" class="btn btn-sm btn-info" >
                             Update
                         </button>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <input type="text" id="id_sku" name="sku" class="form-control" placeholder="Search Product based on SKU.."
                             hx-get="{% url 'search-product' %}"
                             hx-trigger="keyup"
@@ -104,8 +107,7 @@
                             required
                         >
                     </div>
-                    <div class="col-md-1">
-                    </div>
+                    
             </form>
             <!-- Search Form End -->
         </div>
@@ -164,17 +166,23 @@
             skus[i] = $(this).val()
             } 
         })
-    
+        
+        // remove the undefined values from the array of IDs
+        skus = skus.filter((sku) => sku !== '' && typeof sku !== 'undefined');
+
+
+        var prices = []
+        for (var i = 0; i < skus.length; i++){ // loop through all form
+            var price = document.getElementById("optimize_price_"+skus[i]).value;  // get selected price of sku.
+            prices[i] = price
+        };
+
         if (skus.length === 0){
             alert('No samples selected.');
         } else {
             // collect the value of delete selected or send to qc passed
             var value = document.getElementById("select_id").value;
-    
-            // remove the undefined values from the array of IDs
-            var skus = skus.filter(() => true);
-            console.log(skus);
-    
+
             // send AJAX call to update the product price
             if (value == 'option1') {
             $.ajax({
@@ -185,14 +193,31 @@
                 "X-CSRFToken": getCookie("csrftoken"),
                 },
                 data: {
-                skus: skus,
+                prices: prices,
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 }, 
                 success: function(response) {
-                // Handle the success response
+                    var message = response.message;
+                    var listItem = '<li><i class="fa fa-check fa-li text-success"></i>' + message + '</li>';
+                    $('#message').append(listItem);
+                    var alertBox = $('#message li:last-child');
+                    setTimeout(function() {
+                        alertBox.slideUp(function() {
+                            $(this).remove();
+                        });
+                    }, 5000)
                 },
                 error: function(error) {
-                console.log(error);
+                    var errorResponse = JSON.parse(xhr.responseText);
+                    var errorMessage = errorResponse.message;
+                    var listItem = '<li><i class="fa fa-check fa-li text-warning"></i>' + errorMessagez + '</li>';
+                    $('#message').append(listItem);
+                    var alertBox = $('#message li:last-child');
+                    setTimeout(function() {
+                        alertBox.slideUp(function() {
+                            $(this).remove();
+                        });
+                    }, 5000)
                 }
             });
             }
@@ -233,7 +258,6 @@
                 type: 'POST',
                 data: data,
                 success: function(response) {
-                    console.log(response.message)
                     var message = response.message;
                     var listItem = '<li><i class="fa fa-check fa-li text-success"></i>' + message + '</li>';
                     $('#message').append(listItem);
@@ -245,6 +269,16 @@
                     }, 5000)
                 },
                 error: function(xhr, errmsg, err) {
+                    var errorResponse = JSON.parse(xhr.responseText);
+                    var errorMessage = errorResponse.message;
+                    var listItem = '<li><i class="fa fa-check fa-li text-warning"></i>' + errorMessage + '</li>';
+                    $('#message').append(listItem);
+                    var alertBox = $('#message li:last-child');
+                    setTimeout(function() {
+                        alertBox.slideUp(function() {
+                            $(this).remove();
+                        });
+                    }, 5000)
                 }
             });
         });
