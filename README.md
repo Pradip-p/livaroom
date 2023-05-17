@@ -16,7 +16,6 @@ To run this project, you need to have the following software installed:
 1. Clone the repository or download the source code.
 ```
 git clone git@github.com:Pradip-p/livaroom.git
-
 ```
 2. Install the required dependencies.
 ```
@@ -26,16 +25,27 @@ pip install -r crawler/requirements.txt
 1. Run the english.py script to scrape data from https://englishelm.com/ and save it to the database.
 ```
 python crawler/english.py
-
 ```
 
 2. Run the livaroom_com.py script to scrape data from https://livaroom.com/ and save it to the database.
 ```
 python crawler/livaroom_com.py
-
 ```
 3. After running both scripts, the scraped data will be stored in the database.
 
+4. Run the Django project.
+```
+python manage.py makemigrations
+```
+```
+python manage.py migrate
+```
+```
+python manage.py createsuperuser
+```
+```
+python manage.py runserver
+```
 #### Contributing
 Contributions are welcome! If you encounter any issues or have suggestions for improvements, please submit a pull request.
 
