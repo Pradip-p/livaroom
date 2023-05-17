@@ -6,6 +6,7 @@ from selenium.webdriver.chrome.options import Options
 import time
 from lib.user_agent import get_user_agent
 import csv
+from selenium.webdriver.chrome.service import Service
 
 def start_crawl():
     options = Options()
@@ -15,12 +16,12 @@ def start_crawl():
     timeout = 30
     retry_wait_time = 60
 
-    driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome(service=Service('/usr/local/bin/chromedriver'),options=options)
 
     for letter in range(ord('A'), ord('Z')+1):
         start_url = f'https://www.getcyberleads.com/directories/companies/{chr(letter)}'
         driver.get(start_url)
-        parse_url(driver, wait_time, timeout, retry_wait_time)
+        # parse_url(driver, wait_time, timeout, retry_wait_time)
     
     driver.quit()
 
