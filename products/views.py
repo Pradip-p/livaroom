@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import  Variant, Product
+from .models import Product
 from .pagination import set_pagination
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -9,11 +9,8 @@ import shopify
 from shopify import PaginatedIterator
 
 # Create your views here.
-from django.http import FileResponse
 from django.urls import reverse
 from django.utils.encoding import smart_str
-import os
-from django.http import FileResponse
 from django.utils.encoding import smart_str
 from pathlib import Path
 
@@ -28,35 +25,6 @@ def download_export_csv(request):
     response.write(smart_str(file_content))
 
     return response
-
-
-# def download_export_csv(request):
-#     # Assuming the "export.csv" file is located in the base directory of your Django project
-#     file_path = 'export.csv'
-#      # Assuming the "export.csv" file is located in the "data" folder outside the Django project
-#     # file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'export.csv')
-#     # file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__)),'data/export.csv'))
-#     file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data', 'export.csv')
-#     # Open the file in binary mode
-#     file = open(file_path, 'rb')
-#     # Read the file content
-#     file_content = file.read()
-#     # Close the file
-#     file.close()
-
-#     # Create a FileResponse object with the file content
-#     response = FileResponse(file_content)
-#     # Set the appropriate content type (CSV file)
-#     response['Content-Type'] = 'text/csv'
-#     # Set the Content-Disposition header to force the browser to download the file
-#     response['Content-Disposition'] = 'attachment; filename="{0}"'.format(smart_str(file_path))
-#     return response
-
-
-
-
-
-
 
 
 @login_required(login_url='/')
@@ -95,6 +63,10 @@ def update_product_price(request):
 def update_view(request):
     if request.method == 'POST':
         optimize_price = request.POST.get('optimize_price')
+        if not optimize_price or optimize_price == 'NA' or optimize_price.strip() == '':
+            return JsonResponse({'message': 'Invalid or Empty Price Found.'}, status=500)
+            
+
         # Update the value in the database or perform any other operations
         API_KEY = "2b4e323d3129443363269802ebca49df"
         API_ACCESS_TOKEN = "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"
@@ -122,7 +94,7 @@ def update_view(request):
 
         else:
             # messages.errors(request, 'Varint:{} Not found'.format(variant_sku))
-            return JsonResponse({'success': True, 'message': 'SKU Not Found.'}, status=500)
+            return JsonResponse({'message': 'SKU Not Found.'}, status=500)
         
 
 @login_required(login_url='/')
@@ -166,7 +138,7 @@ def dashboard(request):
 def home(request):
     # #set the pagination on products li
     variants = [variant for variant in Product.objects.all().order_by('-id') if variant.price_englishelm]
-    # variants = Product.objects.all().order_by('-id')
+    variants = Product.objects.all().order_by('-id')
     variants = set_pagination(request, variants)
     context = {
                'variants':variants,

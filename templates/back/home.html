@@ -1,8 +1,7 @@
 
 {% extends 'back/base.html' %}
-
 {% load static %}
-
+{% load product_tags %}
 {% block mainblock %}
 <!-- Mini Top Stats Row (Index page of admin panel) Start -->
 <div class="row">
@@ -14,7 +13,7 @@
                     <i class="fa fa-file-text"></i>
                 </div>
                 <h3 class="widget-content text-right animation-pullDown">
-                    <strong>646</strong><br>
+                    <strong>{% get_matching_product_count %}</strong><br>
                     <small> Matching Products</small>
                 </h3>
             </div>
@@ -29,8 +28,8 @@
                     <i class="gi gi-usd"></i>
                 </div>
                 <h3 class="widget-content text-right animation-pullDown">
-                    + <strong>132</strong><br>
-                    <small>Total Products: </small>
+                     <strong>{% get_total_product_count %}</strong><br>
+                    <small>Total Products</small>
                 </h3>
             </div>
         </a>
