@@ -118,21 +118,7 @@ def search_product(request):
             return render(request, "back/product_table.html", context)
 
 
-@login_required(login_url='/')
-def dashboard(request):
-    variants = Product.objects.all().order_by('-id')
-    for variant in variants:
-        if variant.price_livaroom:
-            print('')
-    # variants_data = Variant.objects.exclude(price_livaroom__exact='').order_by('-id')
-    # cat = Category.objects.all()
-    # print(variants_data)
-    variants = set_pagination(request, variants)
 
-    return render(request, 'front/home.html',{
-        'variants':variants,
-        # 'cat':cat
-    })
 
 @login_required(login_url='/')
 def home(request):

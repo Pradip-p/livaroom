@@ -26,7 +26,7 @@ def start_crawl():
 
     driver = webdriver.Chrome(options=options)
     # for url in ['https://www.getcyberleads.com/directories/companies/A?page=159','https://www.getcyberleads.com/directories/companies/B']:
-    for letter in range(ord('B'), ord('Z')+1):
+    for letter in range(ord('C'), ord('Z')+1):
         start_url = f'https://www.getcyberleads.com/directories/companies/{chr(letter)}'
         driver.get(start_url)
         parse_url(driver, wait_time, timeout, retry_wait_time)

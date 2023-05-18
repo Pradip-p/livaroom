@@ -128,113 +128,17 @@
                                     <div class="col-xs-8 text-right">
                                         <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> Login to Dashboard</button>
                                     </div>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-xs-12 text-center">
-                                        <a href="javascript:void(0)" id="link-reminder-login"><small>Forgot password?</small></a> -
-                                        <a href="javascript:void(0)" id="link-register-login"><small>Create a new account</small></a>
-                                    </div>
-                                </div>
+                                
                             </form>
                             <!-- END Login Form -->
 
-                            <!-- Reminder Form -->
-                            <form action="login_alt.html#reminder" method="post" id="form-reminder" class="form-horizontal display-none">
-                                <div class="form-group">
-                                    <div class="col-xs-12">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="gi gi-envelope"></i></span>
-                                            <input type="text" id="reminder-email" name="reminder-email" class="form-control input-lg" placeholder="Email">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group form-actions">
-                                    <div class="col-xs-12 text-right">
-                                        <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> Reset Password</button>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-xs-12 text-center">
-                                        <small>Did you remember your password?</small> <a href="javascript:void(0)" id="link-reminder"><small>Login</small></a>
-                                    </div>
-                                </div>
-                            </form>
-                            <!-- END Reminder Form -->
-                            
-
-                            <!-- Register Form -->
-                            <form action="{% url 'registration' %}" method="post" id="form-register" class="form-horizontal display-none">
-                                {% csrf_token %}
-                                <div class="form-group">
-                                  <div class="col-xs-12">
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><i class="gi gi-user"></i></span>
-                                      {{ form.full_name }}
-                                    </div>
-                                    {% for error in form.full_name.errors %}
-                                      <span class="help-block">{{ error }}</span>
-                                    {% endfor %}
-                                  </div>                                  
-                                </div>
-                              
-                               
-                              
-                                <div class="form-group{% if form.email.errors %} has-error{% endif %}">
-                                  <div class="col-xs-12">
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><i class="gi gi-envelope"></i></span>
-                                      {{ form.email }}
-                                    </div>
-                                    {% for error in form.email.errors %}
-                                      <span class="help-block">{{ error }}</span>
-                                    {% endfor %}
-                                  </div>
-                                </div>
-                              
-                                <div class="form-group{% if form.password1.errors %} has-error{% endif %}">
-                                  <div class="col-xs-12">
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><i class="gi gi-asterisk"></i></span>
-                                      {{ form.password1 }}
-                                    </div>
-                                    {% for error in form.password1.errors %}
-                                      <span class="help-block">{{ error }}</span>
-                                    {% endfor %}
-                                  </div>
-                                </div>
-                              
-                                <div class="form-group{% if form.password2.errors %} has-error{% endif %}">
-                                  <div class="col-xs-12">
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><i class="gi gi-asterisk"></i></span>
-                                      {{ form.password2 }}
-                                    </div>
-                                    {% for error in form.password2.errors %}
-                                      <span class="help-block">{{ error }}</span>
-                                    {% endfor %}
-                                  </div>
-                                </div>
-                              
-                                <div class="form-group form-actions">
-                                    <div class="col-xs-6">
-                                        <a href="#modal-terms" data-toggle="modal" class="register-terms">Terms</a>
-                                        <label class="switch switch-primary" data-toggle="tooltip" title="Agree to the terms">
-                                            <input type="checkbox" id="terms" name="is_user" required>
-                                            <span></span>
-                                        </label>
-                                    </div>
-                                    <div class="col-xs-6 text-right">
-                                        <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Register Account</button>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-xs-12 text-center">
-                                        <small>Do you have an account?</small> <a href="javascript:void(0)" id="link-register"><small>Login</small></a>
-                                    </div>
-                                </div>
-                              </form>
-                              
-                            <!-- END Register Form -->
+                                                    
                         </div>
                         <!-- END Login Block -->
                     </div>
