@@ -17,20 +17,19 @@ def start_crawl():
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-    # options = Options() 
-    # options.add_argument('--headless')  # use headless browser mode
     options.add_argument(f"user-agent:{get_user_agent('random')}")
     wait_time = 10
     timeout = 30
     retry_wait_time = 60
 
-    driver = webdriver.Chrome(options=options)
-    # for url in ['https://www.getcyberleads.com/directories/companies/A?page=159','https://www.getcyberleads.com/directories/companies/B']:
-    for letter in range(ord('C'), ord('Z')+1):
+    #https://www.getcyberleads.com/directories/companies/C?page=171
+    # for url in ['https://www.getcyberleads.com/directories/companies/A?page=159','https://www.getcyberleads.com/directories/companies/B?page=121']:
+    for letter in range(ord('D'), ord('Z')+1):
+        driver = webdriver.Chrome(options=options)
         start_url = f'https://www.getcyberleads.com/directories/companies/{chr(letter)}'
         driver.get(start_url)
         parse_url(driver, wait_time, timeout, retry_wait_time)
-    driver.quit()
+        driver.quit()
 
 def parse_url(driver, wait_time, timeout, retry_wait_time):
     while True:
@@ -61,6 +60,7 @@ def parse_url(driver, wait_time, timeout, retry_wait_time):
         next_page = driver.find_elements(By.XPATH, '//div[@class="pagination"]/a[@class="next_page"]')
         if next_page:
             next_page_url = next_page[0].get_attribute("href")
+            print('#'*20, next_page_url)
             try:
                 options = webdriver.ChromeOptions()
                 options.add_argument('--no-sandbox')
@@ -136,8 +136,6 @@ def technologies_stack(url, data):
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-    # options = Options()
-    # options.add_argument('--headless')  # use headless browser mode
     options.add_argument(f"user-agent:{get_user_agent('random')}")
     technologies_driver = webdriver.Chrome(options=options)
     technologies_driver.get(url)
@@ -172,8 +170,6 @@ def email_format(url, data):
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-    # options = Options()
-    # options.add_argument('--headless')  # use headless browser mode
     options.add_argument(f"user-agent:{get_user_agent('random')}")
     email_driver = webdriver.Chrome(options=options)
     email_driver.get(url)
@@ -208,8 +204,6 @@ def email_format(url, data):
     # Write the updated data to the CSV file
     write_data_to_csv("export.csv", data)
 
-    print(data)
-
 def write_data_to_csv(filename, data):
     col_name = list(data.keys())
 
@@ -218,8 +212,6 @@ def write_data_to_csv(filename, data):
         if csvFile.tell() == 0:  # Check if the file is empty
             writer.writeheader()
         writer.writerow(data)
-
     
-
 if __name__ == '__main__':
     start_crawl()

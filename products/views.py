@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from .models import Product
 from .pagination import set_pagination
 from django.contrib.auth.decorators import login_required
@@ -7,12 +7,10 @@ from django.http import HttpResponse
 from django.contrib import messages
 import shopify
 from shopify import PaginatedIterator
-
-# Create your views here.
-from django.urls import reverse
-from django.utils.encoding import smart_str
 from django.utils.encoding import smart_str
 from pathlib import Path
+# Create your views here.
+
 
 def download_export_csv(request):
     file_path = Path(__file__).resolve().parent.parent.parent / 'data' / 'export.csv'
@@ -99,8 +97,22 @@ def update_view(request):
 
 @login_required(login_url='/')
 def search_product(request):
-    if request.method == 'GET':
+    """
+    Search for products based on the SKU parameter in the request and return the corresponding results.
 
+    Args:
+    request: The HTTP request object.
+
+    Returns:
+    If the request method is 'GET', the function searches for products based on the SKU parameter. If the SKU parameter is provided, it filters the Product objects based on the SKU (case-insensitive) and returns the variants along with a message indicating to show the products based on price availability. If the SKU parameter is not provided, it retrieves all Product objects, orders them by descending ID, filters out variants with no price_livaroom value, paginates the results using the set_pagination function, and returns the paginated variants.
+
+    Note:
+    - This function assumes the use of Django's render function to render the 'back/product_table.html' template.
+    - The function relies on the set_pagination function to perform pagination for the results.
+    - The function assumes the existence of a Product model with the necessary fields (e.g., sku, price_livaroom) in the Django project.
+    - If an error occurs during the SKU filtering process, a message is rendered indicating the need to select a country.
+    """
+    if request.method == 'GET':
         sku = request.GET.get('sku')
         if sku:
             try:
@@ -116,15 +128,34 @@ def search_product(request):
                'variants':variants,
                }
             return render(request, "back/product_table.html", context)
-
-
-
+        
 
 @login_required(login_url='/')
 def home(request):
+    """
+    Render the home page view.
+
+    This view requires authentication, redirecting to the '/' URL if the user is not logged in.
+
+    The view retrieves a list of product variants, orders them by descending ID, filters out variants without an 'price_englishelm' value,
+    paginates the results using the set_pagination function, and renders the 'back/home.html' template with the paginated variants.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        The rendered 'back/home.html' template with the paginated variants in the context.
+
+    Note:
+        - This view assumes the use of Django's render function to render templates.
+        - The view assumes the existence of a 'Product' model with the necessary fields.
+        - The 'set_pagination' function is used to perform pagination for the product variants.
+        - The 'back/home.html' template is expected to exist and contain the necessary markup for displaying the product variants.
+    """
+
     # #set the pagination on products li
     variants = [variant for variant in Product.objects.all().order_by('-id') if variant.price_englishelm]
-    # variants = Product.objects.all().order_by('-id')
+    variants = Product.objects.all().order_by('-id')
     variants = set_pagination(request, variants)
     context = {
                'variants':variants,

@@ -4,6 +4,37 @@ from django.db import models
 from django.utils.translation import gettext as _
 
 class CustomUserManager(BaseUserManager):
+    """
+    Custom user manager class extending BaseUserManager.
+
+    This manager provides methods for creating user objects with specific attributes.
+
+    Methods:
+        create_user(email, password=None, **extra_fields):
+            Creates and saves a regular user with the given email and password.
+            
+            Args:
+                email (str): The email address of the user.
+                password (str, optional): The password for the user. Defaults to None.
+                **extra_fields: Additional fields and their values to be set for the user.
+            
+            Returns:
+                User: The created user object.
+
+            Raises:
+                ValueError: If the email is not provided.
+
+        create_superuser(email, password=None, **extra_fields):
+            Creates and saves a superuser with the given email and password.
+            
+            Args:
+                email (str): The email address of the superuser.
+                password (str, optional): The password for the superuser. Defaults to None.
+                **extra_fields: Additional fields and their values to be set for the superuser.
+            
+            Returns:
+                User: The created superuser object.
+    """
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError('The Email field must be set')

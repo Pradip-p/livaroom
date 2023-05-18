@@ -21,15 +21,19 @@ def create_chrome_options():
 
 def start_crawl():
     options = create_chrome_options()
-
-    driver = webdriver.Chrome(options=options)
-
-    for letter in range(ord('A'), ord('Z')+1):
-        start_url = f'https://www.getcyberleads.com/directories/companies/{chr(letter)}'
-        driver.get(start_url)
+    
+    # for letter in range(ord('A'), ord('Z')+1):
+        # driver = webdriver.Chrome(options=options)
+        # start_url = f'https://www.getcyberleads.com/directories/companies/{chr(letter)}'
+        # driver.get(start_url)
+        # parse_url(driver)
+        # driver.quit()
+    urls = ['https://www.getcyberleads.com/directories/companies/B?page=122','https://www.getcyberleads.com/directories/companies/C']
+    for url in urls:
+        driver = webdriver.Chrome(options=options)
+        driver.get(url)
         parse_url(driver)
-
-    driver.quit()
+        driver.quit()
 
 
 def parse_url(driver):

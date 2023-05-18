@@ -1,15 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
 from lazy_crawler.lib.user_agent import get_user_agent
-from lazy_crawler.lib.proxy import get_proxy
-# Scrapy settings for crawler project
-#
-# For simplicity, this file contains only settings considered important or
-# commonly used. You can find more settings consulting the documentation:
-#
-#     https://doc.scrapy.org/en/latest/topics/settings.html
-#     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-#     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 BOT_NAME = "lazy_py_crawler"
 
@@ -17,27 +8,19 @@ SPIDER_MODULES = ["lazy_crawler.crawler.spiders"]
 NEWSPIDER_MODULE = "lazy_crawler.crawler.spiders"
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-
-# if os.environ.get('APP_ENV', 'DEV').lower() == 'prd':
-#     LOG_LEVEL = 'ERROR'
-# else:
-#     LOG_LEVEL = 'DEBUG'
-# Obey robots.txt rules
-
 ROBOTSTXT_OBEY = False
 
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 256
+CONCURRENT_REQUESTS = 1
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-# DOWNLOAD_DELAY = 3
-# DOWNLOAD_DELAY = 3
+
 # The download delay setting will honor only one of:
-CONCURRENT_REQUESTS_PER_DOMAIN = 256
-CONCURRENT_REQUESTS_PER_IP = 256
+CONCURRENT_REQUESTS_PER_DOMAIN = 1
+CONCURRENT_REQUESTS_PER_IP = 1
 
 # Disable cookies (enabled by default)
 COOKIES_ENABLED = False
@@ -51,24 +34,6 @@ DEFAULT_REQUEST_HEADERS = {
     'Accept-Language': 'en',
 }
 
-# Enable or disable spider middlewares
-# See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
-# SPIDER_MIDDLEWARES = {
-#    'crawler.middlewares.VtxScrapySpiderMiddleware': 543,
-# }
-
-# Enable or disable downloader middlewares
-# See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-# DOWNLOADER_MIDDLEWARES = {
-#    'crawler.middlewares.VtxScrapyDownloaderMiddleware': 543,
-# }
-
-# Enable or disable extensions
-# See https://doc.scrapy.org/en/latest/topics/extensions.html
-# EXTENSIONS = {
-#    'scrapy.extensions.telnet.TelnetConsole': None,
-# }
-
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
@@ -79,15 +44,11 @@ ITEM_PIPELINES = {
 
 RETRY_TIMES = 3
 
-# MONGO_URI = 'mongodb://localhost:27017'
-# MONGO_DATABASE = 'sivji-sandbox'
-
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
 
-# FEED = 'json'
 
 FEED_EXPORT_ENCODING = 'utf-8'
 
@@ -112,28 +73,12 @@ AUTOTHROTTLE_TARGET_CONCURRENCY = 128
 AUTOTHROTTLE_DEBUG = True
 RETRY_ENABLED = True
 
-# Enable and configure HTTP caching (disabled by default)
-# See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
-# HTTPCACHE_ENABLED = True
-# HTTPCACHE_EXPIRATION_SECS = 0
-# HTTPCACHE_DIR = 'httpcache'
-# HTTPCACHE_IGNORE_HTTP_CODES = []
-# HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-
-
 ################################################################
 # PROXY SETTINGS
 ################################################################
 # Retry on most error codes since proxies fail for different reasons
 RETRY_HTTP_CODES = [500, 502, 503, 504, 400, 401, 403, 404, 405, 406, 407, 408, 409, 410, 429]
 # 
-
-# PROXY_LIST = get_proxy()
-
-
-# PROXY_MODE = 0
-# USE_PROXY = True
-# CHANGE_PROXY_AFTER = 10
 
 DOWNLOADER_MIDDLEWARES = {
     'lazy_crawler.crawler.middlewares.CrawlerSpiderMiddleware': 400,
@@ -161,4 +106,5 @@ FAKEUSERAGENT_PROVIDERS = [
     'scrapy_fake_useragent.providers.FakerProvider',  # If FakeUserAgentProvider fails, we'll use faker to generate a user-agent string for us
     'scrapy_fake_useragent.providers.FixedUserAgentProvider',  # Fall back to USER_AGENT value
 ]
+
 USER_AGENT = get_user_agent('random')
