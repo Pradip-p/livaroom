@@ -13,28 +13,44 @@ from django.http import FileResponse
 from django.urls import reverse
 from django.utils.encoding import smart_str
 import os
+from django.http import FileResponse
+from django.utils.encoding import smart_str
+from pathlib import Path
 
 def download_export_csv(request):
-    # Assuming the "export.csv" file is located in the base directory of your Django project
-    file_path = 'export.csv'
-     # Assuming the "export.csv" file is located in the "data" folder outside the Django project
-    # file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'export.csv')
-    # file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__)),'data/export.csv'))
-    file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data', 'export.csv')
-    # Open the file in binary mode
-    file = open(file_path, 'rb')
-    # Read the file content
-    file_content = file.read()
-    # Close the file
-    file.close()
+    file_path = Path(__file__).resolve().parent.parent.parent / 'data' / 'export.csv'
 
-    # Create a FileResponse object with the file content
-    response = FileResponse(file_content)
-    # Set the appropriate content type (CSV file)
-    response['Content-Type'] = 'text/csv'
-    # Set the Content-Disposition header to force the browser to download the file
-    response['Content-Disposition'] = 'attachment; filename="{0}"'.format(smart_str(file_path))
+    with open(file_path, 'r') as file:
+        file_content = file.read()
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="export.csv"'
+    response.write(smart_str(file_content))
+
     return response
+
+
+# def download_export_csv(request):
+#     # Assuming the "export.csv" file is located in the base directory of your Django project
+#     file_path = 'export.csv'
+#      # Assuming the "export.csv" file is located in the "data" folder outside the Django project
+#     # file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'export.csv')
+#     # file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__)),'data/export.csv'))
+#     file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data', 'export.csv')
+#     # Open the file in binary mode
+#     file = open(file_path, 'rb')
+#     # Read the file content
+#     file_content = file.read()
+#     # Close the file
+#     file.close()
+
+#     # Create a FileResponse object with the file content
+#     response = FileResponse(file_content)
+#     # Set the appropriate content type (CSV file)
+#     response['Content-Type'] = 'text/csv'
+#     # Set the Content-Disposition header to force the browser to download the file
+#     response['Content-Disposition'] = 'attachment; filename="{0}"'.format(smart_str(file_path))
+#     return response
 
 
 
