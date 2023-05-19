@@ -139,6 +139,22 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+    function UnselectAllRows() {
+        var checkboxes = document.getElementsByClassName("row-checkbox");
+        var selectAllCheckbox = document.getElementById("select-all-checkbox");
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = false; // Uncheck each checkbox
+        }
+        selectAllCheckbox.checked = false; // Uncheck the "Select All" checkbox
+    }
+    
+    function selectAllRows() {
+        var checkboxes = document.getElementsByClassName("row-checkbox");
+        var selectAllCheckbox = document.getElementById("select-all-checkbox");
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = selectAllCheckbox.checked;
+        }
+    }
 
     function getCookie(name) {
         let cookieValue = null;
@@ -155,7 +171,7 @@
         }
         return cookieValue;
     }
-
+    // ths is used to update the selected product of prices.
     $(document).ready(function(){
         $('#update_all').click(function(){
         // collect the selected sample id's
@@ -170,12 +186,13 @@
         skus = skus.filter((sku) => sku !== '' && typeof sku !== 'undefined');
 
 
-        var prices = []
-        for (var i = 0; i < skus.length; i++){ // loop through all form
-            var price = document.getElementById("optimize_price_"+skus[i]).value;  // get selected price of sku.
-            prices[i] = price
-        };
+        var prices = {};
 
+        for (var i = 0; i < skus.length; i++) {
+            var sku = skus[i];
+            var price = document.getElementById("optimize_price_" + sku).value;
+            prices[sku] = price;
+          }
         if (skus.length === 0){
             alert('No samples selected.');
         } else {
@@ -192,10 +209,12 @@
                 "X-CSRFToken": getCookie("csrftoken"),
                 },
                 data: {
-                prices: prices,
+                prices: JSON.stringify(prices),
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 }, 
                 success: function(response) {
+                    
+                    UnselectAllRows()
                     var message = response.message;
                     var listItem = '<li><i class="fa fa-check fa-li text-success"></i>' + message + '</li>';
                     $('#message').append(listItem);
@@ -206,10 +225,11 @@
                         });
                     }, 5000)
                 },
-                error: function(error) {
+                error: function(xhr, errmsg, err) {
+                    UnselectAllRows()
                     var errorResponse = JSON.parse(xhr.responseText);
                     var errorMessage = errorResponse.message;
-                    var listItem = '<li><i class="fa fa-check fa-li text-warning"></i>' + errorMessagez + '</li>';
+                    var listItem = '<li><i class="fa fa-check fa-li text-warning"></i>' + errorMessage + '</li>';
                     $('#message').append(listItem);
                     var alertBox = $('#message li:last-child');
                     setTimeout(function() {
@@ -223,33 +243,23 @@
         }
         });
     });
-    
-</script>
-<script>
-    function selectAllRows() {
-        var checkboxes = document.getElementsByClassName("row-checkbox");
-        var selectAllCheckbox = document.getElementById("select-all-checkbox");
-        for (var i = 0; i < checkboxes.length; i++) {
-            checkboxes[i].checked = selectAllCheckbox.checked;
-        }
-    }
-</script>
 
-
-<script>
-    $(document).ready(function() {
+    // for single update the price of product.
+    //$(document).ready(function() {
         $('#updateButton').click(function(e) {
+            
             e.preventDefault(); // Prevent the default form submission
             
-            var optimizePrice = $('#id_optimize_price').val(); // Get the value of optimize_price
-            
+            var sku = $(this).attr('data-sku');
+            var price = document.getElementById("optimize_price_"+sku).value
             // Get the CSRF token value from the cookie
             var csrftoken = Cookies.get('csrftoken');
             
             // Add the CSRF token and the optimize_price value to the data parameter
             var data = {
                 'csrfmiddlewaretoken': csrftoken,
-                'optimize_price': optimizePrice
+                'sku':sku,
+                'price':price
             };
             
             $.ajax({
@@ -281,7 +291,8 @@
                 }
             });
         });
-    });
+    //});
+    
 </script>
 
 {% endblock %}
