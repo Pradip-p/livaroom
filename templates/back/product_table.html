@@ -34,11 +34,12 @@
                         <input id="optimize_price_{{cc.sku}}" name="optimize_price" type="text" class="form-control" value="{{ cc.optimize_price }}">
                     </div>
                 </td>
+                {% comment %}
                 <td>
                     <!-- Button trigger modal -->
-                    {% comment %} <button type="button"  class="btn btn-sm btn-danger" data-toggle="modal" data-target="#exampleModal">
+                     <button type="button"  class="btn btn-sm btn-danger" data-toggle="modal" data-target="#exampleModal">
                         Update
-                    </button> {% endcomment %}
+                    </button>
 
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -63,7 +64,7 @@
                             </div>
                         </div>
                     </div>
-                </td>
+                </td> {% endcomment %}
                 
                 <td class="text-center"><a target="_blank" href="{{ cc.product_url }}" class="btn btn-sm btn-primary">open</a></td>
             </tr>
