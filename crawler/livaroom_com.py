@@ -48,7 +48,6 @@ class LazyCrawler(LazyBaseCrawler):
         # Retrieve all products
         for page in PaginatedIterator(shopify.Product.find()):
             # for items in page:
-
             # Iterate over each product
             for product in page:
                 data = product.to_json()

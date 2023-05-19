@@ -5,6 +5,7 @@
                 <th>&nbsp;
                     <input type="checkbox" value="" id="select-all-checkbox" onclick="selectAllRows()">
                 </th>
+                <th class="text-center">vendor</th>
                 <th class="text-center">title</th>
                 <th class="text-center">sku</th>
                 <th class="text-center" >barcode</th>
@@ -23,6 +24,7 @@
                     value="{{cc.sku}}"
                />
                 </td>
+                <td class="text-center" >{{cc.vendor}}</td>
                 <td class="text-center">{{cc.title}}</td>
                 <td class="text-center">{{ cc.sku }}</td>
                 <td class="text-center" > {{ cc.barcode }}</td>

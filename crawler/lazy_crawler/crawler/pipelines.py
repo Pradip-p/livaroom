@@ -41,6 +41,7 @@ class LivaroomDBPipeline(object):
         product_title = item['title']
         category_name = ''
         variants = item.get('variants')
+        vendor = item.get('vendor')
         for variant in variants:
             title = product_title+' - '+variant.get('title')
             sku = variant.get('sku')
@@ -70,6 +71,8 @@ class LivaroomDBPipeline(object):
                 product.title = title
                 product.handle = handle
                 product.barcode = barcode
+                product.vendor  = vendor
+
                 # product.featured_image = featured_image
                 product.price_livaroom = price_livaroom
                 
@@ -81,7 +84,8 @@ class LivaroomDBPipeline(object):
                     product_id=product_id, variant_id = variant_id,
                     category_name=category_name, title=title, handle=handle,
                     sku=sku, barcode=barcode,
-                    price_livaroom=price_livaroom)
+                    price_livaroom=price_livaroom,
+                    vendor=vendor)
 
         return ''
     

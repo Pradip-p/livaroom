@@ -151,8 +151,8 @@ def home(request):
     """
 
     # #set the pagination on products li
-    variants = [variant for variant in Product.objects.all().order_by('-id') if variant.price_englishelm]
-    # variants = Product.objects.all().order_by('-id')
+    # variants = [variant for variant in Product.objects.all().order_by('-id') if variant.price_englishelm]
+    variants = Product.objects.all().order_by('-id')
     variants = set_pagination(request, variants)
     context = {
                'variants':variants,
