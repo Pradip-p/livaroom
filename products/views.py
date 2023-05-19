@@ -78,7 +78,7 @@ def update_view(request):
         # variant_sku = 'AR-9511'
         variant_sku = 'EEI-5805-CHE-WHI-WHI'
         #let's check we found the varinat our database
-        variant = Product.objects.get(sku=variant_sku)
+        variant = Product.objects.get(sku=sku)
         if variant:
             product_id = variant.product_id
             variant_id = variant.variant_id

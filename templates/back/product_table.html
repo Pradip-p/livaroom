@@ -11,7 +11,7 @@
                 <th class="text-center">price_livaroom</th>
                 <th class="text-center">price_englishelm</th>
                 <th class="text-center" >optimize_price</th>
-                {% comment %} <th class="text-center" >update</th> {% endcomment %}
+                <th class="text-center" >update</th>
                 <th class="text-center" >url</th>
             </tr>
         </thead>
@@ -34,7 +34,7 @@
                         <input id="optimize_price_{{cc.sku}}" name="optimize_price" type="text" class="form-control" value="{{ cc.optimize_price }}">
                     </div>
                 </td>
-                {% comment %}
+                
                 <td>
                     <!-- Button trigger modal -->
                      <button type="button"  class="btn btn-sm btn-danger" data-toggle="modal" data-target="#exampleModal">
@@ -64,7 +64,7 @@
                             </div>
                         </div>
                     </div>
-                </td> {% endcomment %}
+                </td>
                 
                 <td class="text-center"><a target="_blank" href="{{ cc.product_url }}" class="btn btn-sm btn-primary">open</a></td>
             </tr>
