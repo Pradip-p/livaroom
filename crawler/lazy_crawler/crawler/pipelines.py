@@ -15,7 +15,7 @@ sys.path.append(str(BASE_DIR))  # Add the base directory to the PYTHONPATH
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 django.setup()
 
-from products.models import Variant, Product
+from products.models import Product
 
 class LivaroomDBPipeline(object):
     def __init__(self):
