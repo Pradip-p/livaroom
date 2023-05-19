@@ -4,7 +4,6 @@ import scrapy
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from lazy_crawler.crawler.spiders.base_crawler import LazyBaseCrawler
-from lazy_crawler.lib.cleaner import strip_html
 from lazy_crawler.lib.user_agent import get_user_agent
 import gc
 import js2xml
