@@ -12,5 +12,5 @@ class ProductCronJob(CronJobBase):
     def do(self):
         # code to be executed when the cron job runs
         # for example, run a shell script
-        call(['/bin/bash', '-c', 'source /root/livaroom/tools/bin/activate && /root/livaroom/crawler/livaroom_com.py'])
-        # call(['/bin/bash', '-c', 'source /root/livaroom/tools/bin/activate && /root/livaroom/crawler/english.py'])
+        # call(['/bin/bash', '-c', 'source /root/livaroom/tools/bin/activate && /root/livaroom/crawler/livaroom_com.py'])
+        call(['/bin/bash', '-c', 'source /root/livaroom/tools/bin/activate && /root/livaroom/crawler/english.py'])
