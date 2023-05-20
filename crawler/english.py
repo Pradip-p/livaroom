@@ -31,13 +31,13 @@ class LazyCrawler(LazyBaseCrawler):
     categories = [
         {
             # 'living':['https://englishelm.com/collections/living-room-furniture'],
-        #  'dining':['https://englishelm.com/collections/dining-room-furniture'],
-        #  'bed':['https://englishelm.com/collections/bedroom-furniture'],
-        #  'lighting':['https://englishelm.com/collections/lighting-collection-1'],
-        #  'rugs':['https://englishelm.com/collections/rugs'],
+         'dining':['https://englishelm.com/collections/dining-room-furniture'],
+         'bed':['https://englishelm.com/collections/bedroom-furniture'],
+         'lighting':['https://englishelm.com/collections/lighting-collection-1'],
+         'rugs':['https://englishelm.com/collections/rugs'],
         #  'outdoor':['https://englishelm.com/collections/outdoor-collection'],
         #  'accessories':['https://englishelm.com/collections/accessories'],
-         'kitchen':['https://englishelm.com/collections/kitchen-collection']
+        #  'kitchen':['https://englishelm.com/collections/kitchen-collection']
         }
     ]
 
