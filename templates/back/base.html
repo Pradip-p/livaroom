@@ -26,6 +26,8 @@
         <!-- Icons End -->
 
         <!-- Stylesheets -->
+        <!-- sweetalert message -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
         <!-- Bootstrap is included in its original form, unaltered -->
         <link rel="stylesheet" href="{% static 'back/css/bootstrap.min.css' %}">
 
@@ -39,6 +41,7 @@
 
         <!-- The themes stylesheet of this template (for using specific theme color in individual elements - must included last) -->
         <link rel="stylesheet" href="{% static 'back/css/themes.css' %}">
+
         <!-- END Stylesheets -->
 
         <!-- Modernizr (browser feature detection library) -->
@@ -149,10 +152,10 @@
                                 <li>
                                     <a href="/admin/django_cron/cronjoblog/" target="_blank" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide"> Crawler Logs</span></a>
                                 </li>
-                                <li>
+                                {% comment %} <li>
                                     <a href="{% url 'download_export_csv' %}"> 
                                     <i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide"> Download Logs</span></a>
-                                </li>
+                                </li> {% endcomment %}
                             <!-- About Settings (Under Site Settings Panel) End -->
                            
                            
@@ -239,6 +242,7 @@
         <script src="{% static 'back/js/app.js' %}"></script>
 
         <script src="{% static 'back/js/helpers/gmaps.min.js' %}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
         <script src="https://unpkg.com/htmx.org@1.6.0"></script>
 
         <script>

@@ -39,33 +39,34 @@
                 
                 <td>
                     <!-- Button trigger modal -->
-                     <button type="button"  class="btn btn-sm btn-danger" data-toggle="modal" data-target="#exampleModal">
+                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#exampleModal_{{cc.id}}">
                         Update
                     </button>
-
+                    
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="exampleModal_{{cc.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel" style='text-align:center'>
-                                    <strong>Are you sure you want to update price of variant?</strong>
-                                </h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                </div>
-                                <div class="modal-body">
-                                    If you update the price, It will automatically price of livaroom variant of product.
-                                    This action cannot be undone. Are you sure you want to proceed?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <a id="updateButton" data-sku="{{ cc.sku }}" data-dismiss="modal" class="btn btn-danger">Update<a>
-                                </div>
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel" style="text-align:center">
+                                <strong>Are you sure you want to update the price of the variant?</strong>
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                            If you update the price, it will automatically update the price of the live room variant of the product.
+                            This action cannot be undone. Are you sure you want to proceed?
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button id="" onclick="updatePrice('{{cc.sku}}')" data-sku="{{cc.sku}}" data-dismiss="modal" class="btn btn-danger">Update</button>
                             </div>
                         </div>
+                        </div>
                     </div>
+  
                 </td>
                 
                 <td class="text-center"><a target="_blank" href="{{ cc.product_url }}" class="btn btn-sm btn-primary">open</a></td>

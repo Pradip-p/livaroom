@@ -32,14 +32,12 @@ def update_product_price(request):
         # Update the value in the database or perform any other operations
         API_KEY = "2b4e323d3129443363269802ebca49df"
         API_ACCESS_TOKEN = "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"
-
         SHOP_NAME = 'livaroom'
-
         shop_url = f"https://{API_KEY}:{API_ACCESS_TOKEN}@{SHOP_NAME}.myshopify.com/admin/api/2023-01"
         shopify.ShopifyResource.set_site(shop_url)
         shop = shopify.Shop.current()
-        #now i want to update the prices of each prodcuts
-        # # variant_sku = 'AR-9511'
+        # now i want to update the prices of each prodcuts
+        # variant_sku = 'AR-9511'
         if prices:
             for sku, price in prices.items():
             #     variant_sku = 'EEI-5805-CHE-WHI-WHI'
@@ -90,6 +88,7 @@ def update_view(request):
             return JsonResponse({'message': 'Price {} updated successfully.'.format(price)}, status=200, safe=False)
         else:
             return JsonResponse({'message': 'SKU Not Found.'}, status=500)
+    # return JsonResponse({'message': 'Price {} updated successfully.'.format(price)}, status=200, safe=False)
         
 
 @login_required(login_url='/')
