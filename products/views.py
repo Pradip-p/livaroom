@@ -114,13 +114,13 @@ def search_product(request):
             try:
                 # variants = Product.objects.filter(sku__icontains=sku).distinct()
                 variants = [variant for variant in Product.objects.filter(sku__icontains=sku).distinct() if variant.price_englishelm]
-
+                variants = set_pagination(request, variants)
                 context = {'variants':variants, 'message':'show the products based on price avaiable'}
                 return render(request, 'back/product_table.html', context)
             except ValueError:
                 return render(request, "back/product_table.html", {"message":"please, select the country."})
         else:
-            variants = [variant for variant in Product.objects.all().order_by('-id') if variant.price_livaroom]
+            variants = [variant for variant in Product.objects.all().order_by('-id') if variant.price_englishelm]
             variants = set_pagination(request, variants)
             context = {
                'variants':variants,
