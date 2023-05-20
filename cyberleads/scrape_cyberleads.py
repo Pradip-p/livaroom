@@ -24,7 +24,7 @@ def start_crawl():
 
     #https://www.getcyberleads.com/directories/companies/C?page=171
     # for url in ['https://www.getcyberleads.com/directories/companies/A?page=159','https://www.getcyberleads.com/directories/companies/B?page=121']:
-    for letter in range(ord('D'), ord('Z')+1):
+    for letter in range(ord('Q'), ord('Z')+1):
         driver = webdriver.Chrome(options=options)
         start_url = f'https://www.getcyberleads.com/directories/companies/{chr(letter)}'
         driver.get(start_url)
@@ -215,3 +215,5 @@ def write_data_to_csv(filename, data):
     
 if __name__ == '__main__':
     start_crawl()
+
+#break after https://www.getcyberleads.com/directories/companies/P?page=81
