@@ -112,7 +112,9 @@ def search_product(request):
         sku = request.GET.get('sku')
         if sku:
             try:
-                variants = Product.objects.filter(sku__icontains=sku).distinct()
+                # variants = Product.objects.filter(sku__icontains=sku).distinct()
+                variants = [variant for variant in Product.objects.filter(sku__icontains=sku).distinct() if variant.price_englishelm]
+
                 context = {'variants':variants, 'message':'show the products based on price avaiable'}
                 return render(request, 'back/product_table.html', context)
             except ValueError:
