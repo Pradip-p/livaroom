@@ -48,8 +48,8 @@ def update_product_price(request):
                     # Find the product variant based on SKU on Livaroom API(site)..
                     product = shopify.Product(dict(id=product_id))
                     variant = shopify.Variant(dict(id=variant_id, price=price)) #55.04
-                    product.add_variant(variant) #it does not mean add new varinat it update the existing price of variant.
-                    product.save()
+                    # product.add_variant(variant) #it does not mean add new varinat it update the existing price of variant.
+                    # product.save()
             return JsonResponse({'message': 'Price updated successfully.'}, status=200,)
         return JsonResponse({'message': 'Please set a valid price. "NA" is not a valid price for the product.'}, status=500)
     return JsonResponse({'message':'invalid request.'}, status=500)
@@ -83,8 +83,8 @@ def update_view(request):
             # Find the product variant based on SKU on Livaroom API(site)..
             product = shopify.Product(dict(id=product_id))
             variant = shopify.Variant(dict(id=variant_id, price=price)) #55.04
-            product.add_variant(variant) #it does not mean add new varinat it update the existing price of variant.
-            product.save()
+            # product.add_variant(variant) #it does not mean add new varinat it update the existing price of variant.
+            # product.save()
             return JsonResponse({'message': 'Price {} updated successfully.'.format(price)}, status=200, safe=False)
         else:
             return JsonResponse({'message': 'SKU Not Found.'}, status=500)

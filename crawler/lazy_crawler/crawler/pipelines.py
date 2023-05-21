@@ -4,7 +4,6 @@ import os
 import django
 from pathlib import Path
 import sys
-from django.db.models import Q
 from django.db import transaction
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -51,14 +50,6 @@ class LivaroomDBPipeline(object):
                 barcode = variant.get('barcode')
             else:
                 barcode = 'NA'
-
-            # if variant['featured_image']:
-            #     if variant['featured_image'].get('src'):
-            #         featured_image = variant['featured_image'].get('src')
-            #     else:
-            #         featured_image = 'NA'
-            # else:
-            #     featured_image = 'NA'
 
             try:
                 # Attempt to retrieve an existing Product object with the given SKU

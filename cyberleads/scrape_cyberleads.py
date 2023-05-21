@@ -24,18 +24,21 @@ def start_crawl():
 
     #https://www.getcyberleads.com/directories/companies/C?page=171
     # for url in ['https://www.getcyberleads.com/directories/companies/A?page=159','https://www.getcyberleads.com/directories/companies/B?page=121']:
-    url = 'https://www.getcyberleads.com/directories/companies/S?page=129'
+    # url = 'https://www.getcyberleads.com/directories/companies/S?page=129'
+    url = 'https://www.getcyberleads.com/directories/companies/P?page=81'
     driver = webdriver.Chrome(options=options)
     driver.get(url)
     parse_url(driver, wait_time, timeout, retry_wait_time)
+
     driver.quit()
+    print('finised')
     
-    for letter in range(ord('T'), ord('Z')+1):
-        driver = webdriver.Chrome(options=options)
-        start_url = f'https://www.getcyberleads.com/directories/companies/{chr(letter)}'
-        driver.get(start_url)
-        parse_url(driver, wait_time, timeout, retry_wait_time)
-        driver.quit()
+    # for letter in range(ord('T'), ord('Z')+1):
+    #     driver = webdriver.Chrome(options=options)
+    #     start_url = f'https://www.getcyberleads.com/directories/companies/{chr(letter)}'
+    #     driver.get(start_url)
+    #     parse_url(driver, wait_time, timeout, retry_wait_time)
+    #     driver.quit()
 
 def parse_url(driver, wait_time, timeout, retry_wait_time):
     while True:

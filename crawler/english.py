@@ -80,8 +80,6 @@ class LazyCrawler(LazyBaseCrawler):
         for product in products:
             yield{"variants": product['variants'] } 
             
-        time.sleep(5)
-
         next_page = response.xpath('//ul[@class="pagination-page"]/li[@class="text"]/a[@title="Next"]/@href').extract_first()
         if next_page:
             url = 'https://englishelm.com{}'.format(next_page)
