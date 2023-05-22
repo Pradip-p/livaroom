@@ -103,13 +103,13 @@ class EnglishElmDBPipeline(object):
     
     @transaction.atomic
     def process_item(self, item, spider):
-        
+        category_name = item.get('category_name')
         variants = item.get('variants')
-
         for variant in variants:
             try:
                 existing_product = Product.objects.get(sku=variant.get('sku'))
                 existing_product.price_englishelm = variant.get('price')
+                existing_product.category_name = category_name
                 existing_product.save()
                 return variant
             except Product.DoesNotExist:

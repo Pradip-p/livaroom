@@ -82,7 +82,8 @@ class LazyCrawler(LazyBaseCrawler):
                     }
                     yield scrapy.Request(url, self.parse_json, dont_filter=True,
                         errback=self.errback_http_ignored,
-                        headers= headers
+                        headers= headers,
+                        meta={'category_name':category_name}
                         )
                     # 
         # url = 'https://englishelm.com/collections/all'
@@ -100,18 +101,19 @@ class LazyCrawler(LazyBaseCrawler):
             parsed.xpath("//var[@name='meta']/object")[0])
         products = results['products']
         for product in products:
-            yield{"variants": product['variants'] } 
+            yield{"variants":  product['variants'],'category_name':response.meta['category_name'] } 
         
         next_page = response.xpath('//ul[@class="pagination-page"]/li[@class="text"]/a[@title="Next"]/@href').extract_first()
         if next_page:
             url = 'https://englishelm.com{}'.format(next_page)
             headers = {
-                    'User-Agent': get_user_agent('random'),
-                    **self.HEADERS,  # Merge the HEADERS dictionary with the User-Agent header
-                    }
+                'User-Agent': get_user_agent('random'),
+                **self.HEADERS,  # Merge the HEADERS dictionary with the User-Agent header
+                }
             yield scrapy.Request(url, self.parse_json, dont_filter=True,
                     errback=self.errback_http_ignored,
-                    headers= headers
+                    headers= headers,
+                    meta={'category_name': response.meta['category_name']}
                     )
 
         gc.collect()
