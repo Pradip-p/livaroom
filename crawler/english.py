@@ -30,11 +30,11 @@ class LazyCrawler(LazyBaseCrawler):
     }
     categories = [
         {
-            # 'living':['https://englishelm.com/collections/living-room-furniture'],
+            'living':['https://englishelm.com/collections/living-room-furniture'],
          'dining':['https://englishelm.com/collections/dining-room-furniture'],
          'bed':['https://englishelm.com/collections/bedroom-furniture'],
-         'lighting':['https://englishelm.com/collections/lighting-collection-1'],
-         'rugs':['https://englishelm.com/collections/rugs'],
+        #  'lighting':['https://englishelm.com/collections/lighting-collection-1'],
+        #  'rugs':['https://englishelm.com/collections/rugs'],
         #  'outdoor':['https://englishelm.com/collections/outdoor-collection'],
         #  'accessories':['https://englishelm.com/collections/accessories'],
         #  'kitchen':['https://englishelm.com/collections/kitchen-collection']
@@ -57,20 +57,20 @@ class LazyCrawler(LazyBaseCrawler):
     }
 
     def start_requests(self): #project start from here.
-        # for category in self.categories:
-        #     category = category.items()
-        #     for key, value in category:
-        #         category_name = key
-        #         urls = value
-        #         for url in urls:
-        #             time.sleep(5)
-        #             yield scrapy.Request(url, self.parse_json, dont_filter=True,
-        #                 headers= self.HEADERS
-        #                 )
-        url = 'https://englishelm.com/collections/all'
-        yield scrapy.Request(url, self.parse_json, dont_filter=True,
+        for category in self.categories:
+            category = category.items()
+            for key, value in category:
+                category_name = key
+                urls = value
+                for url in urls:
+                    time.sleep(5)
+                    yield scrapy.Request(url, self.parse_json, dont_filter=True,
                         headers= self.HEADERS
                         )
+        # url = 'https://englishelm.com/collections/all'
+        # yield scrapy.Request(url, self.parse_json, dont_filter=True,
+        #                 headers= self.HEADERS
+        #                 )
 
     def parse_json(self, response):
         # script_content = response.xpath('//script[@id="web-pixels-manager-setup"]/text()').extract_first()
@@ -83,7 +83,7 @@ class LazyCrawler(LazyBaseCrawler):
         products = results['products']
         for product in products:
             yield{"variants": product['variants'] } 
-            
+        time.sleep(5)
         next_page = response.xpath('//ul[@class="pagination-page"]/li[@class="text"]/a[@title="Next"]/@href').extract_first()
         if next_page:
             url = 'https://englishelm.com{}'.format(next_page)
