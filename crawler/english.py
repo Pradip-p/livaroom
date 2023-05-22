@@ -9,7 +9,6 @@ import gc
 import js2xml
 import time
 from scrapy.spidermiddlewares.httperror import HttpError
-# from twisted.internet.error import DNSLookupError, TimeoutError, TCPTimedOutError
 
 class LazyCrawler(LazyBaseCrawler):
     def errback_http_ignored(self, failure):
@@ -18,6 +17,11 @@ class LazyCrawler(LazyBaseCrawler):
             if response.status == 430:
                 self.logger.info(f"Ignoring response {response.url} with status code {response.status}")
                 time.sleep(240)  # Wait for 4 minutes (adjust as needed)
+                return self._retry_request(response.request, reason=failure.getErrorMessage(), spider=self)
+
+            if response.status == 503:
+                self.logger.info(f"Ignoring response {response.url} with status code {response.status}")
+                time.sleep(480)  # Wait for 8 minutes (adjust as needed)
                 return self._retry_request(response.request, reason=failure.getErrorMessage(), spider=self)
 
     def _retry_request(self, request, reason, spider):
@@ -46,13 +50,13 @@ class LazyCrawler(LazyBaseCrawler):
     categories = [
         {
         'living':['https://englishelm.com/collections/living-room-furniture'],
-        'dining':['https://englishelm.com/collections/dining-room-furniture'],
-        'bed':['https://englishelm.com/collections/bedroom-furniture'],
-        'lighting':['https://englishelm.com/collections/lighting-collection-1'],
-        'rugs':['https://englishelm.com/collections/rugs'],
-        'outdoor':['https://englishelm.com/collections/outdoor-collection'],
-        'accessories':['https://englishelm.com/collections/accessories'],
-        'kitchen':['https://englishelm.com/collections/kitchen-collection']
+        # 'dining':['https://englishelm.com/collections/dining-room-furniture'],
+        # 'bed':['https://englishelm.com/collections/bedroom-furniture'],
+        # 'lighting':['https://englishelm.com/collections/lighting-collection-1'],
+        # 'rugs':['https://englishelm.com/collections/rugs'],
+        # 'outdoor':['https://englishelm.com/collections/outdoor-collection'],
+        # 'accessories':['https://englishelm.com/collections/accessories'],
+        # 'kitchen':['https://englishelm.com/collections/kitchen-collection']
         }
     ]
 
@@ -85,11 +89,6 @@ class LazyCrawler(LazyBaseCrawler):
                         headers= headers,
                         meta={'category_name':category_name}
                         )
-                    # 
-        # url = 'https://englishelm.com/collections/all'
-        # yield scrapy.Request(url, self.parse_json, dont_filter=True,
-        #                 headers= self.HEADERS
-        #                 )
 
     def parse_json(self, response):
         # script_content = response.xpath('//script[@id="web-pixels-manager-setup"]/text()').extract_first()
