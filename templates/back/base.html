@@ -123,31 +123,32 @@
                             </li>
                             <!-- Site Settings Panel(To add all the settings) End -->
                                 <li>
-                                    <a href="#" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Living</span></a>
+                                    <a href="{% url 'category' slug='living' %}" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Living</span></a>
                                 </li>
+                               
                             <!-- Settings (Under Site Settings Panel) Start -->
                                 <li>
-                                    <a href="#" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Bed</span></a>
+                                    <a href="{% url 'category' slug='bed' %}" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Bed</span></a>
                                 </li>
                             <!-- Settings (Under Site Settings Panel) End -->
                             <!-- About Settings (Under Site Settings Panel) Start -->
                                 <li>
-                                    <a href="#" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Lighting</span></a>
+                                    <a href="{% url 'category' slug='dining' %}" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Dining</span></a>
                                 </li>
                                 <li>
-                                    <a href="#" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Rugs</span></a>
+                                    <a href="{% url 'category' slug='rugs' %}" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Rugs</span></a>
                                 </li>
                                 <li>
-                                    <a href="#" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Outdoor</span></a>
+                                    <a href="{% url 'category' slug='outdoor' %}" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Outdoor</span></a>
                                 </li>
                                 <li>
-                                    <a href="#" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Lighting</span></a>
+                                    <a href="{% url 'category' slug='lighting' %}" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Lighting</span></a>
                                 </li>
                                 <li>
-                                    <a href="#" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Accessories</span></a>
+                                    <a href="{% url 'category' slug='accessories' %}" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Accessories</span></a>
                                 </li>
                                 <li>
-                                    <a href="#" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Kitchen</span></a>
+                                    <a href="{% url 'category' slug='kitchen' %}" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Kitchen</span></a>
                                 </li>
                                 <li>
                                     <a href="/admin/django_cron/cronjoblog/" target="_blank" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide"> Crawler Logs</span></a>
@@ -186,10 +187,7 @@
                             </li>
                         <!-- Main Sidebar Toggle Button End -->                           
                         </ul>
-                    <!-- Left Header Navigation End -->
-
-
-                 
+                    <!-- Left Header Navigation End -->                 
                         
                     </header>
                 <!-- Header Section End -->

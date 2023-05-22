@@ -9,18 +9,16 @@ from django.utils.encoding import smart_str
 from pathlib import Path
 import json
 
-# Create your views here.
-def download_export_csv(request):
-    file_path = Path(__file__).resolve().parent.parent.parent / 'data' / 'export.csv'
-
-    with open(file_path, 'r') as file:
-        file_content = file.read()
-
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="export.csv"'
-    response.write(smart_str(file_content))
-
-    return response
+def category_view(request, slug):
+    # Logic for the category view goes here
+    # You can access the 'slug' parameter in this function
+    # and process it accordingly
+    variants = [variant for variant in Product.objects.filter(category_name=slug).distinct() if variant.price_englishelm]
+    variants = set_pagination(request, variants)
+    context = {
+            'variants':variants,
+            }
+    return render(request, "back/home.html", context)
 
 
 @login_required(login_url='/')

@@ -10,6 +10,7 @@ urlpatterns = [
     path('panel/', views.home, name='home'),
     #this url is used for search the variant using sku.
     path('search-product/', views.search_product, name="search-product"),
-    #this url will be remove soon.
-    path('download-export-csv/', views.download_export_csv, name='download_export_csv'),
+    #this
+    path('category/<slug:slug>/', views.category_view, name='category'),
+
 ]
