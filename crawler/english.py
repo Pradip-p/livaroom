@@ -8,21 +8,36 @@ from lazy_crawler.lib.user_agent import get_user_agent
 import gc
 import js2xml
 import time
+from scrapy.spidermiddlewares.httperror import HttpError
+# from twisted.internet.error import DNSLookupError, TimeoutError, TCPTimedOutError
 
 class LazyCrawler(LazyBaseCrawler):
+    def errback_http_ignored(self, failure):
+        if failure.check(HttpError):
+            response = failure.value.response
+            if response.status == 430:
+                self.logger.info(f"Ignoring response {response.url} with status code {response.status}")
+                time.sleep(240)  # Wait for 4 minutes (adjust as needed)
+                return self._retry_request(response.request, reason=failure.getErrorMessage(), spider=self)
 
+    def _retry_request(self, request, reason, spider):
+        retryreq = request.copy()
+        retryreq.meta['retry_times'] = request.meta.get('retry_times', 0) + 1
+        retryreq.dont_filter = True
+        return retryreq
+    
     name = "englishelm"
 
     allowed_domains = ['englishelm.com']
 
     custom_settings = {
-        'DOWNLOAD_DELAY': 4,'LOG_LEVEL': 'DEBUG',
+        'DOWNLOAD_DELAY': 2,'LOG_LEVEL': 'DEBUG',
         
         'CONCURRENT_REQUESTS' : 1,'CONCURRENT_REQUESTS_PER_IP': 1,
 
         'CONCURRENT_REQUESTS_PER_DOMAIN': 1,'RETRY_TIMES': 2,
 
-        "COOKIES_ENABLED": True,'DOWNLOAD_TIMEOUT': 180,
+        # "COOKIES_ENABLED": True,'DOWNLOAD_TIMEOUT': 180,
 
         'ITEM_PIPELINES' :  {
             'lazy_crawler.crawler.pipelines.EnglishElmDBPipeline': 300
@@ -30,19 +45,18 @@ class LazyCrawler(LazyBaseCrawler):
     }
     categories = [
         {
-            'living':['https://englishelm.com/collections/living-room-furniture'],
-         'dining':['https://englishelm.com/collections/dining-room-furniture'],
-         'bed':['https://englishelm.com/collections/bedroom-furniture'],
-        #  'lighting':['https://englishelm.com/collections/lighting-collection-1'],
-        #  'rugs':['https://englishelm.com/collections/rugs'],
-        #  'outdoor':['https://englishelm.com/collections/outdoor-collection'],
-        #  'accessories':['https://englishelm.com/collections/accessories'],
-        #  'kitchen':['https://englishelm.com/collections/kitchen-collection']
+        'living':['https://englishelm.com/collections/living-room-furniture'],
+        'dining':['https://englishelm.com/collections/dining-room-furniture'],
+        'bed':['https://englishelm.com/collections/bedroom-furniture'],
+        'lighting':['https://englishelm.com/collections/lighting-collection-1'],
+        'rugs':['https://englishelm.com/collections/rugs'],
+        'outdoor':['https://englishelm.com/collections/outdoor-collection'],
+        'accessories':['https://englishelm.com/collections/accessories'],
+        'kitchen':['https://englishelm.com/collections/kitchen-collection']
         }
     ]
 
     HEADERS = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:98.0) Gecko/20100101 Firefox/98.0",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
         "Accept-Language": "en-US,en;q=0.5",
         "Accept-Encoding": "gzip, deflate",
@@ -53,7 +67,6 @@ class LazyCrawler(LazyBaseCrawler):
         "Sec-Fetch-Site": "none",
         "Sec-Fetch-User": "?1",
         "Cache-Control": "max-age=0",
-        ###add
     }
 
     def start_requests(self): #project start from here.
@@ -63,10 +76,15 @@ class LazyCrawler(LazyBaseCrawler):
                 category_name = key
                 urls = value
                 for url in urls:
-                    time.sleep(5)
+                    headers = {
+                        'User-Agent': get_user_agent('random'),
+                        **self.HEADERS,  # Merge the HEADERS dictionary with the User-Agent header
+                    }
                     yield scrapy.Request(url, self.parse_json, dont_filter=True,
-                        headers= self.HEADERS
+                        errback=self.errback_http_ignored,
+                        headers= headers
                         )
+                    # 
         # url = 'https://englishelm.com/collections/all'
         # yield scrapy.Request(url, self.parse_json, dont_filter=True,
         #                 headers= self.HEADERS
@@ -83,13 +101,17 @@ class LazyCrawler(LazyBaseCrawler):
         products = results['products']
         for product in products:
             yield{"variants": product['variants'] } 
-        time.sleep(5)
+        
         next_page = response.xpath('//ul[@class="pagination-page"]/li[@class="text"]/a[@title="Next"]/@href').extract_first()
         if next_page:
             url = 'https://englishelm.com{}'.format(next_page)
-            time.sleep(5)
+            headers = {
+                    'User-Agent': get_user_agent('random'),
+                    **self.HEADERS,  # Merge the HEADERS dictionary with the User-Agent header
+                    }
             yield scrapy.Request(url, self.parse_json, dont_filter=True,
-                    headers= self.HEADERS
+                    errback=self.errback_http_ignored,
+                    headers= headers
                     )
 
         gc.collect()
