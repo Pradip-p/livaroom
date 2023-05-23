@@ -12,5 +12,7 @@ urlpatterns = [
     path('search-product/', views.search_product, name="search-product"),
     #this
     path('category/<slug:slug>/', views.category_view, name='category'),
+    ##vendor view
+    path('vendor/<slug:slug>/', views.vendor_view, name='vendor'),
 
 ]

@@ -1,47 +1,43 @@
 from django.db import models
-# from django.urls import reverse
-# from django.utils.text import slugify
-# from django.db.models import Min, Avg
-# from django.db.models import Q
+from django.utils.text import slugify
 
 # Create your models here.
-# class Category(models.Model):
-#     name = models.CharField(max_length=150, unique=True)
-#     slug = models.SlugField(max_length=50)
+class Category(models.Model):
+    name = models.CharField(max_length=150, unique=True)
+    slug = models.SlugField(max_length=50)
 
 
-#     def save(self, *args, **kwargs):
-#         # Generate slug from name if it is not already set
-#         if not self.slug:
-#             self.slug = slugify(self.name)
+    def save(self, *args, **kwargs):
+        # Generate slug from name if it is not already set
+        if not self.slug:
+            self.slug = slugify(self.name)
 
-#         super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
-#     def __str__(self):
-#         return self.name
+    def __str__(self):
+        return self.name
+
+class Vendor(models.Model):
+    name = models.CharField(max_length=200, blank=True)
+    slug = models.SlugField(max_length=200)
+
+    def __str__(self):
+        return self.name
+    
+    def save(self, *args, **kwargs):
+        # Generate slug from name if it is not already set
+        if not self.slug:
+            self.slug = slugify(self.name)
+
+        super().save(*args, **kwargs)
 
 
-# class SubCategory(models.Model):
-#     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='sub_category')
-#     name = models.CharField(max_length=150, unique=True)
-#     slug = models.SlugField(max_length=50)
 
-#     def save(self, *args, **kwargs):
-#         # Generate slug from name if it is not already set
-#         if not self.slug:
-#             self.slug = slugify(self.name)
-
-#         super().save(*args, **kwargs)
-
-#     def __str__(self):
-#         return self.name
-        
 class Product(models.Model):
     """
     Represents a product.
 
     Fields:
-        category_name (CharField): The category name of the product (maximum length: 200 characters).
         product_id (CharField): The product ID (maximum length: 200 characters).
         variant_id (CharField): The variant ID (maximum length: 200 characters).
         title (CharField): The title of the product (maximum length: 200 characters).
@@ -53,10 +49,10 @@ class Product(models.Model):
         featured_image (CharField): The URL of the featured image of the product (maximum length: 200 characters, blank allowed).
     """
      
-    category_name = models.CharField(max_length=200, blank=True)
     product_id = models.CharField(max_length=200)
     variant_id = models.CharField(max_length=200)
-    vendor = models.CharField(max_length=200, blank=True)
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='product')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True, related_name="category")
     title = models.CharField(max_length=200)
     sku = models.CharField(max_length=200,unique=True)
     handle = models.CharField(max_length=200)
@@ -107,3 +103,4 @@ class Product(models.Model):
         """
         count = sum(1 for obj in cls.objects.all() if obj.price_englishelm and obj.price_livaroom)
         return count
+            

@@ -3,16 +3,24 @@ from .models import Product
 from .pagination import set_pagination
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.http import HttpResponse
 import shopify
-from django.utils.encoding import smart_str
-from pathlib import Path
 import json
 
+
+@login_required(login_url='/')
+def vendor_view(request,slug):
+    variants = [variant for variant in Product.objects.filter(vendor__slug = slug).distinct() if variant.price_englishelm]
+    variants = set_pagination(request, variants)
+    context = {
+            'variants':variants,
+            }
+    return render(request, "back/home.html", context)
+
+@login_required(login_url='/')
 def category_view(request, slug):
     # Logic for the category view goes here
     # You can access the 'slug' parameter in this function
-    variants = [variant for variant in Product.objects.filter(category_name=slug).distinct() if variant.price_englishelm]
+    variants = [variant for variant in Product.objects.filter(category__slug=slug).distinct() if variant.price_englishelm]
     variants = set_pagination(request, variants)
     context = {
             'variants':variants,
@@ -36,6 +44,7 @@ def update_product_price(request):
         # now i want to update the prices of each prodcuts
         # variant_sku = 'AR-9511'
         if prices:
+            update_price = []
             for sku, price in prices.items():
             #     variant_sku = 'EEI-5805-CHE-WHI-WHI'
                 variant = Product.objects.get(sku=sku)
@@ -47,7 +56,8 @@ def update_product_price(request):
                     variant = shopify.Variant(dict(id=variant_id, price=price)) #55.04
                     product.add_variant(variant) #it does not mean add new varinat it update the existing price of variant.
                     product.save()
-            return JsonResponse({'message': 'Price updated successfully.'}, status=200,)
+                    update_price.append(price)
+            return JsonResponse({'message': 'Price {} updated successfully.'.format(','.join(update_price))}, status=200,)
         return JsonResponse({'message': 'Please set a valid price. "NA" is not a valid price for the product.'}, status=500)
     return JsonResponse({'message':'invalid request.'}, status=500)
 

@@ -1,4 +1,5 @@
 {% load static %}
+{% load product_tags %}
 
 <!DOCTYPE html>
  <html class="no-js" lang="en"> 
@@ -122,38 +123,36 @@
                                 <span class="sidebar-header-title">Category Section</span>
                             </li>
                             <!-- Site Settings Panel(To add all the settings) End -->
+                            {% get_categories as categories %}
+                            {% for cat in categories %}
                                 <li>
-                                    <a href="{% url 'category' slug='living' %}" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Living</span></a>
+                                    <a href="{% url 'category' slug=cat.slug %}" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">{{cat.name}}</span></a>
                                 </li>
-                               
-                            <!-- Settings (Under Site Settings Panel) Start -->
-                                <li>
-                                    <a href="{% url 'category' slug='bed' %}" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Bed</span></a>
-                                </li>
-                            <!-- Settings (Under Site Settings Panel) End -->
-                            <!-- About Settings (Under Site Settings Panel) Start -->
-                                <li>
-                                    <a href="{% url 'category' slug='dining' %}" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Dining</span></a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'category' slug='rugs' %}" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Rugs</span></a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'category' slug='outdoor' %}" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Outdoor</span></a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'category' slug='lighting' %}" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Lighting</span></a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'category' slug='accessories' %}" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Accessories</span></a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'category' slug='kitchen' %}" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Kitchen</span></a>
-                                </li>
-                                <li>
-                                    <a href="/admin/django_cron/cronjoblog/" target="_blank" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide"> Crawler Logs</span></a>
-                                </li>
+                            {% endfor %}
+                                
                             <!-- About Settings (Under Site Settings Panel) End -->
+                            <!-- Category(add and list) Start -->
+                        <li>
+                            
+                            <a href="#" class="sidebar-nav-menu"><i class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Vender</span></a>
+                            
+                            <ul>
+                                {% get_vendor as unique_vendors %}
+
+                                {% for vendor in unique_vendors %}
+
+                                <li>
+                                    <a href="{% url 'vendor' slug=vendor.slug %}">{{ vendor }}</a>
+                                </li>
+                                {% endfor %}
+                               
+                                
+                            </ul>
+                            <li>
+                                <a href="/admin/django_cron/cronjoblog/" target="_blank" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide"> Crawler Logs</span></a>
+                            </li>
+                        </li>
+                    <!-- Category(add and list) End -->
                     <!-- Master User(Which sections i don't want to show for other users) Hide Start -->
 
                   

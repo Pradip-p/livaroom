@@ -14,7 +14,7 @@ sys.path.append(str(BASE_DIR))  # Add the base directory to the PYTHONPATH
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 django.setup()
 
-from products.models import Product
+from products.models import Product, Vendor, Category
 
 class LivaroomDBPipeline(object):
     def __init__(self):
@@ -40,7 +40,13 @@ class LivaroomDBPipeline(object):
         product_title = item['title']
         category_name = ''
         variants = item.get('variants')
-        vendor = item.get('vendor')
+        vendor_name = item.get('vendor')
+        ###to save vendor first....
+        try:
+            vendor = Vendor.objects.get(name=vendor_name)
+        except Vendor.DoesNotExist:
+            vendor = Vendor.objects.create(name=vendor_name)
+        ###now save the variant
         for variant in variants:
             title = product_title+' - '+variant.get('title')
             sku = variant.get('sku')
@@ -54,11 +60,10 @@ class LivaroomDBPipeline(object):
             try:
                 # Attempt to retrieve an existing Product object with the given SKU
                 product = Product.objects.get(sku=sku)
-                
                 # If the object exists, update its attributes with the new data
+                vendor = vendor
                 product_id = product_id
                 variant_id = variant_id
-                product.category_name = category_name
                 product.title = title
                 product.handle = handle
                 product.barcode = barcode
@@ -72,11 +77,12 @@ class LivaroomDBPipeline(object):
             except Product.DoesNotExist:
                 # If the object doesn't exist, create a new one
                 product = Product.objects.create(
+                    vendor=vendor,
                     product_id=product_id, variant_id = variant_id,
-                    category_name=category_name, title=title, handle=handle,
+                    title=title, handle=handle,
                     sku=sku, barcode=barcode,
                     price_livaroom=price_livaroom,
-                    vendor=vendor)
+                    )
 
         return ''
     
@@ -104,12 +110,17 @@ class EnglishElmDBPipeline(object):
     @transaction.atomic
     def process_item(self, item, spider):
         category_name = item.get('category_name')
+        try:
+            category = Category.objects.get(name=category_name)
+        except Category.DoesNotExist:
+            category = Category.objects.create(name=category_name)
+
         variants = item.get('variants')
         for variant in variants:
             try:
                 existing_product = Product.objects.get(sku=variant.get('sku'))
                 existing_product.price_englishelm = variant.get('price')
-                existing_product.category_name = category_name
+                existing_product.category = category
                 existing_product.save()
                 return variant
             except Product.DoesNotExist:
