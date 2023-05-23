@@ -78,7 +78,8 @@ class LivaroomDBPipeline(object):
                 # If the object doesn't exist, create a new one
                 product = Product.objects.create(
                     vendor=vendor,
-                    product_id=product_id, variant_id = variant_id,
+                    product_id=product_id, 
+                    variant_id = variant_id,
                     title=title, handle=handle,
                     sku=sku, barcode=barcode,
                     price_livaroom=price_livaroom,

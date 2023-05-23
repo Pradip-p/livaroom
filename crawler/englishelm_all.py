@@ -47,18 +47,7 @@ class LazyCrawler(LazyBaseCrawler):
             'lazy_crawler.crawler.pipelines.EnglishElmDBPipeline': 300
         }
     }
-    categories = [
-        {
-        # 'living':['https://englishelm.com/collections/living-room-furniture'],#finised 
-        # 'dining':['https://englishelm.com/collections/dining-room-furniture'],finised
-        # 'bed':['https://englishelm.com/collections/bedroom-furniture'], #runing..
-        # 'lighting':['https://englishelm.com/collections/lighting-collection-1'], #runing...
-        #'rugs':['https://englishelm.com/collections/rugs'],#finished
-        'outdoor':['https://englishelm.com/collections/outdoor-collection'],
-        'accessories':['https://englishelm.com/collections/accessories'],
-        # 'kitchen':['https://englishelm.com/collections/kitchen-collection']
-        }
-    ]
+
 
     HEADERS = {
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
@@ -74,21 +63,18 @@ class LazyCrawler(LazyBaseCrawler):
     }
 
     def start_requests(self): #project start from here.
-        for category in self.categories:
-            category = category.items()
-            for key, value in category:
-                category_name = key
-                urls = value
-                for url in urls:
-                    headers = {
-                        'User-Agent': get_user_agent('random'),
-                        **self.HEADERS,  # Merge the HEADERS dictionary with the User-Agent header
-                    }
-                    yield scrapy.Request(url, self.parse_json, dont_filter=True,
-                        errback=self.errback_http_ignored,
-                        headers= headers,
-                        meta={'category_name':category_name}
-                        )
+        headers = {
+            'User-Agent': get_user_agent('random'),
+            **self.HEADERS,  # Merge the HEADERS dictionary with the User-Agent header
+            }
+        url = 'https://englishelm.com/collections/all'
+
+        yield scrapy.Request(url, self.parse_json, dont_filter=True,
+                errback=self.errback_http_ignored,
+                headers= headers,
+                meta={'category_name':''}
+                )
+    
 
     def parse_json(self, response):
         # script_content = response.xpath('//script[@id="web-pixels-manager-setup"]/text()').extract_first()
