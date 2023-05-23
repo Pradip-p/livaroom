@@ -54,9 +54,9 @@ class LazyCrawler(LazyBaseCrawler):
         # 'bed':['https://englishelm.com/collections/bedroom-furniture'], #runing..
         # 'lighting':['https://englishelm.com/collections/lighting-collection-1'], #runing...
         #'rugs':['https://englishelm.com/collections/rugs'],#finished
-        'outdoor':['https://englishelm.com/collections/outdoor-collection'],
-        'accessories':['https://englishelm.com/collections/accessories'],
-        # 'kitchen':['https://englishelm.com/collections/kitchen-collection']
+        'outdoor':['https://englishelm.com/collections/outdoor-collection'],#finished
+        'accessories':['https://englishelm.com/collections/accessories'],#finised
+        'kitchen':['https://englishelm.com/collections/kitchen-collection']
         }
     ]
 
