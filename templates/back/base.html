@@ -113,27 +113,39 @@
                             <li>
                                 <a href="/panel" class=" active"><i class="gi gi-stopwatch sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Dashboard</span></a>
                             </li>
+
                         <!-- Permission Check(logged in user can access or not) End -->
 
-            <!-- Master User(Which sections i don't want to show for other users) Hide Start -->
+                            <!-- Master User(Which sections i don't want to show for other users) Hide Start -->
 
                             <!-- Site Settings Panel(To add all the settings) Start -->
                             <li class="sidebar-header">
                                 <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Quick Settings"><i class="gi gi-settings"></i></a></span>
                                 <span class="sidebar-header-title">Category Section</span>
                             </li>
-                            <!-- Site Settings Panel(To add all the settings) End -->
-                            {% get_categories as categories %}
-                            {% for cat in categories %}
-                                <li>
-                                    <a href="{% url 'category' slug=cat.slug %}" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">{{cat.name}}</span></a>
-                                </li>
-                            {% endfor %}
-                                
+                           
                             <!-- About Settings (Under Site Settings Panel) End -->
-                            <!-- Category(add and list) Start -->
+                            <li>
+                                <a href="#" class="sidebar-nav-menu"><i class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Category</span></a>
+                                
+                                <ul>
+                                    {% get_categories as categories %}
+    
+                                    {% for cat in categories %}
+    
+                                    <li>
+                                        <a href="{% url 'category' slug=cat.slug %}">{{ cat.name }}</a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                               
+                            </li>
+                            <li class="sidebar-header">
+                                <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Quick Settings"><i class="gi gi-settings"></i></a></span>
+                                <span class="sidebar-header-title">Vendor Section</span>
+                            </li>
+                            <!-- vendor(add and list) Start -->
                         <li>
-                            
                             <a href="#" class="sidebar-nav-menu"><i class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Vender</span></a>
                             
                             <ul>
@@ -145,19 +157,12 @@
                                     <a href="{% url 'vendor' slug=vendor.slug %}">{{ vendor }}</a>
                                 </li>
                                 {% endfor %}
-                               
-                                
                             </ul>
                             <li>
                                 <a href="/admin/django_cron/cronjoblog/" target="_blank" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide"> Crawler Logs</span></a>
                             </li>
                         </li>
-                    <!-- Category(add and list) End -->
-                    <!-- Master User(Which sections i don't want to show for other users) Hide Start -->
-
-                  
-         
-                    <!-- Master User(Which sections i don't want to show for other users) Hide End -->              
+                    <!-- Vendor(add and list) End -->           
                         </ul>
                     <!-- Sidebar Navigation(To add category, sub category, settings etc) End -->
 
