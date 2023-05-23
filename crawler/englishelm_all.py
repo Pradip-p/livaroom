@@ -30,7 +30,7 @@ class LazyCrawler(LazyBaseCrawler):
         retryreq.dont_filter = True
         return retryreq
     
-    name = "englishelm"
+    name = "englishelm_elem"
 
     allowed_domains = ['englishelm.com']
 
