@@ -24,7 +24,7 @@ class LazyCrawler(LazyBaseCrawler):
         'COOKIES_ENABLED': True,
         'DOWNLOAD_TIMEOUT': 180,
         'ITEM_PIPELINES': {
-            'lazy_crawler.crawler.pipelines.LivaroomDBPipeline': 400
+            'lazy_crawler.crawler.pipelines.LivaroomDBPipeline': None
         }
     }
 
@@ -47,7 +47,6 @@ class LazyCrawler(LazyBaseCrawler):
     def parse(self, response):
         # Retrieve all products
         for page in PaginatedIterator(shopify.Product.find()):
-            # for items in page:
             # Iterate over each product
             for product in page:
                 data = product.to_json()
