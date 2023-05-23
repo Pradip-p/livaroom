@@ -56,7 +56,7 @@ class LazyCrawler(LazyBaseCrawler):
         #'rugs':['https://englishelm.com/collections/rugs'],#finished
         #'outdoor':['https://englishelm.com/collections/outdoor-collection'],#finished
         #'accessories':['https://englishelm.com/collections/accessories'],#finised
-        'kitchen':['https://englishelm.com/collections/kitchen-collection']
+        #'kitchen':['https://englishelm.com/collections/kitchen-collection']
         }
     ]
 
