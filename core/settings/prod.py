@@ -28,7 +28,7 @@ AUTH_PASSWORD_VALIDATORS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'livaroomtools', #'myproject',#livaroom
+        'NAME': 'DBlivaroom',#'livaroomtools', #'myproject',#livaroom
         'USER': 'myprojectuser',
         'PASSWORD': 'password',
         'HOST': 'localhost',
