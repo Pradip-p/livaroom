@@ -5,7 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 import shopify
 import json
-
+from django.db.models import Q
+from englishelm.models import EnglisemProduct, EnglishemlVendor
 
 @login_required(login_url='/')
 def vendor_view(request,slug):
@@ -159,9 +160,32 @@ def home(request):
     """
 
     # #set the pagination on products li
-    variants = [variant for variant in Product.objects.all().order_by('-id') if variant.price_englishelm]
+    # eng_elm = EnglisemProduct.objects.all()
+    # liva_room = Product.objects.all()
+    matching_skus = EnglisemProduct.objects.values_list('sku', flat=True)
+    # matching_skus_1 = Product.objects.values_list('sku', flat=True)
+    # Create a DataFrame from the SKUs
+    # import openpyxl
+
+    # # Create a new Excel workbook and select the active sheet
+    # workbook = openpyxl.Workbook()
+    # sheet = workbook.active
+
+    # # Write the SKUs to separate columns
+    # for i, sku in enumerate(matching_skus, start=1):
+    #     sheet.cell(row=i, column=1, value=sku)
+
+    # for i, sku_1 in enumerate(matching_skus_1, start=1):
+    #     sheet.cell(row=i, column=2, value=sku_1)
+
+    # # Save the workbook to an Excel file
+    # workbook.save('sku_data.xlsx')
+
+    matching_products = Product.objects.filter(Q(sku__in=matching_skus))
+
+    # variants = [variant for variant in Product.objects.all().order_by('-id') if variant.price_englishelm]
     # variants = Product.objects.all().order_by('-id')
-    variants = set_pagination(request, variants)
+    variants = set_pagination(request, matching_products)
     context = {
                'variants':variants,
                }
