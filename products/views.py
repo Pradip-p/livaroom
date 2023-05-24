@@ -165,12 +165,6 @@ def home(request):
     context = {
                'variants':variants,
                }
-    count = 0
-    for product in Product.objects.all():
-        if product.sku == product.handle:
-            print(product.price_englishelm)
-            count +=1
 
-    print(count)
 
     return render(request, 'back/home.html', context)
