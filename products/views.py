@@ -161,20 +161,24 @@ def home(request):
 
     # eng_elm = EnglisemProduct.objects.all()
     # liva_room = Product.objects.all()
-    matching_skus = EnglisemProduct.objects.values_list('sku', flat=True)
-    updated_matching_skus = []
-    for sku in matching_skus:
-        if "-" in sku:
-            split_sku = sku.split("-")[0]
-            updated_matching_skus.append(split_sku)
-        else:
-            updated_matching_skus.append(sku)
-    print(updated_matching_skus)
-    matching_products = Product.objects.filter(Q(sku__in=matching_skus))
 
-    # variants = [variant for variant in Product.objects.all().order_by('-id') if variant.price_englishelm]
-    # variants = Product.objects.all().order_by('-id')
-    variants = set_pagination(request, matching_products)
+    # matching_skus = EnglisemProduct.objects.values_list('sku', flat=True)
+
+    # updated_matching_skus = []
+    # for sku in matching_skus:
+    #     if "-" in sku:
+    #         split_sku = sku.split("-")[0]
+    #         updated_matching_skus.append(split_sku)
+    #     else:
+    #         updated_matching_skus.append(sku)
+
+    # print(updated_matching_skus)
+
+    # matching_products = Product.objects.filter(Q(sku__in=matching_skus))
+
+    variants = [variant for variant in Product.objects.all().order_by('-id') if variant.price_englishelm]
+    variants = Product.objects.all().order_by('-id')
+    variants = set_pagination(request, variants)
     context = {
                'variants':variants,
                }
