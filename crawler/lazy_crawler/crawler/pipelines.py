@@ -93,59 +93,6 @@ class LivaroomDBPipeline(object):
 
         return ''
     
-class EnglishElmDBPipeline(object):
-    def __init__(self):
-        self.created_time = datetime.datetime.now()
-
-    @classmethod
-    def from_crawler(cls, crawler):
-        pipeline = cls()
-        crawler.signals.connect(pipeline.spider_opened, signals.spider_opened)
-        crawler.signals.connect(pipeline.spider_closed, signals.spider_closed)
-        return pipeline
-
-    def spider_opened(self, spider):
-        pass
-
-    def spider_closed(self, spider):
-        pass
-    
-    @transaction.atomic
-    def process_item(self, item, spider):
-        product_id = item.get('id')
-        vendor = item.get('vendor')
-        type = item.get('type')
-
-        try:
-            eng_vendor = EnglishemlVendor.objects.get(product_id=product_id)
-        except EnglishemlVendor.DoesNotExist:
-            eng_vendor = EnglishemlVendor.objects.create(name=vendor,
-                        product_id=product_id,
-                        type = type,
-                        )
-
-        variants = item.get('variants')
-
-        for variant in variants:
-            try:
-                existing_product = EnglisemProduct.objects.get(sku=variant.get('sku'))
-                existing_product.price = variant.get('price')
-                existing_product.save()
-                return variant
-            except EnglisemProduct.DoesNotExist:
-                EnglisemProduct.objects.create(
-                    variant_id = variant.get('id'),
-                    sku = variant.get('sku'),
-                    name = variant.get('name'),
-                    public_title = variant.get('public_title'),
-                    vendor = eng_vendor
-                )
-                return ''
-    
-
-
-
-
 # class EnglishElmDBPipeline(object):
 #     def __init__(self):
 #         self.created_time = datetime.datetime.now()
@@ -165,36 +112,91 @@ class EnglishElmDBPipeline(object):
     
 #     @transaction.atomic
 #     def process_item(self, item, spider):
-#         # category_name = item.get('category_name')
-#         # try:
-#         #     category = Category.objects.get(name=category_name)
-#         # except Category.DoesNotExist:
-#         #     category = Category.objects.create(name=category_name)
+#         product_id = item.get('id')
+#         vendor = item.get('vendor')
+#         type = item.get('type')
+
+#         try:
+#             eng_vendor = EnglishemlVendor.objects.get(product_id=product_id)
+#         except EnglishemlVendor.DoesNotExist:
+#             eng_vendor = EnglishemlVendor.objects.create(name=vendor,
+#                         product_id=product_id,
+#                         type = type,
+#                         )
 
 #         variants = item.get('variants')
+
 #         for variant in variants:
 #             try:
-#                 existing_product = Product.objects.get(sku=variant.get('sku'))
-#                 existing_product.price_englishelm = variant.get('price')
-#                 # existing_product.category = category
+#                 existing_product = EnglisemProduct.objects.get(sku=variant.get('sku'))
+#                 existing_product.price = variant.get('price')
 #                 existing_product.save()
 #                 return variant
-#             except Product.DoesNotExist:
+#             except EnglisemProduct.DoesNotExist:
+#                 EnglisemProduct.objects.create(
+#                     variant_id = variant.get('id'),
+#                     sku = variant.get('sku'),
+#                     name = variant.get('name'),
+#                     public_title = variant.get('public_title'),
+#                     vendor = eng_vendor
+#                 )
 #                 return ''
+    
 
-class JsonWriterPipeline(object):
+
+
+
+class EnglishElmDBPipeline(object):
     def __init__(self):
         self.created_time = datetime.datetime.now()
-        self.items = []
 
-    def open_spider(self, spider):
+    @classmethod
+    def from_crawler(cls, crawler):
+        pipeline = cls()
+        crawler.signals.connect(pipeline.spider_opened, signals.spider_opened)
+        crawler.signals.connect(pipeline.spider_closed, signals.spider_closed)
+        return pipeline
+
+    def spider_opened(self, spider):
         pass
 
-    def close_spider(self, spider):
-        file_name = f'scraped_data_{self.created_time}.json'
-        with open(file_name, 'w', encoding='utf-8') as f:
-            json.dump(self.items, f, indent=2, cls=ScrapyJSONEncoder, ensure_ascii=False)
-
+    def spider_closed(self, spider):
+        pass
+    
+    @transaction.atomic
     def process_item(self, item, spider):
-        self.items.append(ItemAdapter(item).asdict())
-        return item
+        # category_name = item.get('category_name')
+        # try:
+        #     category = Category.objects.get(name=category_name)
+        # except Category.DoesNotExist:
+        #     category = Category.objects.create(name=category_name)
+
+        variants = item.get('variants')
+        for variant in variants:
+            try:
+                skus = variant.get('sku').split('-')
+                for sku in skus:
+                    existing_product = Product.objects.get(sku= sku)
+                    existing_product.price_englishelm = variant.get('price')
+                    # existing_product.category = category
+                    existing_product.save()
+                    return variant
+            except Product.DoesNotExist:
+                return ''
+
+# class JsonWriterPipeline(object):
+#     def __init__(self):
+#         self.created_time = datetime.datetime.now()
+#         self.items = []
+
+#     def open_spider(self, spider):
+#         pass
+
+#     def close_spider(self, spider):
+#         file_name = f'scraped_data_{self.created_time}.json'
+#         with open(file_name, 'w', encoding='utf-8') as f:
+#             json.dump(self.items, f, indent=2, cls=ScrapyJSONEncoder, ensure_ascii=False)
+
+#     def process_item(self, item, spider):
+#         self.items.append(ItemAdapter(item).asdict())
+#         return item
