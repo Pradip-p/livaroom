@@ -85,8 +85,8 @@ class LazyCrawler(LazyBaseCrawler):
             parsed.xpath("//var[@name='meta']/object")[0])
         products = results['products']
         for product in products:
-            yield product
-            # yield{"variants":  product['variants'], } 
+            # yield product
+            yield{"variants":  product['variants'], } 
         
         next_page = response.xpath('//ul[@class="pagination-page"]/li[@class="text"]/a[@title="Next"]/@href').extract_first()
         if next_page:
