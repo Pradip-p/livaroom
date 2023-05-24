@@ -33,7 +33,7 @@ class Vendor(models.Model):
 
 class EnglishemlVendor(models.Model):
     product_id = models.CharField(max_length=200)
-    type = models.CharField(max_length=200)
+    type = models.CharField(max_length=200, null=True, blank=True)
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200)
 
