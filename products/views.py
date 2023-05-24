@@ -177,7 +177,7 @@ def home(request):
     # matching_products = Product.objects.filter(Q(sku__in=matching_skus))
 
     variants = [variant for variant in Product.objects.all().order_by('-id') if variant.price_englishelm]
-    variants = Product.objects.all().order_by('-id')
+    # variants = Product.objects.all().order_by('-id')
     variants = set_pagination(request, variants)
     context = {
                'variants':variants,
