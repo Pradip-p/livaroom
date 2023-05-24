@@ -44,7 +44,7 @@ class LazyCrawler(LazyBaseCrawler):
         # "COOKIES_ENABLED": True,'DOWNLOAD_TIMEOUT': 180,
 
         'ITEM_PIPELINES' :  {
-            'lazy_crawler.crawler.pipelines.JsonWriterPipeline': 300
+            'lazy_crawler.crawler.pipelines.EnglishElmDBPipeline': 300
         }
     }
 
@@ -84,7 +84,8 @@ class LazyCrawler(LazyBaseCrawler):
             parsed.xpath("//var[@name='meta']/object")[0])
         products = results['products']
         for product in products:
-            yield{"variants":  product['variants'], } 
+            yield product
+            # yield{"variants":  product['variants'], } 
         
         next_page = response.xpath('//ul[@class="pagination-page"]/li[@class="text"]/a[@title="Next"]/@href').extract_first()
         if next_page:

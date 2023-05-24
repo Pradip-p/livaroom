@@ -13,6 +13,6 @@ js2xml
 ShopifyAPI
 load_dotenv
 django
-gunicorn
-psycopg2
+#gunicorn
+#psycopg2
 django-crontab

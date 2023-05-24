@@ -31,6 +31,32 @@ class Vendor(models.Model):
 
         super().save(*args, **kwargs)
 
+class EnglishemlVendor(models.Model):
+    product_id = models.CharField(max_length=200)
+    type = models.CharField(max_length=200)
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200)
+
+    def __str__(self):
+        return self.name
+    
+    def save(self, *args, **kwargs):
+        # Generate slug from name if it is not already set
+        if not self.slug:
+            self.slug = slugify(self.name)
+
+        super().save(*args, **kwargs)
+
+class EnglisemProduct(models.Model):
+    variant_id = models.CharField(max_length=200)
+    vendor = models.ForeignKey(EnglishemlVendor, on_delete=models.CASCADE, related_name='englishelm_product')
+    public_title = models.CharField(max_length=200,null=True, blank=True)
+    name = models.CharField(max_length=200)
+    sku = models.CharField(max_length=200)
+    price = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.title
 
 
 class Product(models.Model):
@@ -103,4 +129,4 @@ class Product(models.Model):
         """
         count = sum(1 for obj in cls.objects.all() if obj.price_englishelm and obj.price_livaroom)
         return count
-            
+# {'id': 7566535786663, 'gid': 'gid://shopify/Product/7566535786663', 'vendor': 'TOV Furniture', 'type': 'Ottomans and Trunks', 'variants': [{'id': 43105494433959, 'price': 11697, 'name': '"Wasn\'t Me" Storage Ottoman - Chocolate Brown / Long', 'public_title': 'Chocolate Brown / Long', 'sku': 'TOV-OC68598'}, {'id': 43105494532263, 'price': 8297, 'name': '"Wasn\'t Me" Storage Ottoman - Chocolate Brown / Round', 'public_title': 'Chocolate Brown / Round', 'sku': 'TOV-OC68597'}, {'id': 43105494565031, 'price': 11697, 'name': '"Wasn\'t Me" Storage Ottoman - Olive Green / Long', 'public_title': 'Olive Green / Long', 'sku': 'TOV-OC68600'}, {'id': 43105494696103, 'price': 8297, 'name': '"Wasn\'t Me" Storage Ottoman - Olive Green / Round', 'public_title': 'Olive Green / Round', 'sku': 'TOV-OC68599'}]}
