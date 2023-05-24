@@ -22,6 +22,6 @@ jobs:
             cd livaroom
             git pull origin main
             source tools/bin/activate
-            pip install -r crawler/requirements.txt
+            pip install .
             sudo systemctl restart gunicorn
             sudo systemctl restart nginx

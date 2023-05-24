@@ -1,3 +1,4 @@
+import json
 from scrapy import signals
 import datetime
 import os
@@ -5,6 +6,9 @@ import django
 from pathlib import Path
 import sys
 from django.db import transaction
+import json
+from itemadapter import ItemAdapter
+from scrapy.utils.serialize import ScrapyJSONEncoder
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
@@ -126,3 +130,20 @@ class EnglishElmDBPipeline(object):
                 return variant
             except Product.DoesNotExist:
                 return ''
+
+class JsonWriterPipeline(object):
+    def __init__(self):
+        self.created_time = datetime.datetime.now()
+        self.items = []
+
+    def open_spider(self, spider):
+        pass
+
+    def close_spider(self, spider):
+        file_name = f'scraped_data_{self.created_time}.json'
+        with open(file_name, 'w', encoding='utf-8') as f:
+            json.dump(self.items, f, indent=2, cls=ScrapyJSONEncoder, ensure_ascii=False)
+
+    def process_item(self, item, spider):
+        self.items.append(ItemAdapter(item).asdict())
+        return item
