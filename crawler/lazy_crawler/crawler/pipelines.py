@@ -18,7 +18,9 @@ sys.path.append(str(BASE_DIR))  # Add the base directory to the PYTHONPATH
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 django.setup()
 
-from products.models import Product, Vendor, Category, EnglisemProduct, EnglishemlVendor
+from products.models import Product, Vendor, Category
+
+from englishelm.models import EnglisemProduct, EnglishemlVendor
 
 class LivaroomDBPipeline(object):
     def __init__(self):
@@ -123,7 +125,7 @@ class EnglishElmDBPipeline(object):
                         )
 
         variants = item.get('variants')
-        
+
         for variant in variants:
             try:
                 existing_product = EnglisemProduct.objects.get(sku=variant.get('sku'))

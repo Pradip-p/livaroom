@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     ## added new app
     'authentication',
     'products',
+    'englishelm',
     #####django_cron app run cron jobs
     'django_cron',
 ]
