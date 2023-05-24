@@ -159,28 +159,17 @@ def home(request):
         - The 'back/home.html' template is expected to exist and contain the necessary markup for displaying the product variants.
     """
 
-    # #set the pagination on products li
     # eng_elm = EnglisemProduct.objects.all()
     # liva_room = Product.objects.all()
     matching_skus = EnglisemProduct.objects.values_list('sku', flat=True)
-    # matching_skus_1 = Product.objects.values_list('sku', flat=True)
-    # Create a DataFrame from the SKUs
-    # import openpyxl
-
-    # # Create a new Excel workbook and select the active sheet
-    # workbook = openpyxl.Workbook()
-    # sheet = workbook.active
-
-    # # Write the SKUs to separate columns
-    # for i, sku in enumerate(matching_skus, start=1):
-    #     sheet.cell(row=i, column=1, value=sku)
-
-    # for i, sku_1 in enumerate(matching_skus_1, start=1):
-    #     sheet.cell(row=i, column=2, value=sku_1)
-
-    # # Save the workbook to an Excel file
-    # workbook.save('sku_data.xlsx')
-
+    updated_matching_skus = []
+    for sku in matching_skus:
+        if "-" in sku:
+            split_sku = sku.split("-")[0]
+            updated_matching_skus.append(split_sku)
+        else:
+            updated_matching_skus.append(sku)
+    print(updated_matching_skus)
     matching_products = Product.objects.filter(Q(sku__in=matching_skus))
 
     # variants = [variant for variant in Product.objects.all().order_by('-id') if variant.price_englishelm]
