@@ -188,20 +188,3 @@ class EnglishElmDBPipeline(object):
             except Product.DoesNotExist:
                 pass
         return ''
-
-# class JsonWriterPipeline(object):
-#     def __init__(self):
-#         self.created_time = datetime.datetime.now()
-#         self.items = []
-
-#     def open_spider(self, spider):
-#         pass
-
-#     def close_spider(self, spider):
-#         file_name = f'scraped_data_{self.created_time}.json'
-#         with open(file_name, 'w', encoding='utf-8') as f:
-#             json.dump(self.items, f, indent=2, cls=ScrapyJSONEncoder, ensure_ascii=False)
-
-#     def process_item(self, item, spider):
-#         self.items.append(ItemAdapter(item).asdict())
-#         return item
