@@ -77,9 +77,7 @@
         <div class="row">
             <!-- Search Form Start -->
             <form action="#" method="post">
-                <div class="col-md-1">
-                
-                </div>
+               
                 <div class="col-md-4">
                     <!-- Right side content goes here -->
                     <!-- END Login Title -->
@@ -87,7 +85,7 @@
                         <option value="option1" selected>update selected product price</option>
                     </select>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1">
                     <button type="button"  class="btn btn-sm btn-info" data-toggle="modal" data-target="#exampleModal2" >
                         Update
                     </button>
@@ -126,8 +124,8 @@
                     
                 </div>
 
-                <div class="col-md-3">
-                    <input type="text" id="id_sku" name="sku" class="form-control" placeholder="Search Product based on SKU.."
+                <div class="col-md-6">
+                    <input type="text" id="id_sku" name="sku" class="form-control" placeholder="Search Product based on SKU and vendor name.."
                         hx-get="{% url 'search-product' %}"
                         hx-trigger="keyup"
                         hx-target="#modules"
