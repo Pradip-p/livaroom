@@ -47,7 +47,6 @@ def update_product_price(request):
         if prices:
             update_price = []
             for sku, price in prices.items():
-            #     variant_sku = 'EEI-5805-CHE-WHI-WHI'
                 variant = Product.objects.get(sku=sku)
                 if variant:
                     product_id = variant.product_id
@@ -57,6 +56,7 @@ def update_product_price(request):
                     variant = shopify.Variant(dict(id=variant_id, price=price)) #55.04
                     product.add_variant(variant) #it does not mean add new varinat it update the existing price of variant.
                     product.save()
+
                     update_price.append(price)
             return JsonResponse({'message': 'Price {} updated successfully.'.format(','.join(update_price))}, status=200,)
         return JsonResponse({'message': 'Please set a valid price. "NA" is not a valid price for the product.'}, status=500)
@@ -88,10 +88,8 @@ def update_view(request):
         if variant:
             product_id = variant.product_id
             variant_id = variant.variant_id
-            print(product_id, variant_id)
             # Find the product variant based on SKU on Livaroom API(site)..
             product = shopify.Product(dict(id=product_id))
-            print(product)
             variant = shopify.Variant(dict(id=variant_id, price=price)) #55.04
             product.add_variant(variant) #it does not mean add new varinat it update the existing price of variant.
             product.save()
