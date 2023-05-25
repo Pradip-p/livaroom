@@ -174,15 +174,20 @@ class EnglishElmDBPipeline(object):
         variants = item.get('variants')
         for variant in variants:
             try:
-                skus = variant.get('sku').split('-')
-                for sku in skus:
-                    existing_product = Product.objects.get(sku= sku)
+                sku = variant.get('sku')
+                existing_product = Product.objects.get(sku= sku)
+                if existing_product:
                     existing_product.price_englishelm = variant.get('price')
-                    # existing_product.category = category
                     existing_product.save()
-                    return variant
+                else:
+                    skus = variant.get('sku').split('-')
+                    for sku in skus:
+                        existing_product = Product.objects.get(sku= sku)
+                        existing_product.price_englishelm = variant.get('price')
+                        existing_product.save()
             except Product.DoesNotExist:
-                return ''
+                pass
+        return ''
 
 # class JsonWriterPipeline(object):
 #     def __init__(self):

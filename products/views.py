@@ -121,7 +121,7 @@ def search_product(request):
         if search_key:
             try:
 
-                variants = [variant for variant in Product.objects.filter(Q(sku__icontains=search_key) | Q(vendor__name__icontains=search_key)).distinct() if variant.price_englishelm]
+                variants = [variant for variant in Product.objects.filter(Q(sku__icontains=search_key) | Q(vendor__name__icontains=search_key)).distinct() if variant.price_englishelm]#if variant.price_englishelm
                 # variants = [variant for variant in Product.objects.filter(sku__icontains=search_key, vendor__name__icontains=search_key).distinct() if variant.price_englishelm]
                 # variants = [variant for variant in Product.objects.filter(sku__icontains=sku).distinct() if variant.price_englishelm]
                 variants = set_pagination(request, variants)

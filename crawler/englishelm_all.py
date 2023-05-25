@@ -68,9 +68,6 @@ class LazyCrawler(LazyBaseCrawler):
             **self.HEADERS,  # Merge the HEADERS dictionary with the User-Agent header
             }
         url = 'https://englishelm.com/collections/all'
-        # url = 'https://englishelm.com/search?type=product&q=amazing+rugs'
-        # url = 'https://englishelm.com/collections/vendors?q=HomeRoots'
-        # url = 'https://englishelm.com/collections/zuo-modern'
         yield scrapy.Request(url, self.parse_json, dont_filter=True,
                 errback=self.errback_http_ignored,
                 headers= headers,
