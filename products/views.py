@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 import shopify
 import json
+from django.db.models import Q
 
 
 @login_required(login_url='/')
@@ -116,11 +117,13 @@ def search_product(request):
     - If an error occurs during the SKU filtering process, a message is rendered indicating the need to select a country.
     """
     if request.method == 'GET':
-        sku = request.GET.get('sku')
-        if sku:
+        search_key = request.GET.get('sku')
+        if search_key:
             try:
-                # variants = Product.objects.filter(sku__icontains=sku).distinct()
-                variants = [variant for variant in Product.objects.filter(sku__icontains=sku).distinct() if variant.price_englishelm]
+
+                variants = [variant for variant in Product.objects.filter(Q(sku__icontains=search_key) | Q(vendor__name__icontains=search_key)).distinct() if variant.price_englishelm]
+                # variants = [variant for variant in Product.objects.filter(sku__icontains=search_key, vendor__name__icontains=search_key).distinct() if variant.price_englishelm]
+                # variants = [variant for variant in Product.objects.filter(sku__icontains=sku).distinct() if variant.price_englishelm]
                 variants = set_pagination(request, variants)
                 context = {'variants':variants, 'message':'show the products based on price avaiable'}
                 return render(request, 'back/product_table.html', context)
