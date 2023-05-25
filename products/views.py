@@ -88,8 +88,10 @@ def update_view(request):
         if variant:
             product_id = variant.product_id
             variant_id = variant.variant_id
+            print(product_id, variant_id)
             # Find the product variant based on SKU on Livaroom API(site)..
             product = shopify.Product(dict(id=product_id))
+            print(product)
             variant = shopify.Variant(dict(id=variant_id, price=price)) #55.04
             product.add_variant(variant) #it does not mean add new varinat it update the existing price of variant.
             product.save()
