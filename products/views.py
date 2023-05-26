@@ -7,6 +7,10 @@ import shopify
 import json
 from django.db.models import Q
 
+def no_matching_product(request):
+    variants = [variant for variant in Product.objects.all().order_by('-id') if not variant.price_englishelm]
+    variants = set_pagination(request, variants)
+    return render(request, 'back/home.html',{'variants': variants})
 
 @login_required(login_url='/')
 def vendor_view(request,slug):

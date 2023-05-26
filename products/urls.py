@@ -14,5 +14,8 @@ urlpatterns = [
     path('category/<slug:slug>/', views.category_view, name='category'),
     ##vendor view
     path('vendor/<slug:slug>/', views.vendor_view, name='vendor'),
+    path('no_matching_product/', views.no_matching_product, name='no_matching_product'),
+
+    
 
 ]
