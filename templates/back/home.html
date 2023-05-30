@@ -305,11 +305,9 @@
                     },
                     error: function(xhr, errmsg, err) {
                         UnselectAllRows()
-                        var errorResponse = JSON.parse(xhr.responseText);
-                        var errorMessage = errorResponse.message;
                         hideLoader();
                         Swal.fire({
-                            title: errorMessage,
+                            title: errmsg,
                             text: errmsg,
                             icon: 'error',
                             confirmButtonText: 'OK'
