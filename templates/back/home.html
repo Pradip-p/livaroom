@@ -304,11 +304,12 @@
                 
                     },
                     error: function(xhr, errmsg, err) {
+                        message = xhr.responseJSON.message
                         UnselectAllRows()
                         hideLoader();
                         Swal.fire({
-                            title: errmsg,
-                            text: errmsg,
+                            title: err,
+                            text: message,
                             icon: 'error',
                             confirmButtonText: 'OK'
                         });
