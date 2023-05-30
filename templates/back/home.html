@@ -5,6 +5,7 @@
 {% block mainblock %}
 <!-- Mini Top Stats Row (Index page of admin panel) Start -->
 <div class="row">
+    
     <div class="col-sm-6 col-lg-3">
         <!-- Widget -->
         <a href="#" class="widget widget-hover-effect1">
@@ -70,7 +71,16 @@
 <!-- Mini Top Stats Row (Index page of admin panel) End -->
 <!-- Datatables Content -->
 <div class="block full">
+    <div id="page-wrapper" class="page-loading" style="display: none;" >
+        <div class="preloader">
+            <div class="inner">
+                <div class="preloader-spinner"></div>
+            </div>
+        </div>
+        
+    </div>
     
+
     <div class="block-title">
         <h2><strong>Products</strong>  </h2>
 
@@ -163,6 +173,15 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+    function showLoader() {
+        $('#page-wrapper').addClass('page-loading');
+        $('.preloader').fadeIn();
+    }
+
+    function hideLoader() {
+        $('#page-wrapper').removeClass('page-loading');
+        $('.preloader').fadeOut();
+    }
 
     function handleAjaxResponse(response) {
         // Close the loading indicator
@@ -254,40 +273,48 @@
 
             // send AJAX call to update the product price
             if (value == 'option1') {
-            $.ajax({
-                method: 'POST',
-                url: "{% url 'update_product_price' %}",
-                headers: {
-                "X-Requested-With": "XMLHttpRequest",
-                "X-CSRFToken": getCookie("csrftoken"),
-                },
-                data: {
-                prices: JSON.stringify(prices),
-                csrfmiddlewaretoken: '{{ csrf_token }}',
-                }, 
-                success: function(response) {
-                    
-                    UnselectAllRows()
-                    var message = response.message;
-                    Swal.fire({
-                        title: 'Success',
-                        text: message,
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    });
-                },
-                error: function(xhr, errmsg, err) {
-                    UnselectAllRows()
-                    var errorResponse = JSON.parse(xhr.responseText);
-                    var errorMessage = errorResponse.message;
-                    Swal.fire({
-                        title: errorMessage,
-                        text: errmsg,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                }
-            });
+
+                showLoader();
+                $.ajax({
+                    method: 'POST',
+                    url: "{% url 'update_product_price' %}",
+                    headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRFToken": getCookie("csrftoken"),
+                    },
+                    data: {
+                    prices: JSON.stringify(prices),
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    }, 
+                    success: function(response) {
+                        UnselectAllRows()
+                        var message = response.message;
+                        // Simulating an AJAX call
+                        setTimeout(function() {
+                            // AJAX call completed
+                            hideLoader();
+                            Swal.fire({
+                                title: 'Success',
+                                text: message,
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            });
+
+                        }, 2000);
+                
+                    },
+                    error: function(xhr, errmsg, err) {
+                        UnselectAllRows()
+                        var errorResponse = JSON.parse(xhr.responseText);
+                        var errorMessage = errorResponse.message;
+                        Swal.fire({
+                            title: errorMessage,
+                            text: errmsg,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
             }
         }
         });

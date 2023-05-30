@@ -7,6 +7,7 @@ import shopify
 import json
 from django.db.models import Q
 
+@login_required(login_url='/')
 def no_matching_product(request):
     variants = [variant for variant in Product.objects.all().order_by('-id') if not variant.price_englishelm]
     variants = set_pagination(request, variants)
@@ -60,7 +61,6 @@ def update_product_price(request):
                     variant = shopify.Variant(dict(id=variant_id, price=price)) #55.04
                     product.add_variant(variant) #it does not mean add new varinat it update the existing price of variant.
                     product.save()
-
                     update_price.append(price)
             return JsonResponse({'message': 'Price {} updated successfully.'.format(','.join(update_price))}, status=200,)
         return JsonResponse({'message': 'Please set a valid price. "NA" is not a valid price for the product.'}, status=500)
