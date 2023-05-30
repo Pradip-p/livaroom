@@ -349,11 +349,10 @@
                 });
             },
             error: function(xhr, errmsg, err) {
-                var errorResponse = JSON.parse(xhr.responseText);
-                var errorMessage = errorResponse.message;
+                message = xhr.responseJSON.message
                 // Display the error message using SweetAlert
                 Swal.fire({
-                    title: errorMessage,
+                    title: message,
                     text: errmsg,
                     icon: 'error',
                     confirmButtonText: 'OK'
