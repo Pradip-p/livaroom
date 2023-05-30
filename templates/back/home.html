@@ -307,6 +307,7 @@
                         UnselectAllRows()
                         var errorResponse = JSON.parse(xhr.responseText);
                         var errorMessage = errorResponse.message;
+                        hideLoader();
                         Swal.fire({
                             title: errorMessage,
                             text: errmsg,

@@ -16,7 +16,7 @@ def set_pagination(request, items):
     """
     page = request.GET.get('page')
 
-    paginator = Paginator(items, 99)  ## How much news will be shown in each page
+    paginator = Paginator(items, 50)  ## How much news will be shown in each page
 
     try:
         items = paginator.page(page)
