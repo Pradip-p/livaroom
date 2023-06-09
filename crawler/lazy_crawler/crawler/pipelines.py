@@ -130,9 +130,13 @@ class EnglishElmDBPipeline(object):
                 else:
                     skus = variant.get('sku').split('-')
                     for sku in skus:
-                        existing_product = Product.objects.get(sku= sku)
-                        existing_product.price_englishelm = variant.get('price')
-                        existing_product.save()
+                        product = Product.objects.get(sku= sku)
+                        if product:    
+                            product.price_englishelm = variant.get('price')
+                            product.save()
+                        else:
+                            pass
+                        
             except Product.DoesNotExist:
                 pass
         return ''
