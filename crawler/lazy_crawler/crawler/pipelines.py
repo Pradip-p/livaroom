@@ -127,6 +127,7 @@ class EnglishElmDBPipeline(object):
                 if existing_product:
                     existing_product.price_englishelm = variant.get('price')
                     existing_product.save()
+                    print('update the price')
                 else:
                     skus = variant.get('sku').split('-')
                     for sku in skus:
@@ -134,6 +135,7 @@ class EnglishElmDBPipeline(object):
                         if product:    
                             product.price_englishelm = variant.get('price')
                             product.save()
+                            print('update the price')
                         else:
                             pass
                         
