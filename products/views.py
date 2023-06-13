@@ -34,47 +34,101 @@ def category_view(request, slug):
     return render(request, "back/home.html", context)
 
 
+
 @login_required(login_url='/')
 def update_product_price(request):
     if request.method == "POST":
         prices_json = request.POST.get('prices')
         prices = json.loads(prices_json)
         prices = {key: value for key, value in prices.items() if value != 'NA'}
-        # Update the value in the database or perform any other operations
-        API_KEY = "2b4e323d3129443363269802ebca49df"
-        API_ACCESS_TOKEN = "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"
-        SHOP_NAME = 'livaroom'
-        shop_url = f"https://{API_KEY}:{API_ACCESS_TOKEN}@{SHOP_NAME}.myshopify.com/admin/api/2023-01"
-        shopify.ShopifyResource.set_site(shop_url)
-        # shop = shopify.Shop.current()
-        
-        try:
-            shop = shopify.Shop.current()
-        except shopify.ShopifyResourceError:
-            return JsonResponse({'message': 'Failed to connect to Shopify API. Please check your internet connection.'}, status=500)
-        
-        
-        # now i want to update the prices of each prodcuts
-        # variant_sku = 'AR-9511'
+        access_token = "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"
+        shop_url = "livaroom.myshopify.com"
+
+        api_version = '2023-01'
+        session = shopify.Session(shop_url, api_version, access_token)
+        shopify.ShopifyResource.activate_session(session)
+
         if prices:
-            update_price = []
+            
+            mutation_query = """
+                mutation productVariantUpdate($input: ProductVariantInput!) {
+                productVariantUpdate(input: $input) {
+                    productVariant {
+                    id
+                    title
+                    price
+                    }
+                }
+                }
+                """
             for sku, price in prices.items():
                 variant = Product.objects.get(sku=sku)
                 if variant:
-                    product_id = variant.product_id
-                    variant_id = variant.variant_id
-                    # Find the product variant based on SKU on Livaroom API(site)..
-                    product = shopify.Product(dict(id=product_id))
-                    variant = shopify.Variant(dict(id=variant_id, price=price)) #55.04
-                    try:
-                        product.add_variant(variant) #it does not mean add new variant, it updates the existing price of the variant.
-                        product.save()
-                        update_price.append(price)
-                    except Exception as e:
-                        return JsonResponse({'message': f'Failed to update price for SKU {sku}: {str(e)}'}, status=500)
-            return JsonResponse({'message': 'Price {} updated successfully.'.format(','.join(update_price))}, status=200)
-        return JsonResponse({'message': 'Please set a valid price. "NA" is not a valid price for the product.'}, status=500)
-    return JsonResponse({'message':'invalid request.'}, status=500)
+                    _id = variant.variant_id
+                    variant_id = "gid://shopify/ProductVariant/{}".format(_id)
+                    variant_price = price
+                    
+                    variables = {
+                    "input": {
+                        "id": variant_id,
+                        "price": variant_price
+                        }
+                    }
+
+                    r = shopify.GraphQL().execute(mutation_query, variables=variables)
+            return JsonResponse({
+                "message": "Price updated successfully.",
+            }, status=200)
+
+        return JsonResponse({
+            "message": "Please set a valid price. 'NA' is not a valid price for the product."
+        }, status=500)
+
+    return JsonResponse({
+        "message": "invalid request."
+    }, status=500)
+
+
+# def update_product_price(request):
+#     if request.method == "POST":
+#         prices_json = request.POST.get('prices')
+#         prices = json.loads(prices_json)
+#         prices = {key: value for key, value in prices.items() if value != 'NA'}
+#         # Update the value in the database or perform any other operations
+#         API_KEY = "2b4e323d3129443363269802ebca49df"
+#         API_ACCESS_TOKEN = "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"
+#         SHOP_NAME = 'livaroom'
+#         shop_url = f"https://{API_KEY}:{API_ACCESS_TOKEN}@{SHOP_NAME}.myshopify.com/admin/api/2023-01"
+#         shopify.ShopifyResource.set_site(shop_url)
+#         # shop = shopify.Shop.current()
+        
+#         try:
+#             shop = shopify.Shop.current()
+#         except shopify.ShopifyResourceError:
+#             return JsonResponse({'message': 'Failed to connect to Shopify API. Please check your internet connection.'}, status=500)
+        
+        
+#         # now i want to update the prices of each prodcuts
+#         # variant_sku = 'AR-9511'
+#         if prices:
+#             update_price = []
+#             for sku, price in prices.items():
+#                 variant = Product.objects.get(sku=sku)
+#                 if variant:
+#                     product_id = variant.product_id
+#                     variant_id = variant.variant_id
+#                     # Find the product variant based on SKU on Livaroom API(site)..
+#                     product = shopify.Product(dict(id=product_id))
+#                     variant = shopify.Variant(dict(id=variant_id, price=price)) #55.04
+#                     try:
+#                         product.add_variant(variant) #it does not mean add new variant, it updates the existing price of the variant.
+#                         product.save()
+#                         update_price.append(price)
+#                     except Exception as e:
+#                         return JsonResponse({'message': f'Failed to update price for SKU {sku}: {str(e)}'}, status=500)
+#             return JsonResponse({'message': 'Price {} updated successfully.'.format(','.join(update_price))}, status=200)
+#         return JsonResponse({'message': 'Please set a valid price. "NA" is not a valid price for the product.'}, status=500)
+#     return JsonResponse({'message':'invalid request.'}, status=500)
 
 
 @login_required(login_url='/')

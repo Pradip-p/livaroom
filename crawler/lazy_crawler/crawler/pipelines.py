@@ -20,8 +20,6 @@ django.setup()
 
 from products.models import Product, Vendor, Category
 
-from englishelm.models import EnglisemProduct, EnglishemlVendor
-
 class LivaroomDBPipeline(object):
     def __init__(self):
         self.created_time = datetime.datetime.now()
@@ -143,51 +141,3 @@ class EnglishElmDBPipeline(object):
                 pass
         return ''
 
-# class EnglishElmDBPipeline(object):
-#     def __init__(self):
-#         self.created_time = datetime.datetime.now()
-
-#     @classmethod
-#     def from_crawler(cls, crawler):
-#         pipeline = cls()
-#         crawler.signals.connect(pipeline.spider_opened, signals.spider_opened)
-#         crawler.signals.connect(pipeline.spider_closed, signals.spider_closed)
-#         return pipeline
-
-#     def spider_opened(self, spider):
-#         pass
-
-#     def spider_closed(self, spider):
-#         pass
-    
-#     @transaction.atomic
-#     def process_item(self, item, spider):
-#         product_id = item.get('id')
-#         vendor = item.get('vendor')
-#         type = item.get('type')
-
-#         try:
-#             eng_vendor = EnglishemlVendor.objects.get(product_id=product_id)
-#         except EnglishemlVendor.DoesNotExist:
-#             eng_vendor = EnglishemlVendor.objects.create(name=vendor,
-#                         product_id=product_id,
-#                         type = type,
-#                         )
-
-#         variants = item.get('variants')
-
-#         for variant in variants:
-#             try:
-#                 existing_product = EnglisemProduct.objects.get(sku=variant.get('sku'))
-#                 existing_product.price = variant.get('price')
-#                 existing_product.save()
-#                 return variant
-#             except EnglisemProduct.DoesNotExist:
-#                 EnglisemProduct.objects.create(
-#                     variant_id = variant.get('id'),
-#                     sku = variant.get('sku'),
-#                     name = variant.get('name'),
-#                     public_title = variant.get('public_title'),
-#                     vendor = eng_vendor
-#                 )
-#                 return ''
