@@ -126,16 +126,17 @@ class EnglishElmDBPipeline(object):
                     existing_product.price_englishelm = variant.get('price')
                     existing_product.save()
                     print('update the price')
-                else:
-                    skus = variant.get('sku').split('-')
-                    for sku in skus:
-                        product = Product.objects.get(sku= sku)
-                        if product:    
-                            product.price_englishelm = variant.get('price')
-                            product.save()
-                            print('update the price')
-                        else:
-                            pass
+                    
+                # else:
+                #     skus = variant.get('sku').split('-')
+                #     for sku in skus:
+                #         product = Product.objects.get(sku= sku)
+                #         if product:    
+                #             product.price_englishelm = variant.get('price')
+                #             product.save()
+                #             print('update the price')
+                #         else:
+                #             pass
                         
             except Product.DoesNotExist:
                 pass
