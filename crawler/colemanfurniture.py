@@ -46,7 +46,7 @@ class LazyCrawler(LazyBaseCrawler):
         # "COOKIES_ENABLED": True,'DOWNLOAD_TIMEOUT': 180,
 
         'ITEM_PIPELINES' :  {
-            'lazy_crawler.crawler.pipelines.EnglishElmDBPipeline': 300
+            'lazy_crawler.crawler.pipelines.EnglishElmDBPipeline': None
         }
     }
 

@@ -37,6 +37,7 @@ def category_view(request, slug):
 
 @login_required(login_url='/')
 def update_product_price(request):
+
     if request.method == "POST":
         prices_json = request.POST.get('prices')
         prices = json.loads(prices_json)
