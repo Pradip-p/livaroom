@@ -59,6 +59,7 @@ class Product(models.Model):
     handle = models.CharField(max_length=200)
     price_englishelm = models.CharField(max_length=200, blank=True)
     price_livaroom = models.CharField(max_length=200, blank=True)
+    price_coleman = models.CharField(max_length=200, null=True, blank=True)
     barcode = models.CharField(max_length=200)
     featured_image = models.CharField(max_length=200, blank=True)
 

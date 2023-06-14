@@ -46,7 +46,7 @@ class LazyCrawler(LazyBaseCrawler):
         # "COOKIES_ENABLED": True,'DOWNLOAD_TIMEOUT': 180,
 
         'ITEM_PIPELINES' :  {
-            'lazy_crawler.crawler.pipelines.EnglishElmDBPipeline': None
+            'lazy_crawler.crawler.pipelines.ColemanDBPipeline': 300
         }
     }
 
@@ -63,13 +63,14 @@ class LazyCrawler(LazyBaseCrawler):
         "Sec-Fetch-User": "?1",
         "Cache-Control": "max-age=0",
     }
-
+    page_number = 1
+    
     def start_requests(self): #project start from here.
         headers = {
             'User-Agent': get_user_agent('random'),
             **self.HEADERS,  # Merge the HEADERS dictionary with the User-Agent header
         }
-        url = 'https://colemanfurniture.com/living/sofas.htm'
+        url = 'https://colemanfurniture.com/living/sofas.htm?p=1'
         yield scrapy.Request(url, self.parse_json, dont_filter=True,
                 errback=self.errback_http_ignored,
                 headers= headers,
@@ -83,25 +84,24 @@ class LazyCrawler(LazyBaseCrawler):
         if start_index != -1:
             json_str = next_script_content[start_index:].replace('<!--', '').replace('-->', '')  # Remove the HTML comments
             data = json.loads(json_str)['data']
-            print(data)
-        # next_script_content = response.xpath('//script[@id="web-pixels-manager-setup"]/following-sibling::script[not(@id)]/text()').extract_first()
-        # parsed = js2xml.parse(next_script_content)
-        # meta_dict = json.loads(parsed.xpath("//var[@name='meta']/object")[0].to_dict())['object']
-
-        # results = js2xml.jsonlike.make_dict(next_script_content)
-        # print(next_script_content)
-        # next_page = response.xpath('//ul[@class="pagination-page"]/li[@class="text"]/a[@title="Next"]/@href').extract_first()
-        # if next_page:
-        #     url = 'https://englishelm.com{}'.format(next_page)
-        #     headers = {
-        #         'User-Agent': get_user_agent('random'),
-        #         **self.HEADERS,  # Merge the HEADERS dictionary with the User-Agent header
-        #         }
-        #     yield scrapy.Request(url, self.parse_json, dont_filter=True,
-        #             errback=self.errback_http_ignored,
-        #             headers= headers,
-        #             )
-
+            products = data['content']['reflektionPayload']['batch'][0]['content']['product']['value']
+            yield {"variants": products}
+            
+            ##next page.
+            page = data['content']['reflektionPayload']['batch'][0]
+            self.page_number = self.page_number +1
+            total_page = page['total_page']
+            
+            if self.page_number <= total_page:
+                headers = {
+                'User-Agent': get_user_agent('random'),
+                **self.HEADERS,  # Merge the HEADERS dictionary with the User-Agent header
+            }
+            url = 'https://colemanfurniture.com/living/sofas.htm?p={}'.format(self.page_number)
+            yield scrapy.Request(url, self.parse_json, dont_filter=True,
+                errback=self.errback_http_ignored,
+                headers= headers,
+                )
         gc.collect()
 
 settings_file_path = 'lazy_crawler.crawler.settings'

@@ -111,12 +111,6 @@ class EnglishElmDBPipeline(object):
     
     @transaction.atomic
     def process_item(self, item, spider):
-        # category_name = item.get('category_name')
-        # try:
-        #     category = Category.objects.get(name=category_name)
-        # except Category.DoesNotExist:
-        #     category = Category.objects.create(name=category_name)
-
         variants = item.get('variants')
         for variant in variants:
             try:
@@ -140,5 +134,38 @@ class EnglishElmDBPipeline(object):
                         
             except Product.DoesNotExist:
                 pass
+        return ''
+
+class ColemanDBPipeline(object):
+    def __init__(self):
+        self.created_time = datetime.datetime.now()
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        pipeline = cls()
+        crawler.signals.connect(pipeline.spider_opened, signals.spider_opened)
+        crawler.signals.connect(pipeline.spider_closed, signals.spider_closed)
+        return pipeline
+
+    def spider_opened(self, spider):
+        pass
+
+    def spider_closed(self, spider):
+        pass
+    
+    @transaction.atomic
+    def process_item(self, item, spider):
+        variants = item.get('variants')
+        for variant in variants:
+            try:
+                sku = variant.get('sku')
+                existing_product = Product.objects.get(sku= sku)
+                if existing_product:
+                    existing_product.price_coleman = variant.get('final_price')
+                    existing_product.save()
+                        
+            except Product.DoesNotExist:
+                pass
+            
         return ''
 

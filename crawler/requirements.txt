@@ -14,5 +14,5 @@ ShopifyAPI
 load_dotenv
 django
 gunicorn
-psycopg2
+#psycopg2
 django-crontab
