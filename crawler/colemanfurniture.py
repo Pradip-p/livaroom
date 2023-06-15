@@ -11,25 +11,6 @@ from scrapy.spidermiddlewares.httperror import HttpError
 import json
 
 class LazyCrawler(LazyBaseCrawler):
-    def errback_http_ignored(self, failure):
-        if failure.check(HttpError):
-            response = failure.value.response
-            if response.status == 430:
-                self.logger.info(f"Ignoring response {response.url} with status code {response.status}")
-                time.sleep(240)  # Wait for 4 minutes (adjust as needed)
-                return self._retry_request(response.request, reason=failure.getErrorMessage(), spider=self)
-
-            if response.status == 503:
-                self.logger.info(f"Ignoring response {response.url} with status code {response.status}")
-                time.sleep(480)  # Wait for 8 minutes (adjust as needed)
-                return self._retry_request(response.request, reason=failure.getErrorMessage(), spider=self)
-
-    def _retry_request(self, request, reason, spider):
-        retryreq = request.copy()
-        retryreq.meta['retry_times'] = request.meta.get('retry_times', 0) + 1
-        retryreq.dont_filter = True
-        return retryreq
-    
     name = "colemanfurniture"
 
     allowed_domains = ['colemanfurniture.com']
@@ -44,7 +25,7 @@ class LazyCrawler(LazyBaseCrawler):
         # "COOKIES_ENABLED": True,
         'DOWNLOAD_TIMEOUT': 180,
         'ITEM_PIPELINES': {
-            'lazy_crawler.crawler.pipelines.ColemanDBPipeline': 300
+            'lazy_crawler.crawler.pipelines.ColemanDBPipeline': None
         }
     }
 
@@ -60,6 +41,7 @@ class LazyCrawler(LazyBaseCrawler):
         "Sec-Fetch-User": "?1",
         "Cache-Control": "max-age=0",
     }
+    
     page_number = 1
     
     def start_requests(self):  # Project starts from here.
@@ -67,14 +49,38 @@ class LazyCrawler(LazyBaseCrawler):
             'User-Agent': get_user_agent('random'),
             **self.HEADERS,  # Merge the HEADERS dictionary with the User-Agent header
         }
-        url = 'https://colemanfurniture.com/living/sofas.htm?p=1'
-        yield scrapy.Request(
-            url,
-            self.parse_json,
-            dont_filter=True,
-            errback=self.errback_http_ignored,
-            headers=headers
-        )
+        urls = ['https://colemanfurniture.com/living.htm',
+                'https://colemanfurniture.com/bedroom-furniture.htm',
+                'https://colemanfurniture.com/dining.htm',
+                'https://colemanfurniture.com/bar.htm',
+                'https://colemanfurniture.com/entertainment.htm',
+                'https://colemanfurniture.com/kids.htm',
+                'https://colemanfurniture.com/outdoor.htm',
+                'https://colemanfurniture.com/accents.htm',
+                'https://colemanfurniture.com/office.htm'
+                ]
+        for url in urls:
+            yield scrapy.Request(
+                url,
+                self.parse_url,
+                dont_filter=True,
+                errback=self.errback_http_ignored,
+                headers=headers
+            )
+    def parse_url(self, response):
+        urls = response.xpath('//ul[@class="side-menu"]/li/a/@href').extract()
+        headers = {
+            'User-Agent': get_user_agent('random'),
+            **self.HEADERS,  # Merge the HEADERS dictionary with the User-Agent header
+        }
+        for url in urls:
+            yield scrapy.Request(
+                url,
+                self.parse_json,
+                dont_filter=True,
+                errback=self.errback_http_ignored,
+                headers=headers
+            )
     
     def parse_json(self, response):
         next_script_content = response.xpath('//script[@type="application/json"]/text()').extract_first()
@@ -86,7 +92,7 @@ class LazyCrawler(LazyBaseCrawler):
             products = data['content']['reflektionPayload']['batch'][0]['content']['product']['value']
             yield {"variants": products}
             
-            # Next page.
+            # # Next page.
             page = data['content']['reflektionPayload']['batch'][0]
             self.page_number += 1
             total_page = page['total_page']
@@ -106,6 +112,27 @@ class LazyCrawler(LazyBaseCrawler):
                 )
         
         gc.collect()
+        
+    def errback_http_ignored(self, failure):
+        if failure.check(HttpError):
+            response = failure.value.response
+            if response.status == 430:
+                self.logger.info(f"Ignoring response {response.url} with status code {response.status}")
+                time.sleep(240)  # Wait for 4 minutes (adjust as needed)
+                return self._retry_request(response.request, reason=failure.getErrorMessage(), spider=self)
+
+            if response.status == 503:
+                self.logger.info(f"Ignoring response {response.url} with status code {response.status}")
+                time.sleep(480)  # Wait for 8 minutes (adjust as needed)
+                return self._retry_request(response.request, reason=failure.getErrorMessage(), spider=self)
+
+    def _retry_request(self, request, reason, spider):
+        retryreq = request.copy()
+        retryreq.meta['retry_times'] = request.meta.get('retry_times', 0) + 1
+        retryreq.dont_filter = True
+        return retryreq
+    
+    
 
 settings_file_path = 'lazy_crawler.crawler.settings'
 os.environ.setdefault('SCRAPY_SETTINGS_MODULE', settings_file_path)
