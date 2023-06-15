@@ -102,7 +102,9 @@ class LazyCrawler(LazyBaseCrawler):
                     'User-Agent': get_user_agent('random'),
                     **self.HEADERS,  # Merge the HEADERS dictionary with the User-Agent header
                 }
-                url = 'https://colemanfurniture.com/living/sofas.htm?p={}'.format(self.page_number)
+                
+                base_url = response.url  # Get the base URL without the query parameters
+                url = f'{base_url}?p={self.page_number}'
                 yield scrapy.Request(
                     url,
                     self.parse_json,
@@ -110,6 +112,14 @@ class LazyCrawler(LazyBaseCrawler):
                     errback=self.errback_http_ignored,
                     headers=headers
                 )
+                # url = 'https://colemanfurniture.com/living/sofas.htm?p={}'.format(self.page_number)
+                # yield scrapy.Request(
+                #     url,
+                #     self.parse_json,
+                #     dont_filter=True,
+                #     errback=self.errback_http_ignored,
+                #     headers=headers
+                # )
         
         gc.collect()
         
