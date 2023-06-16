@@ -37,7 +37,6 @@ def category_view(request, slug):
 
 @login_required(login_url='/')
 def update_product_price(request):
-
     if request.method == "POST":
         prices_json = request.POST.get('prices')
         prices = json.loads(prices_json)
@@ -48,35 +47,44 @@ def update_product_price(request):
         api_version = '2023-01'
         session = shopify.Session(shop_url, api_version, access_token)
         shopify.ShopifyResource.activate_session(session)
-
         if prices:
-            
-            mutation_query = """
+            for sku, price in prices.items():
+                print('new requesting for update new data.')
+                mutation_query = """
                 mutation productVariantUpdate($input: ProductVariantInput!) {
-                productVariantUpdate(input: $input) {
-                    productVariant {
-                    id
-                    title
-                    price
+                    productVariantUpdate(input: $input) {
+                        product {
+                        id
+                        }
+                        productVariant {
+                        id
+                        title
+                        price
+                        sku
+                        }
+                        userErrors {
+                        field
+                        message
+                        }
                     }
                 }
-                }
                 """
-            for sku, price in prices.items():
+                
                 variant = Product.objects.get(sku=sku)
+                
                 if variant:
                     _id = variant.variant_id
-                    variant_id = "gid://shopify/ProductVariant/{}".format(_id)
-                    variant_price = price
-                    
+                    variant_id = "gid://shopify/ProductVariant/{}".format(_id)                    
                     variables = {
                     "input": {
                         "id": variant_id,
-                        "price": variant_price
+                        "price": price
                         }
                     }
 
                     r = shopify.GraphQL().execute(mutation_query, variables=variables)
+                    print(r)
+                    
             return JsonResponse({
                 "message": "Price updated successfully.",
             }, status=200)
@@ -88,7 +96,6 @@ def update_product_price(request):
     return JsonResponse({
         "message": "invalid request."
     }, status=500)
-
 
 # def update_product_price(request):
 #     if request.method == "POST":
