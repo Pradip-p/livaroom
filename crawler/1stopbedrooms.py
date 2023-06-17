@@ -16,11 +16,11 @@ class LazyCrawler(LazyBaseCrawler):
     allowed_domains = ['1stopbedrooms.com']
 
     custom_settings = {
-        'DOWNLOAD_DELAY': 0.5,
+        'DOWNLOAD_DELAY': 2,
         'LOG_LEVEL': 'DEBUG',
-        'CONCURRENT_REQUESTS': 128,
-        'CONCURRENT_REQUESTS_PER_IP': 128,
-        'CONCURRENT_REQUESTS_PER_DOMAIN': 32,
+        'CONCURRENT_REQUESTS': 32,
+        'CONCURRENT_REQUESTS_PER_IP': 32,
+        'CONCURRENT_REQUESTS_PER_DOMAIN': 13,
         'RETRY_TIMES': 2,
         # "COOKIES_ENABLED": True,
         'DOWNLOAD_TIMEOUT': 10,
@@ -58,16 +58,16 @@ class LazyCrawler(LazyBaseCrawler):
                 'https://www.1stopbedrooms.com/brand/meridian',
                 'https://www.1stopbedrooms.com/brand/zuo-modern',
                 ]
-        url = 'https://www.1stopbedrooms.com/brand/modway'
+        # url = 'https://www.1stopbedrooms.com/brand/modway'
     
-        # for url in urls:
-        yield scrapy.Request(
-        url,
-        self.parse_item,
-        dont_filter=True,
-        errback=self.errback_http_ignored,
-        headers=headers
-        )
+        for url in urls:
+            yield scrapy.Request(
+            url,
+            self.parse_item,
+            dont_filter=True,
+            errback=self.errback_http_ignored,
+            headers=headers
+            )
             
         # url = 'https://www.1stopbedrooms.com/all-furniture'
         # url = 'https://www.1stopbedrooms.com/bedroom/beds'
