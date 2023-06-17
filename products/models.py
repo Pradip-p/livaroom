@@ -107,4 +107,19 @@ class Product(models.Model):
         """
         count = sum(1 for obj in cls.objects.all() if obj.price_englishelm and obj.price_livaroom)
         return count
-# {'id': 7566535786663, 'gid': 'gid://shopify/Product/7566535786663', 'vendor': 'TOV Furniture', 'type': 'Ottomans and Trunks', 'variants': [{'id': 43105494433959, 'price': 11697, 'name': '"Wasn\'t Me" Storage Ottoman - Chocolate Brown / Long', 'public_title': 'Chocolate Brown / Long', 'sku': 'TOV-OC68598'}, {'id': 43105494532263, 'price': 8297, 'name': '"Wasn\'t Me" Storage Ottoman - Chocolate Brown / Round', 'public_title': 'Chocolate Brown / Round', 'sku': 'TOV-OC68597'}, {'id': 43105494565031, 'price': 11697, 'name': '"Wasn\'t Me" Storage Ottoman - Olive Green / Long', 'public_title': 'Olive Green / Long', 'sku': 'TOV-OC68600'}, {'id': 43105494696103, 'price': 8297, 'name': '"Wasn\'t Me" Storage Ottoman - Olive Green / Round', 'public_title': 'Olive Green / Round', 'sku': 'TOV-OC68599'}]}
+    
+    @classmethod
+    def matching_product_1stopbedrooms_count(cls):
+        """
+        Calculate the count of objects in the class that have both 'price_englishelm' and 'price_livaroom' attributes.
+
+        Returns:
+        The count of objects in the class that have values for both 'price_englishelm' and 'price_livaroom' attributes.
+
+        Note:
+        - This function is a class method, meaning it can be called on the class itself (cls) rather than an instance of the class.
+        - It assumes the existence of a class with objects that have 'price_englishelm' and 'price_livaroom' attributes.
+        - The function uses a generator expression to iterate over all objects in the class and count those that meet the condition (have values for both 'price_englishelm' and 'price_livaroom').
+        """
+        count = sum(1 for obj in cls.objects.all() if obj.price_1stopbedrooms and obj.price_livaroom)
+        return count
