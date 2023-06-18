@@ -44,7 +44,7 @@ class LazyCrawler(LazyBaseCrawler):
         # "COOKIES_ENABLED": True,'DOWNLOAD_TIMEOUT': 180,
 
         'ITEM_PIPELINES' :  {
-            'lazy_crawler.crawler.pipelines.EnglishElmDBPipeline': None
+            'lazy_crawler.crawler.pipelines.EnglishElmDBPipeline': 300
         }
     }
 
@@ -67,8 +67,8 @@ class LazyCrawler(LazyBaseCrawler):
             'User-Agent': get_user_agent('random'),
             **self.HEADERS,  # Merge the HEADERS dictionary with the User-Agent header
             }
-        # url = 'https://englishelm.com/collections/zuo-modern'
-        url = 'https://englishelm.com/collections/all'
+        url = 'https://englishelm.com/collections/zuo-modern'
+        # url = 'https://englishelm.com/collections/all'
         # url = 'https://englishelm.com/collections/sofas'
         yield scrapy.Request(url, self.parse_json, dont_filter=True,
                 errback=self.errback_http_ignored,
