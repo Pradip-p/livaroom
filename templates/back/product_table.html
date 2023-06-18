@@ -10,7 +10,8 @@
                 <th class="text-center">sku</th>
                 <th class="text-center">price_livaroom</th>
                 <th class="text-center">price_englishelm</th>
-                {% comment %} <th class="text-center">1stopbedrooms</th> {% endcomment %}
+                <th class="text-center">1stopbedrooms</th>
+                <th class="text-center">1stop_url</th>
                 <th class="text-center" >optimize_price</th>
                 <th class="text-center" >update</th>
                 <th class="text-center" >url</th>
@@ -29,7 +30,25 @@
                 <td class="text-center">{{ cc.sku }}</td>
                 <td class="text-center" > {{ cc.price_livaroom }}</td>
                 <td class="text-center" > {{ cc.price_englishelm }}</td>
-                {% comment %} <td class="text-center" > {{ cc.price_1stopbedrooms }}</td> {% endcomment %}
+
+                
+                <td class="text-center">
+                    {% if cc.price_1stopbedrooms %}
+                    {{ cc.price_1stopbedrooms }}
+                    {% else %}
+                    NA
+                    {% endif %}
+                </td>
+                
+                
+                <td class="text-center">
+                    {% if cc.url_1stopbedrooms %}
+                    <a target="_blank" href="{{ cc.url_1stopbedrooms }}" class="btn btn-sm btn-primary">open</a>
+                    {% else %}
+                    NA
+                    {% endif %}
+                </td>
+                                
                 <td class="text-center">
                     <div class="input-group input-group-sm">
                         <input id="optimize_price_{{cc.sku}}" name="optimize_price" type="text" class="form-control" value="{{ cc.optimize_price }}">

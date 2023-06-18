@@ -21,6 +21,19 @@ CONCURRENT_REQUESTS_PER_DOMAIN = 16
 
 CONCURRENT_REQUESTS_PER_IP = 16
 
+# Enable the HttpProxyMiddleware
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 543,
+} 
+
+# Set the proxy details
+PROXY_HOST = 'proxy.speedproxies.net'
+PROXY_PORT = 'your_proxy_port'
+PROXY_USER = '12321'
+PROXY_PASS = '34d89f51e9f5'
+
+# Configure the HttpProxyMiddleware
+PROXY_URL = f'http://{PROXY_USER}:{PROXY_PASS}@{PROXY_HOST}:{PROXY_PORT}'
 # Disable cookies (enabled by default)
 # COOKIES_ENABLED = False
 
