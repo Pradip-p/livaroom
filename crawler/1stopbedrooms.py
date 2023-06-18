@@ -11,6 +11,7 @@ from scrapy.spidermiddlewares.httperror import HttpError
 import json
 
 class LazyCrawler(LazyBaseCrawler):
+    
     name = "1stopbedrooms"
 
     allowed_domains = ['1stopbedrooms.com']
@@ -49,9 +50,9 @@ class LazyCrawler(LazyBaseCrawler):
             **self.HEADERS,  # Merge the HEADERS dictionary with the User-Agent header
         }
         urls = [
-                # 'https://www.1stopbedrooms.com/brand/lh-imports',
+                'https://www.1stopbedrooms.com/brand/lh-imports',
                 # 'https://www.1stopbedrooms.com/brand/malouf',
-                'https://www.1stopbedrooms.com/brand/modway',
+                # 'https://www.1stopbedrooms.com/brand/modway',
                 # 'https://www.1stopbedrooms.com/brand/j-and-m',
                 # 'https://www.1stopbedrooms.com/brand/manhattan-comfort',
                 # 'https://www.1stopbedrooms.com/brand/moes-home',
@@ -59,8 +60,7 @@ class LazyCrawler(LazyBaseCrawler):
                 # 'https://www.1stopbedrooms.com/brand/meridian',
                 # 'https://www.1stopbedrooms.com/brand/zuo-modern',
                 ]
-        # url = 'https://www.1stopbedrooms.com/brand/modway'
-    
+  
         for url in urls:
             yield scrapy.Request(
             url,
@@ -70,11 +70,7 @@ class LazyCrawler(LazyBaseCrawler):
             headers=headers
             )
             
-        # url = 'https://www.1stopbedrooms.com/all-furniture'
-        # url = 'https://www.1stopbedrooms.com/bedroom/beds'
-        # url = 'https://www.1stopbedrooms.com/brand/malouf'
-        
-        
+
     def parse_url(self, response):
         urls = response.xpath('//a[@class="subcategories-section almost-sb-button"]/@href').extract()
         
