@@ -51,14 +51,15 @@ class LazyCrawler(LazyBaseCrawler):
         }
         urls = [
                 # 'https://www.1stopbedrooms.com/brand/lh-imports',
-                'https://www.1stopbedrooms.com/brand/malouf',
+                # 'https://www.1stopbedrooms.com/brand/malouf',
+                #############
                 # 'https://www.1stopbedrooms.com/brand/modway',
                 # 'https://www.1stopbedrooms.com/brand/j-and-m',
                 # 'https://www.1stopbedrooms.com/brand/manhattan-comfort',
                 # 'https://www.1stopbedrooms.com/brand/moes-home',
                 # 'https://www.1stopbedrooms.com/brand/baxton-studio',
                 # 'https://www.1stopbedrooms.com/brand/meridian',
-                # 'https://www.1stopbedrooms.com/brand/zuo-modern',
+                'https://www.1stopbedrooms.com/brand/zuo-modern',
                 ]
   
         for url in urls:
