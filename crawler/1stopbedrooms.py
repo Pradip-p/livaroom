@@ -50,8 +50,8 @@ class LazyCrawler(LazyBaseCrawler):
             **self.HEADERS,  # Merge the HEADERS dictionary with the User-Agent header
         }
         urls = [
-                'https://www.1stopbedrooms.com/brand/lh-imports',
-                # 'https://www.1stopbedrooms.com/brand/malouf',
+                # 'https://www.1stopbedrooms.com/brand/lh-imports',
+                'https://www.1stopbedrooms.com/brand/malouf',
                 # 'https://www.1stopbedrooms.com/brand/modway',
                 # 'https://www.1stopbedrooms.com/brand/j-and-m',
                 # 'https://www.1stopbedrooms.com/brand/manhattan-comfort',
