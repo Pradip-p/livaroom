@@ -17,13 +17,13 @@ class LazyCrawler(LazyBaseCrawler):
     allowed_domains = ['1stopbedrooms.com']
 
     custom_settings = {
-        'DOWNLOAD_DELAY': 2,
+        'DOWNLOAD_DELAY': 4,
         'LOG_LEVEL': 'DEBUG',
         'CONCURRENT_REQUESTS': 1,
         'CONCURRENT_REQUESTS_PER_IP': 1,
         'CONCURRENT_REQUESTS_PER_DOMAIN': 1,
         'RETRY_TIMES': 2,
-        # "COOKIES_ENABLED": True,
+        "COOKIES_ENABLED": False,
         # 'DOWNLOAD_TIMEOUT': 10,
         'ITEM_PIPELINES': {
             'lazy_crawler.crawler.pipelines.Stopbedrooms': 300
@@ -142,14 +142,7 @@ class LazyCrawler(LazyBaseCrawler):
                             if item['upc'] == sku:
                                 item['sku'] = mpn
                                 yield item
-                                
-                                
-                                
-                            # {'is_mattress': False, 'image': 'https://cdn.1stopbedrooms.com/media/i/catalog:keepframe/catalog/product/g/r/gracelton-cream-velvet-king-bed_0qb24396204.jpg', 'imageclass': None, 'hoverimage': 'https://cdn.1stopbedrooms.com/media/i/catalog:keepframe/catalog/product/g/r/gracelton-cream-velvet-king-bed_0qb24396204_1.jpg', 'hoverimageclass': '', 'name': 'Gracelton Cream Velvet King Bed', 'link': 'https://www.1stopbedrooms.com/gracelton-cream-velvet-king-bed', 'upc': '0qb24396204', 'product_ships_via': 'Free Delivery', 'quick_ship': False, 'price': '$1,680.00', 'old_price': '$1,920.59', 'is_instock': True}
-
-                    # {'prod_id': 'qb1222261', 'sku': 'qb1222261', 'name': 'Donnica Silver Accent Sconce', 'mpn': 'A8010154', 'url': 'https://www.1stopbedrooms.com/donnica-silver-accent-sconce', 'producttype': 'Wall Sconce', 'img': 'https://cdn.1stopbedrooms.com/media/i/thumb_72:keepframe/catalog/product/d/o/donnica-silver-accent-sconce_qb1222261.jpg'}
-                
-                # print(data_optipns)
+                    
             else:
                 print("Data not found")
         else:
@@ -162,19 +155,15 @@ class LazyCrawler(LazyBaseCrawler):
     def errback_http_ignored(self, failure):
         if failure.check(HttpError):
             response = failure.value.response
-            if response.status in  [430, 403]:
+            if response.status in  [430, 403, 503]:
                 self.logger.info(f"Ignoring response {response.url} with status code {response.status}")
-                time.sleep(240)  # Wait for 4 minutes (adjust as needed)
-                return self._retry_request(response.request, reason=failure.getErrorMessage(), spider=self)
-
-            if response.status == 503:
-                self.logger.info(f"Ignoring response {response.url} with status code {response.status}")
-                time.sleep(480)  # Wait for 8 minutes (adjust as needed)
+                # time.sleep(240)  # Wait for 4 minutes (adjust as needed)
                 return self._retry_request(response.request, reason=failure.getErrorMessage(), spider=self)
 
     def _retry_request(self, request, reason, spider):
         retryreq = request.copy()
         retryreq.meta['retry_times'] = request.meta.get('retry_times', 0) + 1
+        retryreq.headers['User-Agent'] = get_user_agent('random')
         retryreq.dont_filter = True
         return retryreq
     
