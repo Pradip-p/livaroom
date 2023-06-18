@@ -16,14 +16,14 @@ class LazyCrawler(LazyBaseCrawler):
     allowed_domains = ['1stopbedrooms.com']
 
     custom_settings = {
-        'DOWNLOAD_DELAY': 4,
+        'DOWNLOAD_DELAY': 2,
         'LOG_LEVEL': 'DEBUG',
-        'CONCURRENT_REQUESTS': 128,
-        'CONCURRENT_REQUESTS_PER_IP': 128,
-        'CONCURRENT_REQUESTS_PER_DOMAIN': 32,
+        'CONCURRENT_REQUESTS': 1,
+        'CONCURRENT_REQUESTS_PER_IP': 1,
+        'CONCURRENT_REQUESTS_PER_DOMAIN': 1,
         'RETRY_TIMES': 2,
         # "COOKIES_ENABLED": True,
-        'DOWNLOAD_TIMEOUT': 10,
+        # 'DOWNLOAD_TIMEOUT': 10,
         'ITEM_PIPELINES': {
             'lazy_crawler.crawler.pipelines.Stopbedrooms': 300
         }
