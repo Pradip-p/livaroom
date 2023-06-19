@@ -68,7 +68,7 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
-    def product_url(self):
+    def product_url(self):        
         return f'https://livaroom.com/products/{self.handle}'
 
     def optimize_price(self):
@@ -115,7 +115,7 @@ class Product(models.Model):
         - It assumes the existence of a class with objects that have 'price_englishelm' and 'price_livaroom' attributes.
         - The function uses a generator expression to iterate over all objects in the class and count those that meet the condition (have values for both 'price_englishelm' and 'price_livaroom').
         """
-        count = sum(1 for obj in cls.objects.all() if obj.price_englishelm and obj.price_livaroom)
+        count = sum(1 for obj in cls.objects.all() if obj.price_englishelm or obj.price_1stopbedrooms)
         return count
     
     @classmethod

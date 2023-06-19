@@ -49,6 +49,7 @@ class LazyCrawler(LazyBaseCrawler):
             'User-Agent': get_user_agent('random'),
             **self.HEADERS,  # Merge the HEADERS dictionary with the User-Agent header
         }
+        # url = 'https://www.1stopbedrooms.com/all-furniture'
         urls = [
                 # 'https://www.1stopbedrooms.com/brand/lh-imports',
                 # 'https://www.1stopbedrooms.com/brand/malouf',
