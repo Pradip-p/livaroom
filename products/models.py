@@ -72,10 +72,20 @@ class Product(models.Model):
         return f'https://livaroom.com/products/{self.handle}'
 
     def optimize_price(self):
-        if self.price_englishelm:
-            return float(self.price_englishelm)/100-2 #cheap price reduce with $2 
+        if self.price_1stopbedrooms and self.price_englishelm:
+            price_1stopbedrooms = float(self.price_1stopbedrooms.replace(',', ''))
+            price_englishelm = float(self.price_englishelm.replace(',', ''))
+            return min(price_1stopbedrooms, price_englishelm / 100) - 2
+        elif self.price_englishelm and not self.price_1stopbedrooms:
+            price_englishelm = float(self.price_englishelm.replace(',', ''))
+            return price_englishelm / 100 - 2
+        elif self.price_1stopbedrooms and not self.price_englishelm:
+            price_1stopbedrooms = float(self.price_1stopbedrooms.replace(',', ''))
+            return price_1stopbedrooms - 2
         else:
             return 'NA'
+
+
     
     @classmethod
     def get_total_count(cls):

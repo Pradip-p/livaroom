@@ -29,7 +29,13 @@
                 <td class="text-center">{{cc.title}}</td>
                 <td class="text-center">{{ cc.sku }}</td>
                 <td class="text-center" > {{ cc.price_livaroom }}</td>
-                <td class="text-center" > {{ cc.price_englishelm }}</td>
+                <td class="text-center" > 
+                    {% if  cc.price_englishelm %}
+                    {{ cc.price_englishelm }}
+                    {% else %}
+                    NA
+                    {% endif %}
+                </td>
 
                 
                 <td class="text-center">

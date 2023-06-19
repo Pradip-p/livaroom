@@ -15,7 +15,7 @@ def no_matching_product(request):
 
 @login_required(login_url='/')
 def vendor_view(request,slug):
-    variants = [variant for variant in Product.objects.filter(vendor__slug = slug).distinct() if variant.price_englishelm]
+    variants = [variant for variant in Product.objects.filter(vendor__slug = slug).distinct() if variant.price_englishelm or variant.price_1stopbedrooms]
     variants = set_pagination(request, variants)
     context = {
             'variants':variants,
@@ -26,7 +26,7 @@ def vendor_view(request,slug):
 def category_view(request, slug):
     # Logic for the category view goes here
     # You can access the 'slug' parameter in this function
-    variants = [variant for variant in Product.objects.filter(category__slug=slug).distinct() if variant.price_englishelm]
+    variants = [variant for variant in Product.objects.filter(category__slug=slug).distinct() if variant.price_englishelm or variant.price_1stopbedrooms]
     variants = set_pagination(request, variants)
     context = {
             'variants':variants,
@@ -197,7 +197,7 @@ def search_product(request):
         if search_key:
             try:
 
-                variants = [variant for variant in Product.objects.filter(Q(sku__icontains=search_key) | Q(vendor__name__icontains=search_key)).distinct() if variant.price_englishelm]#if variant.price_englishelm
+                variants = [variant for variant in Product.objects.filter(Q(sku__icontains=search_key) | Q(vendor__name__icontains=search_key)).distinct() if variant.price_englishelm or variant.price_1stopbedrooms]#if variant.price_englishelm
                 # variants = [variant for variant in Product.objects.filter(sku__icontains=search_key, vendor__name__icontains=search_key).distinct() if variant.price_englishelm]
                 # variants = [variant for variant in Product.objects.filter(sku__icontains=sku).distinct() if variant.price_englishelm]
                 variants = set_pagination(request, variants)
@@ -206,7 +206,7 @@ def search_product(request):
             except ValueError:
                 return render(request, "back/product_table.html", {"message":"please, select the country."})
         else:
-            variants = [variant for variant in Product.objects.all().order_by('-id') if variant.price_englishelm]
+            variants = [variant for variant in Product.objects.all().order_by('-id') if variant.price_englishelm or variant.price_1stopbedrooms]
             variants = set_pagination(request, variants)
             context = {
                'variants':variants,
@@ -238,7 +238,7 @@ def home(request):
     """
 
     # #set the pagination on products li
-    variants = [variant for variant in Product.objects.all().order_by('-id') if variant.price_englishelm]
+    variants = [variant for variant in Product.objects.all().order_by('-id') if variant.price_englishelm or variant.price_1stopbedrooms]
     # variants = Product.objects.all().order_by('-id')
     variants = set_pagination(request, variants)
     context = {
