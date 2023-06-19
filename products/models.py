@@ -103,7 +103,7 @@ class Product(models.Model):
         return cls.objects.count()
 
     @classmethod
-    def matching_product_count(cls):
+    def total_matching_product_count(cls):
         """
         Calculate the count of objects in the class that have both 'price_englishelm' and 'price_livaroom' attributes.
 
@@ -131,5 +131,21 @@ class Product(models.Model):
         - It assumes the existence of a class with objects that have 'price_englishelm' and 'price_livaroom' attributes.
         - The function uses a generator expression to iterate over all objects in the class and count those that meet the condition (have values for both 'price_englishelm' and 'price_livaroom').
         """
-        count = sum(1 for obj in cls.objects.all() if obj.price_1stopbedrooms and obj.price_livaroom)
+        count = sum(1 for obj in cls.objects.all() if obj.price_1stopbedrooms)
         return count
+    @classmethod
+    def get_englishelm_matching_product_count(cls):
+        """
+        Calculate the count of objects in the class that have both 'price_englishelm' and 'price_livaroom' attributes.
+
+        Returns:
+        The count of objects in the class that have values for both 'price_englishelm' and 'price_livaroom' attributes.
+
+        Note:
+        - This function is a class method, meaning it can be called on the class itself (cls) rather than an instance of the class.
+        - It assumes the existence of a class with objects that have 'price_englishelm' and 'price_livaroom' attributes.
+        - The function uses a generator expression to iterate over all objects in the class and count those that meet the condition (have values for both 'price_englishelm' and 'price_livaroom').
+        """
+        count = sum(1 for obj in cls.objects.all() if obj.price_englishelm)
+        return count
+
