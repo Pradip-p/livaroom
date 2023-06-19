@@ -73,7 +73,7 @@ class Product(models.Model):
 
     def optimize_price(self):
         if self.price_englishelm:
-            return float(self.price_englishelm)/100
+            return float(self.price_englishelm)/100-2 #cheap price reduce with $2 
         else:
             return 'NA'
     
