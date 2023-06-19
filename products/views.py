@@ -9,7 +9,7 @@ from django.db.models import Q
 
 @login_required(login_url='/')
 def no_matching_product(request):
-    variants = [variant for variant in Product.objects.all().order_by('-id') if not variant.price_englishelm]
+    variants = [variant for variant in Product.objects.all().order_by('-id') if not variant.price_englishelm and not variant.price_1stopbedrooms]
     variants = set_pagination(request, variants)
     return render(request, 'back/home.html',{'variants': variants})
 
