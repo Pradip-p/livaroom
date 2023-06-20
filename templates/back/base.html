@@ -118,46 +118,22 @@
 
                             <!-- Master User(Which sections i don't want to show for other users) Hide Start -->
 
-                            <!-- Site Settings Panel(To add all the settings) Start -->
-                            <li class="sidebar-header">
-                                <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Quick Settings"><i class="gi gi-settings"></i></a></span>
-                                <span class="sidebar-header-title">Category Section</span>
-                            </li>
-                           
-                            <!-- About Settings (Under Site Settings Panel) End -->
-                            <li>
-                                <a href="#" class="sidebar-nav-menu"><i class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Category</span></a>
-                                
-                                <ul>
-                                    {% get_categories as categories %}
-    
-                                    {% for cat in categories %}
-    
-                                    <li>
-                                        <a href="{% url 'category' slug=cat.slug %}">{{ cat.name }}</a>
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-                               
-                            </li>
+                            
                             <li class="sidebar-header">
                                 <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Quick Settings"><i class="gi gi-settings"></i></a></span>
                                 <span class="sidebar-header-title">Vendor Section</span>
                             </li>
                             <!-- vendor(add and list) Start -->
                         <li>
-                            <a href="#" class="sidebar-nav-menu"><i class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Vender</span></a>
                             
-                            <ul>
-                                {% get_vendor as unique_vendors %}
+                            {% get_vendor as unique_vendors %}
 
-                                {% for vendor in unique_vendors %}
+                            {% for vendor in unique_vendors %}
+                            <li>
+                                <a href="{% url 'vendor' slug=vendor.slug %}"  class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">{{ vendor }}</span></a>
+                            </li>
+                            {% endfor %}
 
-                                <li>
-                                    <a href="{% url 'vendor' slug=vendor.slug %}">{{ vendor }}</a>
-                                </li>
-                                {% endfor %}
-                            </ul>
                             <li>
                                 <a href="{% url 'no_matching_product' %}"  class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">No Matching Products</span></a>
                             </li>
