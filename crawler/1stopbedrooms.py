@@ -49,8 +49,8 @@ class LazyCrawler(LazyBaseCrawler):
             'User-Agent': get_user_agent('random'),
             **self.HEADERS,  # Merge the HEADERS dictionary with the User-Agent header
         }
-        # url = 'https://www.1stopbedrooms.com/all-furniture'
-        urls = [
+        url = 'https://www.1stopbedrooms.com/all-furniture'
+        # urls = [
                 # 'https://www.1stopbedrooms.com/brand/lh-imports',
                 # 'https://www.1stopbedrooms.com/brand/malouf',
                 # 'https://www.1stopbedrooms.com/brand/zuo-modern',
@@ -58,19 +58,19 @@ class LazyCrawler(LazyBaseCrawler):
                 #############
                 # 'https://www.1stopbedrooms.com/brand/modway',
                 # 'https://www.1stopbedrooms.com/brand/j-and-m',
-                'https://www.1stopbedrooms.com/brand/manhattan-comfort',
-                'https://www.1stopbedrooms.com/brand/moes-home',
-                'https://www.1stopbedrooms.com/brand/meridian',
-                ]
+                # 'https://www.1stopbedrooms.com/brand/manhattan-comfort',
+                # 'https://www.1stopbedrooms.com/brand/moes-home',
+                # 'https://www.1stopbedrooms.com/brand/meridian',
+                # ]
   
-        for url in urls:
-            yield scrapy.Request(
-            url,
-            self.parse_item,
-            dont_filter=True,
-            errback=self.errback_http_ignored,
-            headers=headers
-            )
+        # for url in urls:
+        yield scrapy.Request(
+        url,
+        self.parse_item,
+        dont_filter=True,
+        errback=self.errback_http_ignored,
+        headers=headers
+        )
             
 
     def parse_url(self, response):
