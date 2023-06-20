@@ -75,7 +75,6 @@ class LazyCrawler(LazyBaseCrawler):
 
     def parse_url(self, response):
         urls = response.xpath('//a[@class="subcategories-section almost-sb-button"]/@href').extract()
-        
         headers = {
             'User-Agent': get_user_agent('random'),
             **self.HEADERS,  # Merge the HEADERS dictionary with the User-Agent header
@@ -137,13 +136,15 @@ class LazyCrawler(LazyBaseCrawler):
                 for id, product in products.items():
                     # yield product 
                     sku = product['sku']
-                    mpn = product['mpn']
-                    for data in data_optipns:
-                        data = json.loads(data)
-                        for id, item in data.items():
-                            if item['upc'] == sku:
-                                item['sku'] = mpn
-                                yield item
+                    if 'mpn' in product:
+                        print(product)
+                        mpn = product['mpn']
+                        for data in data_optipns:
+                            data = json.loads(data)
+                            for id, item in data.items():
+                                if item['upc'] == sku:
+                                    item['sku'] = mpn
+                                    yield item
                     
             else:
                 print("Data not found")
