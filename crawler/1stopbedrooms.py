@@ -66,7 +66,7 @@ class LazyCrawler(LazyBaseCrawler):
         # for url in urls:
         yield scrapy.Request(
         url,
-        self.parse_item,
+        self.parse_url,
         dont_filter=True,
         errback=self.errback_http_ignored,
         headers=headers
