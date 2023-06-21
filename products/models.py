@@ -69,7 +69,7 @@ class Product(models.Model):
         return self.title
 
     def product_url(self):        
-        return f'https://livaroom.com/products/{self.handle}'
+        return f'https://livaroom.com/products/{self.handle}?variant={self.variant_id}'
 
     def optimize_price(self):
         if self.price_1stopbedrooms and self.price_englishelm:
